@@ -1,30 +1,54 @@
 <?php $title = 'Register'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h2>Register</h2>
+<section class="auth-page">
 
-<form action="/public/index.php" method="POST">
+    <div class="auth-card card">
 
-    <input type="hidden" name="action" value="register">
+        <h1>Create your account</h1>
 
-    <input type="text" name="name" placeholder="Name" required>
-    <br><br>
+        <p class="auth-subtitle">
+            Join the marketplace as a buyer or seller.
+        </p>
 
-    <input type="email" name="email" placeholder="Email" required>
-    <br><br>
+        <form action="/public/index.php" method="POST" class="auth-form">
 
-    <input type="password" name="password" placeholder="Password" required>
-    <br><br>
+            <input type="hidden" name="action" value="register">
 
-    <select name="role">
-        <option value="buyer">Buyer</option>
-        <option value="seller">Seller</option>
-    </select>
+            <label>
+                Full Name
+                <input type="text" name="name" placeholder="Your full name" required>
+            </label>
 
-    <br><br>
+            <label>
+                Email Address
+                <input type="email" name="email" placeholder="you@example.com" required>
+            </label>
 
-    <button type="submit">Register</button>
+            <label>
+                Password
+                <input type="password" name="password" placeholder="Create a password" required>
+            </label>
 
-</form>
+            <label>
+                Account Type
+                <select name="role" required>
+                    <option value="buyer">Buyer</option>
+                    <option value="seller">Seller</option>
+                </select>
+            </label>
+
+            <button type="submit">Create Account</button>
+
+        </form>
+
+        <p class="auth-footer-text">
+            Already have an account?
+            <a href="/public/index.php?page=login">Login</a>
+        </p>
+
+    </div>
+
+</section>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

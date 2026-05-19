@@ -1,75 +1,63 @@
 <?php $title = 'Add Product'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h1>Add Product</h1>
+<div class="page-header">
+    <div>
+        <h1>Add Product</h1>
+        <p>Create a new listing for buyers to discover.</p>
+    </div>
 
-<form
-    action="/public/index.php"
-    method="POST"
-    enctype="multipart/form-data"
->
+    <a class="btn btn-secondary" href="/public/index.php?page=dashboard">Back</a>
+</div>
 
-    <input type="hidden" name="action" value="create-product">
+<section class="form-page card">
 
-    <select name="category_id" required>
-        <option value="">Select Category</option>
+    <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
-    <?php foreach ($categories as $category): ?>
-        <option value="<?php echo $category['id']; ?>">
-            <?php echo htmlspecialchars($category['name']); ?>
-        </option>
-    <?php endforeach; ?>
-    </select>
+        <input type="hidden" name="action" value="create-product">
 
-    <br><br>
+        <label>
+            Category
+            <select name="category_id" required>
+                <option value="">Select Category</option>
 
-    <input
-        type="text"
-        name="name"
-        placeholder="Product Name"
-        required
-    >
+                <?php foreach ($categories as $category): ?>
+                    <option value="<?php echo $category['id']; ?>">
+                        <?php echo htmlspecialchars($category['name']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </label>
 
-    <br><br>
+        <label>
+            Product Name
+            <input type="text" name="name" placeholder="Product name" required>
+        </label>
 
-    <textarea
-        name="description"
-        placeholder="Description"
-    ></textarea>
+        <label>
+            Description
+            <textarea name="description" placeholder="Describe your product"></textarea>
+        </label>
 
-    <br><br>
+        <label>
+            Price
+            <input type="number" step="0.01" name="price" placeholder="0.00" required>
+        </label>
 
-    <input
-        type="number"
-        step="0.01"
-        name="price"
-        placeholder="Price"
-        required
-    >
+        <label>
+            Stock
+            <input type="number" name="stock" placeholder="Available quantity" required>
+        </label>
 
-    <br><br>
+        <label>
+            Product Image
+            <input type="file" name="image" required>
+        </label>
 
-    <input
-        type="number"
-        name="stock"
-        placeholder="Stock"
-        required
-    >
+        <button type="submit">Add Product</button>
 
-    <br><br>
+    </form>
 
-    <input
-        type="file"
-        name="image"
-        required
-    >
-
-    <br><br>
-
-    <button type="submit">
-        Add Product
-    </button>
-
-</form>
+</section>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

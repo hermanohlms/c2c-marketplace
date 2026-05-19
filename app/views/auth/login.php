@@ -1,20 +1,41 @@
 <?php $title = 'Login'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h2>Login</h2>
+<section class="auth-page">
 
-<form action="/public/index.php" method="POST">
+    <div class="auth-card card">
 
-    <input type="hidden" name="action" value="login">
+        <h1>Welcome back</h1>
 
-    <input type="email" name="email" placeholder="Email" required>
-    <br><br>
+        <p class="auth-subtitle">
+            Log in to continue shopping, managing orders, or selling products.
+        </p>
 
-    <input type="password" name="password" placeholder="Password" required>
-    <br><br>
+        <form action="/public/index.php" method="POST" class="auth-form">
 
-    <button type="submit">Login</button>
+            <input type="hidden" name="action" value="login">
 
-</form>
+            <label>
+                Email Address
+                <input type="email" name="email" placeholder="you@example.com" required>
+            </label>
+
+            <label>
+                Password
+                <input type="password" name="password" placeholder="Enter your password" required>
+            </label>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p class="auth-footer-text">
+            Don't have an account?
+            <a href="/public/index.php?page=register">Create one</a>
+        </p>
+
+    </div>
+
+</section>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

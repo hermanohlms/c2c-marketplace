@@ -10,68 +10,103 @@ $total = 0;
 
 <?php if (empty($cart)): ?>
 
-    <p>Your cart is empty.</p>
-
-    <a href="/public/index.php?page=shop">Continue Shopping</a>
+    <div class="card empty-cart">
+        <h2>Your cart is empty</h2>
+        <p>Start browsing products and add something you like.</p>
+        <a class="btn" href="/public/index.php?page=shop">Continue Shopping</a>
+    </div>
 
 <?php else: ?>
 
-    <form action="/public/index.php" method="POST">
-        <input type="hidden" name="action" value="update-cart">
+    <section class="cart-page">
 
-        <div class="cart-list">
+        <form action="/public/index.php" method="POST" class="cart-items-form">
+            <input type="hidden" name="action" value="update-cart">
 
-            <?php foreach ($cart as $item): ?>
+            <div class="cart-items-list">
 
-                <?php
-                $subtotal = $item['price'] * $item['quantity'];
-                $total += $subtotal;
-                ?>
+                <?php foreach ($cart as $item): ?>
 
-                <div class="cart-item">
+                    <?php
+                    $subtotal = $item['price'] * $item['quantity'];
+                    $total += $subtotal;
+                    ?>
 
-                    <?php if (!empty($item['image'])): ?>
-                        <img
-                            src="/public/uploads/<?php echo htmlspecialchars($item['image']); ?>"
-                            alt="<?php echo htmlspecialchars($item['name']); ?>">
-                    <?php endif; ?>
+                    <div class="cart-item-card">
 
-                    <div>
-                        <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                        <?php if (!empty($item['image'])): ?>
+                            <img
+                                src="/public/uploads/<?php echo htmlspecialchars($item['image']); ?>"
+                                alt="<?php echo htmlspecialchars($item['name']); ?>"
+                                class="cart-item-image">
+                        <?php endif; ?>
 
-                        <p>Price: R<?php echo htmlspecialchars($item['price']); ?></p>
+                        <div class="cart-item-info">
+                            <h3><?php echo htmlspecialchars($item['name']); ?></h3>
 
-                        <label>
-                            Quantity:
-                            <input
-                                type="number"
-                                name="quantities[<?php echo $item['id']; ?>]"
-                                value="<?php echo htmlspecialchars($item['quantity']); ?>"
-                                min="0">
-                        </label>
+                            <p class="cart-item-price">
+                                R<?php echo number_format($item['price'], 2); ?>
+                            </p>
 
-                        <p>Subtotal: R<?php echo number_format($subtotal, 2); ?></p>
+                            <label class="quantity-label">
+                                Quantity
+                                <input
+                                    type="number"
+                                    name="quantities[<?php echo htmlspecialchars($item['id']); ?>]"
+                                    value="<?php echo htmlspecialchars($item['quantity']); ?>"
+                                    min="0">
+                            </label>
 
+                            <p class="cart-item-subtotal">
+                                Subtotal:
+                                <strong>R<?php echo number_format($subtotal, 2); ?></strong>
+                            </p>
+                        </div>
 
                     </div>
 
-                </div>
+                <?php endforeach; ?>
 
-            <?php endforeach; ?>
+            </div>
 
-        </div>
+            <button type="submit" class="btn btn-secondary">
+                Update Cart
+            </button>
+        </form>
 
-        <button type="submit">Update Cart</button>
-    </form>
+        <aside class="cart-summary card">
+            <h2>Order Summary</h2>
 
-    <h2>Total: R<?php echo number_format($total, 2); ?></h2>
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong>R<?php echo number_format($total, 2); ?></strong>
+            </div>
 
-    <form action="/public/index.php" method="POST">
-        <input type="hidden" name="action" value="checkout">
-        <button type="submit">Proceed to Checkout</button>
-    </form>
+            <div class="summary-row">
+                <span>Delivery</span>
+                <strong>Calculated later</strong>
+            </div>
 
-    <a href="/public/index.php?page=shop">Continue Shopping</a>
+            <hr>
+
+            <div class="summary-row total-row">
+                <span>Total</span>
+                <strong>R<?php echo number_format($total, 2); ?></strong>
+            </div>
+
+            <form action="/public/index.php" method="POST">
+                <input type="hidden" name="action" value="checkout">
+                <button type="submit" class="checkout-btn">
+                    Proceed to Checkout
+                </button>
+            </form>
+
+            <a class="continue-link" href="/public/index.php?page=shop">
+                Continue Shopping
+            </a>
+        </aside>
+
+    </section>
 
 <?php endif; ?>
 

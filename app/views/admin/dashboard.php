@@ -1,18 +1,33 @@
 <?php $title = 'Admin Dashboard'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h1>Admin Dashboard</h1>
+<div class="page-header">
+    <div>
+        <h1>Admin Dashboard</h1>
+        <p>Manage marketplace categories, products, and users.</p>
+    </div>
+</div>
 
-<p>Welcome, <?php echo htmlspecialchars($_SESSION['user_name']); ?>.</p>
+<section class="admin-dashboard-grid">
 
-<a href="/public/index.php?page=admin-categories">Manage Categories</a>
+    <a class="admin-dashboard-card card" href="/public/index.php?page=admin-categories">
+        <h2>Categories</h2>
+        <p>Create and manage product categories.</p>
+        <span>Manage Categories →</span>
+    </a>
 
-<br><br>
+    <a class="admin-dashboard-card card" href="/public/index.php?page=admin-products">
+        <h2>Products</h2>
+        <p>Moderate product listings and update visibility.</p>
+        <span>Moderate Products →</span>
+    </a>
 
-<a href="/public/index.php?page=admin-products">Moderate Products</a>
+    <a class="admin-dashboard-card card" href="/public/index.php?page=admin-users">
+        <h2>Users</h2>
+        <p>Manage buyers, sellers, admins, and account status.</p>
+        <span>Manage Users →</span>
+    </a>
 
-<br><br>
-
-<a href="/public/index.php?page=admin-users">Manage Users</a>
+</section>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

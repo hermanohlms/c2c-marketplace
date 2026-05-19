@@ -1,60 +1,70 @@
 <?php $title = $product['name']; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<div class="product-detail">
+<a class="back-link" href="/public/index.php?page=shop">← Back to Shop</a>
 
-    <?php if (!empty($product['image'])): ?>
-        <img
-            src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
-            alt="<?php echo htmlspecialchars($product['name']); ?>">
-    <?php endif; ?>
+<section class="product-detail-page">
 
-    <div>
+    <div class="product-detail-image-wrap">
+        <?php if (!empty($product['image'])): ?>
+            <img
+                src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                alt="<?php echo htmlspecialchars($product['name']); ?>"
+                class="product-detail-image">
+        <?php else: ?>
+            <div class="product-detail-placeholder">No Image</div>
+        <?php endif; ?>
+    </div>
+
+    <div class="product-detail-info card">
+
+        <p class="product-category">
+            <?php echo htmlspecialchars($product['category_name'] ?? 'Uncategorized'); ?>
+        </p>
+
         <h1><?php echo htmlspecialchars($product['name']); ?></h1>
 
-        <p>
-            Category:
-            <?php echo htmlspecialchars($product['category_name'] ?? 'No category'); ?>
+        <p class="product-seller">
+            Sold by <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
         </p>
 
-        <p>
-            Seller:
-            <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
+        <h2 class="product-detail-price">
+            R<?php echo number_format($product['price'], 2); ?>
+        </h2>
+
+        <p class="stock-badge">
+            Stock: <?php echo htmlspecialchars($product['stock']); ?>
         </p>
 
-        <p>
+        <p class="product-description">
             <?php echo nl2br(htmlspecialchars($product['description'])); ?>
         </p>
 
-        <h2>R<?php echo htmlspecialchars($product['price']); ?></h2>
+        <div class="product-actions">
 
-        <p>
-            Stock:
-            <?php echo htmlspecialchars($product['stock']); ?>
-        </p>
-
-        <form action="/public/index.php" method="POST" class="ajax-add-to-cart">
-            <input type="hidden" name="action" value="add-to-cart">
-            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-
-            <button type="submit">Add to Cart</button>
-        </form>
-
-        <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'buyer'): ?>
-
-            <form action="/public/index.php" method="POST">
-                <input type="hidden" name="action" value="add-to-wishlist">
+            <form action="/public/index.php" method="POST" class="ajax-add-to-cart">
+                <input type="hidden" name="action" value="add-to-cart">
                 <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 
-                <button type="submit">Add to Wishlist</button>
+                <button type="submit">Add to Cart</button>
             </form>
 
-        <?php endif; ?>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'buyer'): ?>
 
-        <a href="/public/index.php?page=shop">Back to Shop</a>
+                <form action="/public/index.php" method="POST">
+                    <input type="hidden" name="action" value="add-to-wishlist">
+                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+
+                    <button class="btn-secondary" type="submit">Add to Wishlist</button>
+                </form>
+
+            <?php endif; ?>
+
+        </div>
+
     </div>
 
-</div>
+</section>
 
 <hr>
 

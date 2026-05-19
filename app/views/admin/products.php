@@ -1,23 +1,29 @@
 <?php $title = 'Admin Products'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h1>Product Moderation</h1>
+<div class="page-header">
+    <div>
+        <h1>Product Moderation</h1>
+        <p>Review listings and control product visibility.</p>
+    </div>
 
-<a href="/public/index.php?page=admin-dashboard">Back to Admin Dashboard</a>
-
-<br><br>
+    <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
+</div>
 
 <?php if (empty($products)): ?>
 
-    <p>No products found.</p>
+    <div class="card empty-state">
+        <h2>No products found</h2>
+        <p>Products will appear here once sellers add them.</p>
+    </div>
 
 <?php else: ?>
 
-    <div class="admin-product-list">
+    <div class="management-grid">
 
         <?php foreach ($products as $product): ?>
 
-            <div class="admin-product-card">
+            <div class="management-card card">
 
                 <?php if (!empty($product['image'])): ?>
                     <img
@@ -28,47 +34,30 @@
                 <div>
                     <h3><?php echo htmlspecialchars($product['name']); ?></h3>
 
-                    <p>
+                    <p class="muted">
                         Seller:
                         <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
-                        (<?php echo htmlspecialchars($product['seller_email'] ?? 'No email'); ?>)
+                        — <?php echo htmlspecialchars($product['seller_email'] ?? 'No email'); ?>
                     </p>
 
-                    <p>
-                        Category:
-                        <?php echo htmlspecialchars($product['category_name'] ?? 'No category'); ?>
-                    </p>
+                    <p>Category: <?php echo htmlspecialchars($product['category_name'] ?? 'No category'); ?></p>
+                    <p>Price: <strong>R<?php echo number_format($product['price'], 2); ?></strong></p>
+                    <p>Stock: <?php echo htmlspecialchars($product['stock']); ?></p>
 
-                    <p>
-                        Price: R<?php echo number_format($product['price'], 2); ?>
-                    </p>
+                    <span class="status-pill">
+                        <?php echo htmlspecialchars($product['status']); ?>
+                    </span>
 
-                    <p>
-                        Stock: <?php echo htmlspecialchars($product['stock']); ?>
-                    </p>
-
-                    <p>
-                        Current Status:
-                        <strong><?php echo htmlspecialchars($product['status']); ?></strong>
-                    </p>
-
-                    <form action="/public/index.php" method="POST">
+                    <form action="/public/index.php" method="POST" class="inline-update-form">
                         <input type="hidden" name="action" value="update-product-status">
                         <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 
                         <select name="status" required>
-                            <option value="active" <?php echo $product['status'] === 'active' ? 'selected' : ''; ?>>
-                                Active
-                            </option>
-
-                            <option value="inactive" <?php echo $product['status'] === 'inactive' ? 'selected' : ''; ?>>
-                                Inactive
-                            </option>
+                            <option value="active" <?php echo $product['status'] === 'active' ? 'selected' : ''; ?>>Active</option>
+                            <option value="inactive" <?php echo $product['status'] === 'inactive' ? 'selected' : ''; ?>>Inactive</option>
                         </select>
 
-                        <br><br>
-
-                        <button type="submit">Update Status</button>
+                        <button type="submit">Update</button>
                     </form>
                 </div>
 

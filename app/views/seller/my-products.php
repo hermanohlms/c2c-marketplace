@@ -1,50 +1,67 @@
 <?php $title = 'My Products'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h1>My Products</h1>
+<div class="page-header">
+    <div>
+        <h1>My Products</h1>
+        <p>View and manage your product listings.</p>
+    </div>
 
-<a href="/public/index.php?page=dashboard">Back to Dashboard</a>
-<br><br>
+    <a class="btn" href="/public/index.php?page=add-product">Add Product</a>
+</div>
 
 <?php if (empty($products)): ?>
 
-    <p>You have not added any products yet.</p>
+    <div class="card empty-state">
+        <h2>No products yet</h2>
+        <p>Add your first product to start selling.</p>
+        <a class="btn" href="/public/index.php?page=add-product">Add Product</a>
+    </div>
 
 <?php else: ?>
 
-    <?php foreach ($products as $product): ?>
+    <div class="product-grid">
 
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        <?php foreach ($products as $product): ?>
 
-            <?php if (!empty($product['image'])): ?>
-                <img 
-                    src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>" 
-                    width="120"
-                >
-            <?php endif; ?>
+            <div class="product-card">
 
-            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                <?php if (!empty($product['image'])): ?>
+                    <img
+                        src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                        alt="<?php echo htmlspecialchars($product['name']); ?>"
+                        class="product-image">
+                <?php endif; ?>
 
-            <p>
-                Category:
-                <?php echo htmlspecialchars($product['category_name'] ?? 'No category'); ?>
-            </p>
+                <div class="product-card-body">
+                    <p class="product-category">
+                        <?php echo htmlspecialchars($product['category_name'] ?? 'Uncategorized'); ?>
+                    </p>
 
-            <p>
-                Price: R<?php echo htmlspecialchars($product['price']); ?>
-            </p>
+                    <h3 class="product-title">
+                        <?php echo htmlspecialchars($product['name']); ?>
+                    </h3>
 
-            <p>
-                Stock: <?php echo htmlspecialchars($product['stock']); ?>
-            </p>
+                    <p class="product-seller">
+                        Stock: <?php echo htmlspecialchars($product['stock']); ?>
+                    </p>
 
-            <p>
-                Status: <?php echo htmlspecialchars($product['status']); ?>
-            </p>
+                    <div class="product-card-footer">
+                        <strong class="product-price">
+                            R<?php echo number_format($product['price'], 2); ?>
+                        </strong>
 
-        </div>
+                        <span class="status-pill">
+                            <?php echo htmlspecialchars($product['status']); ?>
+                        </span>
+                    </div>
+                </div>
 
-    <?php endforeach; ?>
+            </div>
+
+        <?php endforeach; ?>
+
+    </div>
 
 <?php endif; ?>
 
