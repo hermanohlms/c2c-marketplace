@@ -57,21 +57,44 @@
 
             <div class="product-card">
 
-                <?php if (!empty($product['image'])): ?>
-                    <img
-                        src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
-                        alt="<?php echo htmlspecialchars($product['name']); ?>">
-                <?php endif; ?>
-
-                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
-
-                <p><?php echo htmlspecialchars($product['category_name'] ?? 'No category'); ?></p>
-
-                <p><strong>R<?php echo htmlspecialchars($product['price']); ?></strong></p>
-
-                <a href="/public/index.php?page=product&id=<?php echo $product['id']; ?>">
-                    View Product
+                <a href="/public/index.php?page=product&id=<?php echo $product['id']; ?>" class="product-image-link">
+                    <?php if (!empty($product['image'])): ?>
+                        <img
+                            src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                            alt="<?php echo htmlspecialchars($product['name']); ?>"
+                            class="product-image">
+                    <?php else: ?>
+                        <div class="product-image-placeholder">No Image</div>
+                    <?php endif; ?>
                 </a>
+
+                <div class="product-card-body">
+
+                    <p class="product-category">
+                        <?php echo htmlspecialchars($product['category_name'] ?? 'Uncategorized'); ?>
+                    </p>
+
+                    <h3 class="product-title">
+                        <?php echo htmlspecialchars($product['name']); ?>
+                    </h3>
+
+                    <p class="product-seller">
+                        Seller: <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
+                    </p>
+
+                    <div class="product-card-footer">
+                        <strong class="product-price">
+                            R<?php echo number_format($product['price'], 2); ?>
+                        </strong>
+
+                        <a
+                            class="btn product-btn"
+                            href="/public/index.php?page=product&id=<?php echo $product['id']; ?>">
+                            View
+                        </a>
+                    </div>
+
+                </div>
 
             </div>
 

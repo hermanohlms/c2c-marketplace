@@ -19,7 +19,7 @@
 
         <?php if (!isset($_SESSION['user_id'])): ?>
 
-            <a href="/public/index.php">Register</a> |
+            <a href="/public/index.php?page=register">Register</a> |
             <a href="/public/index.php?page=login">Login</a> |
 
         <?php endif; ?>
