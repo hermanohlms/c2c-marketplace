@@ -1,0 +1,177 @@
+<?php
+
+session_start();
+
+require_once __DIR__ . '/../config/db.php';
+
+
+require_once __DIR__ . '/../app/controllers/ProductController.php';
+require_once __DIR__ . '/../app/controllers/AuthController.php';
+require_once __DIR__ . '/../app/controllers/CartController.php';
+require_once __DIR__ . '/../app/controllers/CheckoutController.php';
+require_once __DIR__ . '/../app/controllers/OrderController.php';
+require_once __DIR__ . '/../app/controllers/ReviewController.php';
+require_once __DIR__ . '/../app/controllers/AdminController.php';
+require_once __DIR__ . '/../app/controllers/PaymentController.php';
+require_once __DIR__ . '/../app/controllers/WishlistController.php';
+
+require_once __DIR__ . '/../app/models/Order.php';
+require_once __DIR__ . '/../app/models/Product.php';
+
+$action = $_POST['action'] ?? null;
+$page = $_GET['page'] ?? 'register';
+
+$orderModel = new Order($conn);
+$productModel = new Product($conn);
+
+$wishlistController = new WishlistController($conn);
+$paymentController = new PaymentController($conn);
+$adminController = new AdminController($conn);
+$reviewController = new ReviewController($conn);
+$orderController = new OrderController($conn);
+$checkoutController = new CheckoutController($conn);
+$cartController = new CartController($conn);
+$controller = new AuthController($conn);
+$productController = new ProductController($conn);
+
+if ($action === 'register') {
+
+    $controller->register();
+} elseif ($action === 'login') {
+
+    $controller->login();
+} elseif ($page === 'dashboard') {
+
+    if (!isset($_SESSION['user_id'])) {
+        die("Access denied.");
+    }
+
+    if ($_SESSION['user_role'] !== 'seller') {
+        die("Seller access only.");
+    }
+
+    $analytics = $orderModel->getSellerAnalytics($_SESSION['user_id']);
+    $topProducts = $orderModel->getTopSellingProducts($_SESSION['user_id']);
+    $activeProductsCount = $productModel->countActiveBySeller($_SESSION['user_id']);
+    $lowStockProducts = $productModel->getLowStockBySeller($_SESSION['user_id']);
+
+    require_once __DIR__ . '/../app/views/seller/dashboard.php';
+} elseif ($page === 'my-products') {
+
+    if (!isset($_SESSION['user_id'])) {
+        die("Access denied.");
+    }
+
+    if ($_SESSION['user_role'] !== 'seller') {
+        die("Seller access only.");
+    }
+
+    $productController->myProducts();
+} elseif ($page === 'logout') {
+
+    session_destroy();
+
+    header("Location: /public/index.php?page=login");
+    exit;
+} elseif ($page === 'add-product') {
+
+    if (!isset($_SESSION['user_id'])) {
+        die("Access denied.");
+    }
+
+    if ($_SESSION['user_role'] !== 'seller') {
+        die("Seller access only.");
+    }
+
+    $productController->showAddProductForm();
+} elseif ($action === 'create-product') {
+
+    $productController->create();
+} elseif ($page === 'shop') {
+
+    $productController->shop();
+} elseif ($page === 'product') {
+
+    $productController->show();
+} elseif ($action === 'add-to-cart') {
+
+    $cartController->add();
+} elseif ($action === 'cart-count') {
+
+    $cartController->count();
+} elseif ($action === 'remove-from-cart') {
+
+    $cartController->remove();
+} elseif ($page === 'cart') {
+
+    $cartController->view();
+} elseif ($action === 'update-cart') {
+
+    $cartController->update();
+} elseif ($action === 'checkout') {
+
+    $checkoutController->checkout();
+} elseif ($page === 'checkout-success') {
+
+    require_once __DIR__ . '/../app/views/checkout/success.php';
+} elseif ($page === 'my-orders') {
+
+    $orderController->myOrders();
+} elseif ($page === 'seller-orders') {
+
+    $orderController->sellerOrders();
+} elseif ($action === 'update-order-status') {
+
+    $orderController->updateStatus();
+} elseif ($action === 'create-review') {
+
+    $reviewController->create();
+} elseif ($page === 'admin-dashboard') {
+
+    $adminController->dashboard();
+} elseif ($page === 'admin-categories') {
+
+    $adminController->categories();
+} elseif ($action === 'create-category') {
+
+    $adminController->createCategory();
+} elseif ($page === 'admin-products') {
+
+    $adminController->products();
+} elseif ($action === 'update-product-status') {
+
+    $adminController->updateProductStatus();
+} elseif ($page === 'payfast-start') {
+
+    $paymentController->startPayfast();
+} elseif ($page === 'payment-success') {
+
+    $paymentController->success();
+} elseif ($page === 'payment-cancelled') {
+
+    $paymentController->cancelled();
+} elseif ($page === 'wishlist') {
+
+    $wishlistController->index();
+} elseif ($action === 'add-to-wishlist') {
+
+    $wishlistController->add();
+} elseif ($action === 'remove-from-wishlist') {
+
+    $wishlistController->remove();
+} elseif ($page === 'admin-users') {
+
+    $adminController->users();
+} elseif ($action === 'update-user') {
+
+    $adminController->updateUser();
+} else {
+
+    if ($page === 'login') {
+
+        require_once __DIR__ . '/../app/views/auth/login.php';
+    } else {
+
+        require_once __DIR__ . '/../app/views/auth/register.php';
+    }
+}

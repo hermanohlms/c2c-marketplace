@@ -1,0 +1,77 @@
+<?php
+
+require_once __DIR__ . '/../models/Wishlist.php';
+
+class WishlistController
+{
+
+    private $db;
+
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
+
+    private function requireBuyer()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = "Please login first.";
+            header("Location: /public/index.php?page=login");
+            exit;
+        }
+
+        if ($_SESSION['user_role'] !== 'buyer') {
+            $_SESSION['error'] = "Buyer access only.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+    }
+
+    public function index()
+    {
+        $this->requireBuyer();
+
+        $wishlistModel = new Wishlist($this->db);
+        $wishlistItems = $wishlistModel->getByUser($_SESSION['user_id']);
+
+        require_once __DIR__ . '/../views/wishlist/index.php';
+    }
+
+    public function add()
+    {
+        $this->requireBuyer();
+
+        $product_id = $_POST['product_id'] ?? null;
+
+        if (!$product_id) {
+            $_SESSION['error'] = "Invalid product.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+
+        $wishlistModel = new Wishlist($this->db);
+        $wishlistModel->add($_SESSION['user_id'], $product_id);
+
+        $_SESSION['success'] = "Product added to wishlist.";
+
+        header("Location: /public/index.php?page=product&id=" . $product_id);
+        exit;
+    }
+
+    public function remove()
+    {
+        $this->requireBuyer();
+
+        $product_id = $_POST['product_id'] ?? null;
+
+        if ($product_id) {
+            $wishlistModel = new Wishlist($this->db);
+            $wishlistModel->remove($_SESSION['user_id'], $product_id);
+        }
+
+        $_SESSION['success'] = "Product removed from wishlist.";
+
+        header("Location: /public/index.php?page=wishlist");
+        exit;
+    }
+}

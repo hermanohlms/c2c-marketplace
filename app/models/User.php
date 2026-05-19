@@ -1,0 +1,101 @@
+<?php
+
+class User
+{
+
+    private $conn;
+
+    public function __construct($db)
+    {
+        $this->conn = $db;
+    }
+
+    public function create($name, $email, $password, $role)
+    {
+        $sql = "
+            INSERT INTO users
+            (name, email, password, role)
+            VALUES
+            (:name, :email, :password, :role)
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':name' => $name,
+            ':email' => $email,
+            ':password' => $password,
+            ':role' => $role
+        ]);
+    }
+
+    public function findByEmail($email)
+    {
+        $sql = "
+        SELECT * FROM users
+        WHERE email = :email
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':email' => $email
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAll()
+    {
+        $sql = "SELECT * FROM users ORDER BY created_at DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateRole($user_id, $role)
+    {
+        $allowedRoles = ['buyer', 'seller', 'admin'];
+
+        if (!in_array($role, $allowedRoles)) {
+            return false;
+        }
+
+        $sql = "
+        UPDATE users
+        SET role = :role
+        WHERE id = :user_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':role' => $role,
+            ':user_id' => $user_id
+        ]);
+    }
+
+    public function updateStatus($user_id, $status)
+    {
+        $allowedStatuses = ['active', 'inactive'];
+
+        if (!in_array($status, $allowedStatuses)) {
+            return false;
+        }
+
+        $sql = "
+        UPDATE users
+        SET status = :status
+        WHERE id = :user_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':status' => $status,
+            ':user_id' => $user_id
+        ]);
+    }
+}
