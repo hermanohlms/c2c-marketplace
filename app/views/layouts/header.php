@@ -57,16 +57,18 @@
 
 
     <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert error">
-            <?php echo htmlspecialchars($_SESSION['error']); ?>
-        </div>
+        <script>
+            window.toastMessage = <?php echo json_encode($_SESSION['error']); ?>;
+            window.toastType = "error";
+        </script>
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert success">
-            <?php echo htmlspecialchars($_SESSION['success']); ?>
-        </div>
+        <script>
+            window.toastMessage = <?php echo json_encode($_SESSION['success']); ?>;
+            window.toastType = "success";
+        </script>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 

@@ -78,6 +78,20 @@
                         <?php echo htmlspecialchars($product['name']); ?>
                     </h3>
 
+                    <div class="rating-summary">
+                        <span class="rating-stars">
+                            <?php
+                            $avg = round($product['average_rating']);
+                            echo str_repeat('★', $avg);
+                            echo str_repeat('☆', 5 - $avg);
+                            ?>
+                        </span>
+
+                        <span class="rating-count">
+                            <?php echo htmlspecialchars($product['review_count']); ?> reviews
+                        </span>
+                    </div>
+
                     <p class="product-seller">
                         Seller: <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
                     </p>

@@ -28,6 +28,21 @@
             Sold by <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
         </p>
 
+        <div class="rating-summary product-detail-rating">
+            <span class="rating-stars">
+                <?php
+                $avg = round($product['average_rating']);
+                echo str_repeat('★', $avg);
+                echo str_repeat('☆', 5 - $avg);
+                ?>
+            </span>
+
+            <span class="rating-count">
+                <?php echo number_format($product['average_rating'], 1); ?>/5
+                (<?php echo htmlspecialchars($product['review_count']); ?> reviews)
+            </span>
+        </div>
+
         <h2 class="product-detail-price">
             R<?php echo number_format($product['price'], 2); ?>
         </h2>

@@ -103,13 +103,20 @@ class Product
     public function findById($id)
     {
         $sql = "
-        SELECT products.*, categories.name AS category_name, users.name AS seller_name
-        FROM products
-        LEFT JOIN categories ON products.category_id = categories.id
-        LEFT JOIN users ON products.seller_id = users.id
-        WHERE products.id = :id
-        LIMIT 1
-    ";
+                SELECT 
+                products.*, 
+                categories.name AS category_name, 
+                users.name AS seller_name,
+                COALESCE(AVG(reviews.rating), 0) AS average_rating,
+                COUNT(reviews.id) AS review_count
+            FROM products
+            LEFT JOIN categories ON products.category_id = categories.id
+            LEFT JOIN users ON products.seller_id = users.id
+            LEFT JOIN reviews ON products.id = reviews.product_id
+            WHERE products.id = :id
+            GROUP BY products.id, categories.name, users.name
+            LIMIT 1
+        ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([
@@ -141,12 +148,18 @@ class Product
     public function searchAndFilter($search, $category_id, $sort)
     {
         $sql = "
-        SELECT products.*, categories.name AS category_name, users.name AS seller_name
-        FROM products
-        LEFT JOIN categories ON products.category_id = categories.id
-        LEFT JOIN users ON products.seller_id = users.id
-        WHERE products.status = 'active'
-    ";
+                SELECT 
+                products.*, 
+                categories.name AS category_name, 
+                users.name AS seller_name,
+                COALESCE(AVG(reviews.rating), 0) AS average_rating,
+                COUNT(reviews.id) AS review_count
+            FROM products
+            LEFT JOIN categories ON products.category_id = categories.id
+            LEFT JOIN users ON products.seller_id = users.id
+            LEFT JOIN reviews ON products.id = reviews.product_id
+            WHERE products.status = 'active'
+        ";
 
         $params = [];
 
@@ -163,6 +176,10 @@ class Product
             $sql .= " AND products.category_id = :category_id";
             $params[':category_id'] = $category_id;
         }
+
+        $sql .= "
+            GROUP BY products.id, categories.name, users.name
+        ";
 
         if ($sort === 'price_low') {
             $sql .= " ORDER BY products.price ASC";
