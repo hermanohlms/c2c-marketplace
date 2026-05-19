@@ -45,6 +45,12 @@
             </a> |
             <a href="/public/index.php?page=logout">Logout</a> |
 
+            <a href="/public/index.php?page=profile" class="profile-nav-link">
+                <span class="profile-avatar">
+                    <?php echo strtoupper(substr($_SESSION['user_name'], 0, 1)); ?>
+                </span>
+            </a>
+
             <span>
                 Logged in as:
                 <?php echo htmlspecialchars($_SESSION['user_name']); ?>

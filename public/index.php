@@ -14,6 +14,7 @@ require_once __DIR__ . '/../app/controllers/ReviewController.php';
 require_once __DIR__ . '/../app/controllers/AdminController.php';
 require_once __DIR__ . '/../app/controllers/PaymentController.php';
 require_once __DIR__ . '/../app/controllers/WishlistController.php';
+require_once __DIR__ . '/../app/controllers/ProfileController.php';
 
 require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
@@ -24,6 +25,7 @@ $page = $_GET['page'] ?? 'home';
 $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
+$profileController = new ProfileController($conn);
 $wishlistController = new WishlistController($conn);
 $paymentController = new PaymentController($conn);
 $adminController = new AdminController($conn);
@@ -168,6 +170,12 @@ if ($action === 'register') {
 } elseif ($page === 'home') {
 
     require_once __DIR__ . '/../app/views/home.php';
+} elseif ($page === 'profile') {
+
+    $profileController->show();
+} elseif ($action === 'update-profile') {
+
+    $profileController->update();
 } else {
 
     if ($page === 'login') {

@@ -98,4 +98,59 @@ class User
             ':user_id' => $user_id
         ]);
     }
+
+    public function findById($id)
+    {
+        $sql = "
+        SELECT *
+        FROM users
+        WHERE id = :id
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateProfile($id, $name, $phone, $profile_image = null)
+    {
+        if ($profile_image) {
+            $sql = "
+            UPDATE users
+            SET name = :name,
+                phone = :phone,
+                profile_image = :profile_image
+            WHERE id = :id
+        ";
+
+            $stmt = $this->conn->prepare($sql);
+
+            return $stmt->execute([
+                ':name' => $name,
+                ':phone' => $phone,
+                ':profile_image' => $profile_image,
+                ':id' => $id
+            ]);
+        }
+
+        $sql = "
+        UPDATE users
+        SET name = :name,
+            phone = :phone
+        WHERE id = :id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':name' => $name,
+            ':phone' => $phone,
+            ':id' => $id
+        ]);
+    }
 }
