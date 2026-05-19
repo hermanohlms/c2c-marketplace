@@ -93,26 +93,29 @@
             <input type="hidden" name="action" value="create-review">
             <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 
-            <label>
-                Rating
-                <select name="rating" required>
-                    <option value="">Select rating</option>
-                    <option value="5">5 - Excellent</option>
-                    <option value="4">4 - Good</option>
-                    <option value="3">3 - Average</option>
-                    <option value="2">2 - Poor</option>
-                    <option value="1">1 - Very Poor</option>
-                </select>
-            </label>
+            <label class="rating-label">Rating</label>
 
-            <br><br>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" required>
+                <label for="star5">★</label>
+
+                <input type="radio" id="star4" name="rating" value="4">
+                <label for="star4">★</label>
+
+                <input type="radio" id="star3" name="rating" value="3">
+                <label for="star3">★</label>
+
+                <input type="radio" id="star2" name="rating" value="2">
+                <label for="star2">★</label>
+
+                <input type="radio" id="star1" name="rating" value="1">
+                <label for="star1">★</label>
+            </div>
 
             <label>
                 Comment
                 <textarea name="comment" placeholder="Write your review..."></textarea>
             </label>
-
-            <br><br>
 
             <button type="submit">Submit Review</button>
         </form>
@@ -130,7 +133,10 @@
 
                 <p>
                     Rating:
-                    <?php echo htmlspecialchars($review['rating']); ?>/5
+                    <span class="review-stars">
+                        <?php echo str_repeat('★', (int)$review['rating']); ?>
+                        <?php echo str_repeat('☆', 5 - (int)$review['rating']); ?>
+                    </span>
                 </p>
 
                 <p>
