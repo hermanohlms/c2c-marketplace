@@ -1,5 +1,7 @@
 <hr>
 
+</main>
+
 <footer>
     <p>&copy; <?php echo date('Y'); ?> My E-Commerce Website</p>
 </footer>

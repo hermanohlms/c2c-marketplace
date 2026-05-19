@@ -19,7 +19,7 @@ require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
 
 $action = $_POST['action'] ?? null;
-$page = $_GET['page'] ?? 'register';
+$page = $_GET['page'] ?? 'home';
 
 $orderModel = new Order($conn);
 $productModel = new Product($conn);
@@ -165,6 +165,9 @@ if ($action === 'register') {
 } elseif ($action === 'update-user') {
 
     $adminController->updateUser();
+} elseif ($page === 'home') {
+
+    require_once __DIR__ . '/../app/views/home.php';
 } else {
 
     if ($page === 'login') {

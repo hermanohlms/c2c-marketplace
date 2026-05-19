@@ -1,3 +1,121 @@
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --dark: #111827;
+    --muted: #6b7280;
+    --light: #f9fafb;
+    --border: #e5e7eb;
+    --success: #15803d;
+    --danger: #b91c1c;
+    --radius: 14px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.5;
+}
+
+.container {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: 16px;
+}
+
+nav {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+nav a {
+    color: var(--dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+nav a:hover {
+    color: var(--primary);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
+
+button,
+.btn {
+    display: inline-block;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 11px 16px;
+    border-radius: var(--radius);
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+button:hover,
+.btn:hover {
+    background: var(--primary-dark);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--dark);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: #f3f4f6;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: white;
+}
+
+.card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+}
+
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin: 16px;
+    background: white;
+}
+
+.alert.error {
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.alert.success {
+    border: 1px solid var(--success);
+    color: var(--success);
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -366,5 +484,52 @@ button {
 @media (min-width: 768px) {
     .admin-user-list {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 48px 0;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 8vw, 4rem);
+    margin-bottom: 16px;
+}
+
+.hero p {
+    color: var(--muted);
+    font-size: 1.1rem;
+    max-width: 620px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.hero-card ul {
+    padding-left: 20px;
+}
+
+.category-preview-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 20px 0 40px;
+}
+
+@media (min-width: 768px) {
+    .hero {
+        grid-template-columns: 1.5fr 1fr;
+        align-items: center;
+    }
+
+    .category-preview-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 }

@@ -4,14 +4,17 @@
 <head>
     <title><?php echo $title ?? 'E-Commerce'; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 
 <body>
 
-    <link rel="stylesheet" href="/public/assets/css/style.css">
 
     <nav>
 
+        <a href="/public/index.php?page=home">Home</a> |
         <a href="/public/index.php?page=shop">Shop</a> |
 
         <?php if (!isset($_SESSION['user_id'])): ?>
@@ -52,7 +55,6 @@
 
     </nav>
 
-    <hr>
 
     <?php if (isset($_SESSION['error'])): ?>
         <div class="alert error">
@@ -67,3 +69,9 @@
         </div>
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
+
+    <main class="container">
+
+
+
+</body>
