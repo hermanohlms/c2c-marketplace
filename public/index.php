@@ -173,9 +173,6 @@ if ($action === 'register') {
 } elseif ($page === 'profile') {
 
     $profileController->show();
-} elseif ($action === 'update-profile') {
-
-    $profileController->update();
 } else {
 
     if ($page === 'login') {

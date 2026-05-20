@@ -12,6 +12,8 @@ class ProfileController
         $this->db = $db;
     }
 
+
+
     private function requireLogin()
     {
         if (!isset($_SESSION['user_id'])) {
@@ -20,6 +22,8 @@ class ProfileController
             exit;
         }
     }
+
+
 
     public function show()
     {
@@ -71,6 +75,11 @@ class ProfileController
 
         if ($updated) {
             $_SESSION['user_name'] = $name;
+
+            if ($profileImage) {
+                $_SESSION['profile_image'] = $profileImage;
+            }
+
             $_SESSION['success'] = "Profile updated successfully.";
         } else {
             $_SESSION['error'] = "Could not update profile.";

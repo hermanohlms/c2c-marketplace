@@ -46,9 +46,22 @@
             <a href="/public/index.php?page=logout">Logout</a> |
 
             <a href="/public/index.php?page=profile" class="profile-nav-link">
-                <span class="profile-avatar">
-                    <?php echo strtoupper(substr($_SESSION['user_name'], 0, 1)); ?>
-                </span>
+
+                <?php if (!empty($_SESSION['profile_image'])): ?>
+
+                    <img
+                        src="/public/uploads/<?php echo htmlspecialchars($_SESSION['profile_image']); ?>"
+                        alt="<?php echo htmlspecialchars($_SESSION['user_name']); ?>"
+                        class="profile-avatar-img">
+
+                <?php else: ?>
+
+                    <span class="profile-avatar">
+                        <?php echo strtoupper(substr($_SESSION['user_name'], 0, 1)); ?>
+                    </span>
+
+                <?php endif; ?>
+
             </a>
 
             <span>

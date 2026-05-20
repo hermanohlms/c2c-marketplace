@@ -42,7 +42,7 @@ document.addEventListener("submit", async function (event) {
             cartCount.textContent = data.count;
         }
 
-        showToast(data.message);
+        showToast(data.message, "success");
     }
 });
 

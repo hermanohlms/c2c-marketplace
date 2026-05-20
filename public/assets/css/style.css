@@ -1347,3 +1347,11 @@ button {
         align-items: start;
     }
 }
+
+.profile-avatar-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    object-fit: cover;
+    display: block;
+}

@@ -121,12 +121,12 @@ class User
     {
         if ($profile_image) {
             $sql = "
-            UPDATE users
-            SET name = :name,
-                phone = :phone,
-                profile_image = :profile_image
-            WHERE id = :id
-        ";
+        UPDATE users
+        SET name = :name,
+            phone = :phone,
+            profile_image = :profile_image
+        WHERE id = :id
+    ";
 
             $stmt = $this->conn->prepare($sql);
 
