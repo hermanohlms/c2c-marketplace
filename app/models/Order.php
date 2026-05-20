@@ -51,6 +51,7 @@ class Order
         SELECT *
         FROM orders
         WHERE buyer_id = :buyer_id
+        AND status != 'pending'
         ORDER BY created_at DESC
     ";
 
@@ -210,5 +211,22 @@ class Order
         $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $order ? $order['buyer_id'] : null;
+    }
+
+    public function getItemsByOrderId($order_id)
+    {
+        $sql = "
+        SELECT *
+        FROM order_items
+        WHERE order_id = :order_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':order_id' => $order_id
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

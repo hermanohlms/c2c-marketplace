@@ -65,15 +65,6 @@ class CheckoutController
                     $item['quantity'],
                     $item['price']
                 );
-
-                $stockReduced = $productModel->reduceStock(
-                    $item['id'],
-                    $item['quantity']
-                );
-
-                if (!$stockReduced) {
-                    throw new Exception("Could not reduce stock for " . $item['name']);
-                }
             }
 
             $this->db->commit();

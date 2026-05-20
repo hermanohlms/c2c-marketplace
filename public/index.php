@@ -197,6 +197,9 @@ if ($action === 'register') {
 } elseif ($action === 'mark-notifications-read') {
 
     $notificationController->markAllRead();
+} elseif ($page === 'payfast-itn') {
+
+    $paymentController->itn();
 } else {
 
     if ($page === 'login') {

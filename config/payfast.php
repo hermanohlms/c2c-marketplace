@@ -16,5 +16,5 @@ return [
 
     'return_url' => 'http://localhost:8080/public/index.php?page=payment-success',
     'cancel_url' => 'http://localhost:8080/public/index.php?page=payment-cancelled',
-    'notify_url' => 'http://localhost:8080/public/index.php?page=payfast-itn'
+    'notify_url' => 'https://YOUR-NGROK-URL.ngrok-free.app/public/index.php?page=payfast-itn'
 ];
