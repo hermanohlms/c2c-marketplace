@@ -191,4 +191,24 @@ class Order
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getBuyerIdByOrder($order_id)
+    {
+        $sql = "
+        SELECT buyer_id
+        FROM orders
+        WHERE id = :order_id
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':order_id' => $order_id
+        ]);
+
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $order ? $order['buyer_id'] : null;
+    }
 }

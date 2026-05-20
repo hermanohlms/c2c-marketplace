@@ -16,8 +16,10 @@ require_once __DIR__ . '/../app/controllers/PaymentController.php';
 require_once __DIR__ . '/../app/controllers/WishlistController.php';
 require_once __DIR__ . '/../app/controllers/ProfileController.php';
 require_once __DIR__ . '/../app/controllers/SellerStoreController.php';
+require_once __DIR__ . '/../app/controllers/NotificationController.php';
 
 
+require_once __DIR__ . '/../app/models/Notification.php';
 require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
 
@@ -30,6 +32,7 @@ $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
 
+$notificationController = new NotificationController($conn);
 $sellerStoreController = new SellerStoreController($conn);
 $profileController = new ProfileController($conn);
 $wishlistController = new WishlistController($conn);
@@ -182,6 +185,12 @@ if ($action === 'register') {
 } elseif ($page === 'seller') {
 
     $sellerStoreController->show();
+} elseif ($page === 'notifications') {
+
+    $notificationController->index();
+} elseif ($action === 'mark-notifications-read') {
+
+    $notificationController->markAllRead();
 } else {
 
     if ($page === 'login') {

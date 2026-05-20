@@ -303,4 +303,42 @@ class Product
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getSellerIdByProduct($product_id)
+    {
+        $sql = "
+        SELECT seller_id
+        FROM products
+        WHERE id = :product_id
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':product_id' => $product_id
+        ]);
+
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $product ? $product['seller_id'] : null;
+    }
+
+    public function findBasicById($product_id)
+    {
+        $sql = "
+        SELECT id, name, seller_id, status
+        FROM products
+        WHERE id = :product_id
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':product_id' => $product_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

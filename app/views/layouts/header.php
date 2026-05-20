@@ -54,6 +54,18 @@
                     Cart (<span id="cart-count">0</span>)
                 </a>
 
+                <?php
+                $unreadNotifications = $_SESSION['unread_notifications'] ?? 0;
+                ?>
+
+                <a href="/public/index.php?page=notifications" class="notification-link">
+                    Notifications
+                    <?php if ($unreadNotifications > 0): ?>
+                        <span class="notification-badge">
+                            <?php echo htmlspecialchars($unreadNotifications); ?>
+                        </span>
+                    <?php endif; ?>
+                </a>
 
                 <div class="profile-menu">
 

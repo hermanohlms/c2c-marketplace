@@ -1537,3 +1537,48 @@ button {
         text-align: left;
     }
 }
+
+.notification-link {
+    position: relative;
+}
+
+.notification-badge {
+    display: inline-grid;
+    place-items: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--danger);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.notification-list {
+    display: grid;
+    gap: 16px;
+}
+
+.notification-card {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.notification-card.unread {
+    border-color: var(--primary);
+}
+
+.notification-card.read {
+    opacity: 0.75;
+}
+
+.unread-dot {
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 999px;
+    flex-shrink: 0;
+    margin-top: 8px;
+}

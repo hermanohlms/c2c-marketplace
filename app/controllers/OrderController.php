@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/Order.php';
+require_once __DIR__ . '/../models/Notification.php';
 
 class OrderController
 {
@@ -88,6 +89,21 @@ class OrderController
         );
 
         if ($updated) {
+            $_SESSION['success'] = "Order status updated.";
+
+            $notificationModel = new Notification($this->db);
+
+            $buyer_id = $orderModel->getBuyerIdByOrder($order_id);
+
+            if ($buyer_id) {
+                $notificationModel->create(
+                    $buyer_id,
+                    'Order status updated',
+                    'Your order #' . $order_id . ' is now ' . $status . '.',
+                    'order'
+                );
+            }
+
             $_SESSION['success'] = "Order status updated.";
         } else {
             $_SESSION['error'] = "Could not update order status.";

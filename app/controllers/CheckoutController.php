@@ -2,6 +2,7 @@
 
 require_once __DIR__ . '/../models/Order.php';
 require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Notification.php';
 
 class CheckoutController
 {
@@ -82,6 +83,15 @@ class CheckoutController
             $_SESSION['last_order_id'] = $order_id;
 
             $_SESSION['success'] = "Order placed successfully.";
+
+            $notificationModel = new Notification($this->db);
+
+            $notificationModel->create(
+                $_SESSION['user_id'],
+                'Order placed',
+                'Your order has been placed successfully.',
+                'order'
+            );
 
             header("Location: /public/index.php?page=payfast-start");
             exit;

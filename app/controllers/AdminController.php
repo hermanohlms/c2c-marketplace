@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../models/Category.php';
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/Notification.php';
 
 class AdminController
 {
@@ -97,11 +98,26 @@ class AdminController
 
         $productModel = new Product($this->db);
 
+        $productBeforeUpdate = $productModel->findBasicById($product_id);
+
         $updated = $productModel->updateStatus($product_id, $status);
 
         if ($updated) {
+
+            $notificationModel = new Notification($this->db);
+
+            if ($productBeforeUpdate && $productBeforeUpdate['seller_id']) {
+                $notificationModel->create(
+                    $productBeforeUpdate['seller_id'],
+                    'Product status changed',
+                    'Your product "' . $productBeforeUpdate['name'] . '" was marked as ' . $status . ' by admin.',
+                    'admin'
+                );
+            }
+
             $_SESSION['success'] = "Product status updated.";
         } else {
+
             $_SESSION['error'] = "Could not update product status.";
         }
 
@@ -145,6 +161,15 @@ class AdminController
         $userModel->updateStatus($user_id, $status);
 
         $_SESSION['success'] = "User updated successfully.";
+
+        $notificationModel = new Notification($this->db);
+
+        $notificationModel->create(
+            $_SESSION['user_id'],
+            'User updated',
+            'You updated a user account successfully.',
+            'admin'
+        );
 
         header("Location: /public/index.php?page=admin-users");
         exit;

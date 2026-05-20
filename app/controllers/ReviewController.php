@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../models/Review.php';
+require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Notification.php';
 
 class ReviewController
 {
@@ -66,6 +68,21 @@ class ReviewController
         );
 
         if ($created) {
+
+            $productModel = new Product($this->db);
+            $notificationModel = new Notification($this->db);
+
+            $seller_id = $productModel->getSellerIdByProduct($product_id);
+
+            if ($seller_id) {
+                $notificationModel->create(
+                    $seller_id,
+                    'New product review',
+                    $_SESSION['user_name'] . ' reviewed one of your products.',
+                    'review'
+                );
+            }
+
             $_SESSION['success'] = "Review submitted successfully.";
         } else {
             $_SESSION['error'] = "Could not submit review.";
