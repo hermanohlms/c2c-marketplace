@@ -1,5 +1,10 @@
 <?php
 
+function payfastUrlEncode($value)
+{
+    return str_replace('%20', '+', urlencode(trim($value)));
+}
+
 function generatePayfastSignature($data, $passphrase = '')
 {
     unset($data['signature']);
@@ -8,14 +13,14 @@ function generatePayfastSignature($data, $passphrase = '')
 
     foreach ($data as $key => $value) {
         if ($value !== '' && $value !== null) {
-            $pfOutput .= $key . '=' . urlencode(trim($value)) . '&';
+            $pfOutput .= $key . '=' . payfastUrlEncode($value) . '&';
         }
     }
 
-    $pfOutput = substr($pfOutput, 0, -1);
+    $pfOutput = rtrim($pfOutput, '&');
 
     if ($passphrase !== '') {
-        $pfOutput .= '&passphrase=' . urlencode(trim($passphrase));
+        $pfOutput .= '&passphrase=' . payfastUrlEncode($passphrase);
     }
 
     return strtolower(md5($pfOutput));

@@ -3,6 +3,8 @@
 
 <h1>Redirecting to PayFast...</h1>
 
+<p>Please wait while we send you to PayFast.</p>
+
 <form id="payfast-form" action="<?php echo htmlspecialchars($url); ?>" method="POST">
     <?php foreach ($data as $name => $value): ?>
         <input

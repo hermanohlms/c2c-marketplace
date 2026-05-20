@@ -39,9 +39,8 @@ class PaymentController
             'merchant_key' => $this->config['merchant_key'],
             'return_url' => $this->config['return_url'],
             'cancel_url' => $this->config['cancel_url'],
-            'notify_url' => $this->config['notify_url'],
-            'm_payment_id' => $order['id'],
-            'amount' => number_format($order['total_amount'], 2, '.', ''),
+            'm_payment_id' => (string) $order['id'],
+            'amount' => number_format((float) $order['total_amount'], 2, '.', ''),
             'item_name' => 'Order #' . $order['id']
         ];
 
