@@ -191,6 +191,50 @@ class PaymentController
 
                 $this->db->commit();
 
+                $userStmt = $this->db->prepare("
+                    SELECT users.email, users.name
+                    FROM orders
+                    INNER JOIN users ON orders.buyer_id = users.id
+                    WHERE orders.id = :order_id
+                    LIMIT 1
+                ");
+
+                $userStmt->execute([
+                    ':order_id' => $order_id
+                ]);
+
+                $buyer = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($buyer) {
+
+                    $subject = "Payment Confirmation - Order #{$order_id}";
+
+                    $body = "
+                        <h2>Payment Successful</h2>
+
+                        <p>Hello {$buyer['name']},</p>
+
+                        <p>
+                        Your payment for order <strong>#{$order_id}</strong>
+                        was successfully received.
+                        </p>
+
+                        <p>
+                        Amount Paid: <strong>R{$amount_gross}</strong>
+                        </p>
+
+                        <p>
+                        Thank you for shopping with us.
+                        </p>
+                    ";
+
+                    sendEmail(
+                        $buyer['email'],
+                        $subject,
+                        $body
+                    );
+                }
+
                 http_response_code(200);
                 exit('Payment verified');
             } catch (Exception $e) {

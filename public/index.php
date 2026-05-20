@@ -24,6 +24,7 @@ require_once __DIR__ . '/../app/models/Notification.php';
 require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
 require_once __DIR__ . '/../app/helpers/data_helper.php';
+require_once __DIR__ . '/../app/helpers/email_helper.php';
 
 
 $action = $_POST['action'] ?? null;
