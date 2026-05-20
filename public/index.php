@@ -98,6 +98,12 @@ if ($action === 'register') {
 } elseif ($action === 'create-product') {
 
     $productController->create();
+} elseif ($action === 'update-stock') {
+
+    $productController->updateStock();
+} elseif ($action === 'update-seller-product-status') {
+
+    $productController->updateSellerProductStatus();
 } elseif ($page === 'shop') {
 
     $productController->shop();

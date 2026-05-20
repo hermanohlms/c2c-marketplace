@@ -20,7 +20,7 @@
 
 <?php else: ?>
 
-    <div class="product-grid">
+    <div class="product-grid seller-products-grid">
 
         <?php foreach ($products as $product): ?>
 
@@ -56,6 +56,41 @@
                         </span>
                     </div>
                 </div>
+                <form action="/public/index.php" method="POST" class="inline-update-form">
+                    <input type="hidden" name="action" value="update-stock">
+                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+
+                    <label>
+                        Stock
+                        <input
+                            type="number"
+                            name="stock"
+                            value="<?php echo htmlspecialchars($product['stock']); ?>"
+                            min="0"
+                            required>
+                    </label>
+
+                    <button type="submit">Update Stock</button>
+                </form>
+
+                <form action="/public/index.php" method="POST" class="inline-update-form">
+                    <input type="hidden" name="action" value="update-seller-product-status">
+                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+
+                    <select name="status" required>
+                        <option value="active" <?php echo $product['status'] === 'active' ? 'selected' : ''; ?>>
+                            Active
+                        </option>
+
+                        <option value="inactive" <?php echo $product['status'] === 'inactive' ? 'selected' : ''; ?>>
+                            Inactive
+                        </option>
+                    </select>
+
+                    <button type="submit">
+                        <?php echo $product['status'] === 'active' ? 'Remove from Shop' : 'Reactivate'; ?>
+                    </button>
+                </form>
 
             </div>
 

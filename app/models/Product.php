@@ -341,4 +341,50 @@ class Product
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function updateStockForSeller($product_id, $seller_id, $stock)
+    {
+        $sql = "
+        UPDATE products
+        SET stock = :stock
+        WHERE id = :product_id
+        AND seller_id = :seller_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':stock' => $stock,
+            ':product_id' => $product_id,
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function updateStatusForSeller($product_id, $seller_id, $status)
+    {
+        $allowedStatuses = ['active', 'inactive'];
+
+        if (!in_array($status, $allowedStatuses)) {
+            return false;
+        }
+
+        $sql = "
+        UPDATE products
+        SET status = :status
+        WHERE id = :product_id
+        AND seller_id = :seller_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':status' => $status,
+            ':product_id' => $product_id,
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
 }

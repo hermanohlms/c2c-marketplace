@@ -113,4 +113,74 @@ class ProductController
 
         require_once __DIR__ . '/../views/shop/show.php';
     }
+
+    public function updateStock()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
+            $_SESSION['error'] = "Seller access only.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+
+        $product_id = $_POST['product_id'] ?? null;
+        $stock = $_POST['stock'] ?? null;
+
+        if (!$product_id || $stock === null || $stock < 0) {
+            $_SESSION['error'] = "Invalid stock amount.";
+            header("Location: /public/index.php?page=my-products");
+            exit;
+        }
+
+        $productModel = new Product($this->db);
+
+        $updated = $productModel->updateStockForSeller(
+            $product_id,
+            $_SESSION['user_id'],
+            (int)$stock
+        );
+
+        if ($updated) {
+            $_SESSION['success'] = "Stock updated successfully.";
+        } else {
+            $_SESSION['error'] = "Could not update stock.";
+        }
+
+        header("Location: /public/index.php?page=my-products");
+        exit;
+    }
+
+    public function updateSellerProductStatus()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
+            $_SESSION['error'] = "Seller access only.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+
+        $product_id = $_POST['product_id'] ?? null;
+        $status = $_POST['status'] ?? null;
+
+        if (!$product_id || !$status) {
+            $_SESSION['error'] = "Invalid product status.";
+            header("Location: /public/index.php?page=my-products");
+            exit;
+        }
+
+        $productModel = new Product($this->db);
+
+        $updated = $productModel->updateStatusForSeller(
+            $product_id,
+            $_SESSION['user_id'],
+            $status
+        );
+
+        if ($updated) {
+            $_SESSION['success'] = "Product status updated.";
+        } else {
+            $_SESSION['error'] = "Could not update product status.";
+        }
+
+        header("Location: /public/index.php?page=my-products");
+        exit;
+    }
 }
