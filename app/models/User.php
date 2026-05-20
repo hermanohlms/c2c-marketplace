@@ -153,4 +153,23 @@ class User
             ':id' => $id
         ]);
     }
+
+    public function findSellerById($id)
+    {
+        $sql = "
+        SELECT id, name, email, phone, profile_image, created_at
+        FROM users
+        WHERE id = :id
+        AND role = 'seller'
+        AND status = 'active'
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }

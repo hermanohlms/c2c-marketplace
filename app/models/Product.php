@@ -277,4 +277,30 @@ class Product
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getActiveBySeller($seller_id)
+    {
+        $sql = "
+        SELECT 
+            products.*,
+            categories.name AS category_name,
+            COALESCE(AVG(reviews.rating), 0) AS average_rating,
+            COUNT(reviews.id) AS review_count
+        FROM products
+        LEFT JOIN categories ON products.category_id = categories.id
+        LEFT JOIN reviews ON products.id = reviews.product_id
+        WHERE products.seller_id = :seller_id
+        AND products.status = 'active'
+        GROUP BY products.id, categories.name
+        ORDER BY products.created_at DESC
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

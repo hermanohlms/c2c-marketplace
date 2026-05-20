@@ -12,67 +12,90 @@
 <body>
 
 
-    <nav>
+    <header class="site-header">
 
-        <a href="/public/index.php?page=home">Home</a> |
-        <a href="/public/index.php?page=shop">Shop</a> |
+        <a class="site-logo" href="/public/index.php?page=home">
+            Marketplace
+        </a>
 
-        <?php if (!isset($_SESSION['user_id'])): ?>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+            ☰
+        </button>
 
-            <a href="/public/index.php?page=register">Register</a> |
-            <a href="/public/index.php?page=login">Login</a> |
+        <nav class="site-nav" id="site-nav">
 
-        <?php endif; ?>
+            <a href="/public/index.php?page=home">Home</a>
+            <a href="/public/index.php?page=shop">Shop</a>
 
-        <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (!isset($_SESSION['user_id'])): ?>
 
-            <?php if ($_SESSION['user_role'] === 'seller'): ?>
-                <a href="/public/index.php?page=dashboard">Seller Dashboard</a> |
-                <a href="/public/index.php?page=seller-orders">Incoming Orders</a> |
+                <a href="/public/index.php?page=register">Register</a>
+                <a href="/public/index.php?page=login">Login</a>
+
             <?php endif; ?>
 
-            <?php if ($_SESSION['user_role'] === 'buyer'): ?>
-                <a href="/public/index.php?page=my-orders">My Orders</a> |
-                <a href="/public/index.php?page=wishlist">Wishlist</a> |
-            <?php endif; ?>
+            <?php if (isset($_SESSION['user_id'])): ?>
 
-            <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                <a href="/public/index.php?page=admin-dashboard">Admin Dashboard</a> |
-            <?php endif; ?>
-
-            <a href="/public/index.php?page=cart">
-                Cart (<span id="cart-count">0</span>)
-            </a> |
-            <a href="/public/index.php?page=logout">Logout</a> |
-
-            <a href="/public/index.php?page=profile" class="profile-nav-link">
-
-                <?php if (!empty($_SESSION['profile_image'])): ?>
-
-                    <img
-                        src="/public/uploads/<?php echo htmlspecialchars($_SESSION['profile_image']); ?>"
-                        alt="<?php echo htmlspecialchars($_SESSION['user_name']); ?>"
-                        class="profile-avatar-img">
-
-                <?php else: ?>
-
-                    <span class="profile-avatar">
-                        <?php echo strtoupper(substr($_SESSION['user_name'], 0, 1)); ?>
-                    </span>
-
+                <?php if ($_SESSION['user_role'] === 'seller'): ?>
+                    <a href="/public/index.php?page=dashboard">Seller Dashboard</a>
+                    <a href="/public/index.php?page=seller-orders">Incoming Orders</a>
                 <?php endif; ?>
 
-            </a>
+                <?php if ($_SESSION['user_role'] === 'buyer'): ?>
+                    <a href="/public/index.php?page=my-orders">My Orders</a>
+                    <a href="/public/index.php?page=wishlist">Wishlist</a>
+                <?php endif; ?>
 
-            <span>
-                Logged in as:
-                <?php echo htmlspecialchars($_SESSION['user_name']); ?>
-                (<?php echo htmlspecialchars($_SESSION['user_role']); ?>)
-            </span>
+                <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                    <a href="/public/index.php?page=admin-dashboard">Admin Dashboard</a>
+                <?php endif; ?>
 
-        <?php endif; ?>
+                <a href="/public/index.php?page=cart">
+                    Cart (<span id="cart-count">0</span>)
+                </a>
 
-    </nav>
+
+                <div class="profile-menu">
+
+                    <button class="profile-menu-button" id="profile-menu-button" type="button">
+
+                        <?php if (!empty($_SESSION['profile_image'])): ?>
+                            <img
+                                src="/public/uploads/<?php echo htmlspecialchars($_SESSION['profile_image']); ?>"
+                                alt="<?php echo htmlspecialchars($_SESSION['user_name']); ?>"
+                                class="profile-avatar-img">
+                        <?php else: ?>
+                            <span class="profile-avatar">
+                                <?php echo strtoupper(substr($_SESSION['user_name'], 0, 1)); ?>
+                            </span>
+                        <?php endif; ?>
+
+                    </button>
+
+                    <div class="profile-dropdown" id="profile-dropdown">
+
+                        <p class="profile-dropdown-name">
+                            <?php echo htmlspecialchars($_SESSION['user_name']); ?>
+                        </p>
+
+                        <p class="profile-dropdown-role">
+                            <?php echo htmlspecialchars($_SESSION['user_role']); ?>
+                        </p>
+
+                        <hr>
+
+                        <a href="/public/index.php?page=profile">My Profile</a>
+                        <a href="/public/index.php?page=logout">Logout</a>
+
+                    </div>
+
+                </div>
+
+            <?php endif; ?>
+
+        </nav>
+
+    </header>
 
 
     <?php if (isset($_SESSION['error'])): ?>

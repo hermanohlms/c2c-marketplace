@@ -1,53 +1,52 @@
-<?php $title = 'Shop'; ?>
+<?php $title = $seller['name'] . ' Store'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h1>Shop</h1>
+<section class="seller-store-header card">
 
-<form class="filter-form" action="/public/index.php" method="GET">
+    <div class="seller-store-profile">
 
-    <input type="hidden" name="page" value="shop">
+        <?php if (!empty($seller['profile_image'])): ?>
+            <img
+                src="/public/uploads/<?php echo htmlspecialchars($seller['profile_image']); ?>"
+                alt="<?php echo htmlspecialchars($seller['name']); ?>"
+                class="seller-store-image">
+        <?php else: ?>
+            <div class="seller-store-placeholder">
+                <?php echo strtoupper(substr($seller['name'], 0, 1)); ?>
+            </div>
+        <?php endif; ?>
 
-    <input
-        type="text"
-        name="search"
-        placeholder="Search products..."
-        value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+        <div>
+            <h1><?php echo htmlspecialchars($seller['name']); ?></h1>
 
-    <select name="category_id">
-        <option value="">All Categories</option>
+            <p class="muted">
+                Seller since <?php echo htmlspecialchars(date('F Y', strtotime($seller['created_at']))); ?>
+            </p>
 
-        <?php foreach ($categories as $category): ?>
-            <option
-                value="<?php echo $category['id']; ?>"
-                <?php echo (($_GET['category_id'] ?? '') == $category['id']) ? 'selected' : ''; ?>>
-                <?php echo htmlspecialchars($category['name']); ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
+            <?php if (!empty($seller['phone'])): ?>
+                <p class="muted">Contact: <?php echo htmlspecialchars($seller['phone']); ?></p>
+            <?php endif; ?>
+        </div>
 
-    <select name="sort">
-        <option value="newest" <?php echo (($_GET['sort'] ?? '') === 'newest') ? 'selected' : ''; ?>>
-            Newest
-        </option>
+    </div>
 
-        <option value="price_low" <?php echo (($_GET['sort'] ?? '') === 'price_low') ? 'selected' : ''; ?>>
-            Price: Low to High
-        </option>
+</section>
 
-        <option value="price_high" <?php echo (($_GET['sort'] ?? '') === 'price_high') ? 'selected' : ''; ?>>
-            Price: High to Low
-        </option>
-    </select>
+<div class="page-header">
+    <div>
+        <h2>Products by <?php echo htmlspecialchars($seller['name']); ?></h2>
+        <p>Browse this seller’s active listings.</p>
+    </div>
 
-    <button type="submit">Filter</button>
-
-    <a href="/public/index.php?page=shop">Reset</a>
-
-</form>
+    <a class="btn btn-secondary" href="/public/index.php?page=shop">Back to Shop</a>
+</div>
 
 <?php if (empty($products)): ?>
 
-    <p>No products available yet.</p>
+    <div class="card empty-state">
+        <h2>No active products</h2>
+        <p>This seller has no active products right now.</p>
+    </div>
 
 <?php else: ?>
 
@@ -57,7 +56,7 @@
 
             <div class="product-card">
 
-                <a href="/public/index.php?page=product&id=<?php echo $product['id']; ?>" class="product-image-link">
+                <a href="/public/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>" class="product-image-link">
                     <?php if (!empty($product['image'])): ?>
                         <img
                             src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
@@ -92,13 +91,6 @@
                         </span>
                     </div>
 
-                    <p class="product-seller">
-                        Seller:
-                        <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
-                            <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
-                        </a>
-                    </p>
-
                     <div class="product-card-footer">
                         <strong class="product-price">
                             R<?php echo number_format($product['price'], 2); ?>
@@ -106,7 +98,7 @@
 
                         <a
                             class="btn product-btn"
-                            href="/public/index.php?page=product&id=<?php echo $product['id']; ?>">
+                            href="/public/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>">
                             View
                         </a>
                     </div>

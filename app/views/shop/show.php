@@ -25,7 +25,10 @@
         <h1><?php echo htmlspecialchars($product['name']); ?></h1>
 
         <p class="product-seller">
-            Sold by <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
+            Sold by
+            <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
+                <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
+            </a>
         </p>
 
         <div class="rating-summary product-detail-rating">

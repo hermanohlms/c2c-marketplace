@@ -7,6 +7,7 @@
 </footer>
 
 <script src="/public/assets/js/cart.js"></script>
+<script src="/public/assets/js/nav.js"></script>
 
 </body>
 

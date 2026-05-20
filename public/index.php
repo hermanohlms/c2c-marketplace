@@ -15,16 +15,22 @@ require_once __DIR__ . '/../app/controllers/AdminController.php';
 require_once __DIR__ . '/../app/controllers/PaymentController.php';
 require_once __DIR__ . '/../app/controllers/WishlistController.php';
 require_once __DIR__ . '/../app/controllers/ProfileController.php';
+require_once __DIR__ . '/../app/controllers/SellerStoreController.php';
+
 
 require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
 
+
 $action = $_POST['action'] ?? null;
 $page = $_GET['page'] ?? 'home';
+
 
 $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
+
+$sellerStoreController = new SellerStoreController($conn);
 $profileController = new ProfileController($conn);
 $wishlistController = new WishlistController($conn);
 $paymentController = new PaymentController($conn);
@@ -173,6 +179,9 @@ if ($action === 'register') {
 } elseif ($page === 'profile') {
 
     $profileController->show();
+} elseif ($page === 'seller') {
+
+    $sellerStoreController->show();
 } else {
 
     if ($page === 'login') {
