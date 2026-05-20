@@ -28,7 +28,7 @@
                 <div class="order-card-header">
                     <div>
                         <h3>Order #<?php echo htmlspecialchars($order['order_id']); ?></h3>
-                        <p><?php echo htmlspecialchars($order['created_at']); ?></p>
+                        <p><?php echo formatDateTime($order['created_at']); ?></p>
                     </div>
 
                     <span class="status-pill">

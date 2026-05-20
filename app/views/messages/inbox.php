@@ -44,9 +44,7 @@
                     </p>
                 </div>
 
-                <small>
-                    <?php echo htmlspecialchars($conversation['last_message_at'] ?? $conversation['created_at']); ?>
-                </small>
+                <?php echo formatDateTime($conversation['last_message_at'] ?? $conversation['created_at']); ?>
             </a>
 
         <?php endforeach; ?>

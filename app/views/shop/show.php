@@ -177,7 +177,7 @@
                 </p>
 
                 <small>
-                    <?php echo htmlspecialchars($review['created_at']); ?>
+                    <?php echo formatDateTime($review['created_at']); ?>
                 </small>
             </div>
 

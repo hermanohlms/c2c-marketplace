@@ -42,8 +42,10 @@
                 <?php foreach ($categories as $category): ?>
                     <div class="mini-list-item vertical">
                         <strong><?php echo htmlspecialchars($category['name']); ?></strong>
-                        <span><?php echo htmlspecialchars($category['created_at']); ?></span>
-                        <p><?php echo nl2br(htmlspecialchars($category['description'] ?? '')); ?></p>
+                        <span>
+                            <?php echo formatDateTime($category['created_at']); ?></span>
+                        <p>
+                            <?php echo nl2br(htmlspecialchars($category['description'] ?? '')); ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>

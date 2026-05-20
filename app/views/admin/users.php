@@ -17,9 +17,13 @@
         <div class="management-card card">
 
             <div>
-                <h3><?php echo htmlspecialchars($user['name']); ?></h3>
-                <p class="muted"><?php echo htmlspecialchars($user['email']); ?></p>
-                <p>Joined: <?php echo htmlspecialchars($user['created_at']); ?></p>
+                <h3><?php echo htmlspecialchars($user['name']); ?>
+                </h3>
+                <p class="muted">
+                    <?php echo htmlspecialchars($user['email']); ?>
+                </p>
+                <p>Joined: <?php echo formatDateTime($user['created_at']); ?>
+                </p>
 
                 <form action="/public/index.php" method="POST" class="stack-form">
                     <input type="hidden" name="action" value="update-user">

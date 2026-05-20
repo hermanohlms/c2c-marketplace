@@ -35,7 +35,7 @@
 
                     <p><?php echo nl2br(htmlspecialchars($message['message'])); ?></p>
 
-                    <small><?php echo htmlspecialchars($message['created_at']); ?></small>
+                    <small><?php echo formatTime($message['created_at']); ?></small>
 
                 </div>
 

@@ -31,7 +31,7 @@
                 <div>
                     <h3><?php echo htmlspecialchars($notification['title']); ?></h3>
                     <p><?php echo htmlspecialchars($notification['message']); ?></p>
-                    <small><?php echo htmlspecialchars($notification['created_at']); ?></small>
+                    <small><?php echo formatDateTime($notification['created_at']); ?></small>
                 </div>
 
                 <?php if (!$notification['is_read']): ?>
