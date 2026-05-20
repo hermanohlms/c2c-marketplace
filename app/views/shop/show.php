@@ -67,6 +67,21 @@
                 <button type="submit">Add to Cart</button>
             </form>
 
+            <?php if (
+                isset($_SESSION['user_id']) &&
+                $_SESSION['user_role'] === 'buyer'
+            ): ?>
+
+                <form action="/public/index.php" method="POST">
+                    <input type="hidden" name="action" value="start-conversation">
+                    <input type="hidden" name="seller_id" value="<?php echo htmlspecialchars($product['seller_id']); ?>">
+                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+
+                    <button type="submit" class="btn-secondary">Contact Seller</button>
+                </form>
+
+            <?php endif; ?>
+
             <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'buyer'): ?>
 
                 <form action="/public/index.php" method="POST">

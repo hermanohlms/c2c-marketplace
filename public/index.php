@@ -17,6 +17,7 @@ require_once __DIR__ . '/../app/controllers/WishlistController.php';
 require_once __DIR__ . '/../app/controllers/ProfileController.php';
 require_once __DIR__ . '/../app/controllers/SellerStoreController.php';
 require_once __DIR__ . '/../app/controllers/NotificationController.php';
+require_once __DIR__ . '/../app/controllers/MessageController.php';
 
 
 require_once __DIR__ . '/../app/models/Notification.php';
@@ -32,6 +33,7 @@ $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
 
+$messageController = new MessageController($conn);
 $notificationController = new NotificationController($conn);
 $sellerStoreController = new SellerStoreController($conn);
 $profileController = new ProfileController($conn);
@@ -104,6 +106,18 @@ if ($action === 'register') {
 } elseif ($action === 'update-seller-product-status') {
 
     $productController->updateSellerProductStatus();
+} elseif ($page === 'messages') {
+
+    $messageController->inbox();
+} elseif ($page === 'messages-thread') {
+
+    $messageController->thread();
+} elseif ($action === 'start-conversation') {
+
+    $messageController->start();
+} elseif ($action === 'send-message') {
+
+    $messageController->send();
 } elseif ($page === 'shop') {
 
     $productController->shop();

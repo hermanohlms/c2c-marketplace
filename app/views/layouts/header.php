@@ -27,6 +27,7 @@
             <a href="/public/index.php?page=home">Home</a>
             <a href="/public/index.php?page=shop">Shop</a>
 
+
             <?php if (!isset($_SESSION['user_id'])): ?>
 
                 <a href="/public/index.php?page=register">Register</a>
@@ -66,6 +67,8 @@
                         </span>
                     <?php endif; ?>
                 </a>
+
+                <a href="/public/index.php?page=messages">Messages</a>
 
                 <div class="profile-menu">
 
