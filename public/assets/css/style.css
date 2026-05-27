@@ -14,13 +14,6 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: var(--light);
-    color: var(--dark);
-    line-height: 1.5;
-}
 
 .container {
     width: min(1100px, 100%);
@@ -117,9 +110,30 @@ textarea {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, sans-serif;
     margin: 0;
-    padding: 16px;
+
+    background:
+        radial-gradient(circle at top left,
+            rgba(30, 58, 138, 0.05),
+            transparent 28%),
+        radial-gradient(circle at top right,
+            rgba(20, 184, 166, 0.05),
+            transparent 24%),
+        var(--bg);
+
+    color: var(--text);
+
+    line-height: 1.5;
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
 }
 
 nav {
@@ -159,12 +173,6 @@ button {
     .product-grid {
         grid-template-columns: repeat(4, 1fr);
     }
-}
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 16px;
 }
 
 nav {
@@ -873,6 +881,20 @@ button {
 .auth-form button {
     width: 100%;
     margin-top: 8px;
+}
+
+footer {
+    margin-top: 40px;
+
+    background: white;
+
+    border-top: 1px solid var(--border);
+
+    padding: 20px 28px;
+
+    color: var(--muted);
+
+    font-size: 0.95rem;
 }
 
 .auth-footer-text {

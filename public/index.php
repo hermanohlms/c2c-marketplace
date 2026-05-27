@@ -23,6 +23,7 @@ require_once __DIR__ . '/../app/controllers/MessageController.php';
 require_once __DIR__ . '/../app/models/Notification.php';
 require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
+require_once __DIR__ . '/../app/models/Message.php';
 require_once __DIR__ . '/../app/helpers/data_helper.php';
 require_once __DIR__ . '/../app/helpers/email_helper.php';
 
@@ -49,6 +50,13 @@ $cartController = new CartController($conn);
 $controller = new AuthController($conn);
 $productController = new ProductController($conn);
 
+if (isset($_SESSION['user_id'])) {
+
+    $messageModel = new Message($conn);
+
+    $_SESSION['unread_messages'] =
+        $messageModel->unreadCount($_SESSION['user_id']);
+}
 if ($action === 'register') {
 
     $controller->register();

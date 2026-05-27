@@ -68,7 +68,14 @@
                     <?php endif; ?>
                 </a>
 
-                <a href="/public/index.php?page=messages">Messages</a>
+                <a href="/public/index.php?page=messages" class="notification-link">
+                    Messages
+                    <?php if (!empty($_SESSION['unread_messages']) && $_SESSION['unread_messages'] > 0): ?>
+                        <span class="notification-badge">
+                            <?php echo htmlspecialchars($_SESSION['unread_messages']); ?>
+                        </span>
+                    <?php endif; ?>
+                </a>
 
                 <div class="profile-menu">
 

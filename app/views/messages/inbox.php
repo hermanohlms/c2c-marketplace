@@ -45,6 +45,12 @@
                 </div>
 
                 <?php echo formatDateTime($conversation['last_message_at'] ?? $conversation['created_at']); ?>
+
+                <?php if ($conversation['unread_count'] > 0): ?>
+                    <span class="notification-badge">
+                        <?php echo htmlspecialchars($conversation['unread_count']); ?>
+                    </span>
+                <?php endif; ?>
             </a>
 
         <?php endforeach; ?>

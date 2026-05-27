@@ -53,35 +53,52 @@ class Message
     public function getConversationsByUser($user_id)
     {
         $sql = "
-            SELECT 
-                conversations.*,
-                buyer.name AS buyer_name,
-                seller.name AS seller_name,
-                products.name AS product_name,
-                (
-                    SELECT message
-                    FROM messages
-                    WHERE messages.conversation_id = conversations.id
-                    ORDER BY created_at DESC
-                    LIMIT 1
-                ) AS last_message,
-                (
-                    SELECT created_at
-                    FROM messages
-                    WHERE messages.conversation_id = conversations.id
-                    ORDER BY created_at DESC
-                    LIMIT 1
-                ) AS last_message_at
-            FROM conversations
-            INNER JOIN users AS buyer ON conversations.buyer_id = buyer.id
-            INNER JOIN users AS seller ON conversations.seller_id = seller.id
-            LEFT JOIN products ON conversations.product_id = products.id
-            WHERE conversations.buyer_id = :user_id
-            OR conversations.seller_id = :user_id
-            ORDER BY last_message_at DESC NULLS LAST, conversations.created_at DESC
-        ";
+        SELECT 
+            conversations.*,
+            buyer.name AS buyer_name,
+            seller.name AS seller_name,
+            products.name AS product_name,
+
+            (
+                SELECT messages.message
+                FROM messages
+                WHERE messages.conversation_id = conversations.id
+                ORDER BY messages.created_at DESC
+                LIMIT 1
+            ) AS last_message,
+
+            (
+                SELECT messages.created_at
+                FROM messages
+                WHERE messages.conversation_id = conversations.id
+                ORDER BY messages.created_at DESC
+                LIMIT 1
+            ) AS last_message_at,
+
+            (
+                SELECT COUNT(*)
+                FROM messages
+                WHERE messages.conversation_id = conversations.id
+                AND messages.sender_id != :user_id
+                AND messages.is_read = FALSE
+            ) AS unread_count
+
+        FROM conversations
+        INNER JOIN users AS buyer 
+            ON conversations.buyer_id = buyer.id
+        INNER JOIN users AS seller 
+            ON conversations.seller_id = seller.id
+        LEFT JOIN products 
+            ON conversations.product_id = products.id
+
+        WHERE conversations.buyer_id = :user_id
+        OR conversations.seller_id = :user_id
+
+        ORDER BY last_message_at DESC NULLS LAST, conversations.created_at DESC
+    ";
 
         $stmt = $this->conn->prepare($sql);
+
         $stmt->execute([
             ':user_id' => $user_id
         ]);
@@ -149,6 +166,67 @@ class Message
             ':conversation_id' => $conversation_id,
             ':sender_id' => $sender_id,
             ':message' => $message
+        ]);
+    }
+
+    public function unreadCount($user_id)
+    {
+        $sql = "
+        SELECT COUNT(messages.id) AS total
+        FROM messages
+        INNER JOIN conversations 
+            ON messages.conversation_id = conversations.id
+        WHERE messages.sender_id != :user_id
+        AND messages.is_read = FALSE
+        AND (
+            conversations.buyer_id = :user_id
+            OR conversations.seller_id = :user_id
+        )
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':user_id' => $user_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public function unreadCountByConversation($conversation_id, $user_id)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total
+        FROM messages
+        WHERE conversation_id = :conversation_id
+        AND sender_id != :user_id
+        AND is_read = FALSE
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':conversation_id' => $conversation_id,
+            ':user_id' => $user_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public function markConversationRead($conversation_id, $user_id)
+    {
+        $sql = "
+        UPDATE messages
+        SET is_read = TRUE
+        WHERE conversation_id = :conversation_id
+        AND sender_id != :user_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        return $stmt->execute([
+            ':conversation_id' => $conversation_id,
+            ':user_id' => $user_id
         ]);
     }
 }

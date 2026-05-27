@@ -87,6 +87,11 @@ class MessageController
             exit;
         }
 
+        $messageModel->markConversationRead(
+            $conversation_id,
+            $_SESSION['user_id']
+        );
+
         $messages = $messageModel->getMessages($conversation_id);
 
         require_once __DIR__ . '/../views/messages/thread.php';
