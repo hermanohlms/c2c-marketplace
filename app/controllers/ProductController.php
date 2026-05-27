@@ -183,4 +183,116 @@ class ProductController
         header("Location: /public/index.php?page=my-products");
         exit;
     }
+
+    public function edit()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
+            $_SESSION['error'] = "Seller access only.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+
+        $product_id = $_GET['id'] ?? null;
+
+        if (!$product_id) {
+            $_SESSION['error'] = "Product not found.";
+            header("Location: /public/index.php?page=my-products");
+            exit;
+        }
+
+        $productModel = new Product($this->db);
+
+        $product = $productModel->findByIdForSeller(
+            $product_id,
+            $_SESSION['user_id']
+        );
+
+        if (!$product) {
+            $_SESSION['error'] = "Product not found or access denied.";
+            header("Location: /public/index.php?page=my-products");
+            exit;
+        }
+
+        $categories = $productModel->getCategories();
+
+        require_once __DIR__ . '/../views/seller/edit-product.php';
+    }
+
+    public function update()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
+            $_SESSION['error'] = "Seller access only.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+
+        $product_id = $_POST['product_id'] ?? null;
+        $category_id = $_POST['category_id'] ?? null;
+        $name = trim($_POST['name'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+        $price = $_POST['price'] ?? null;
+        $stock = $_POST['stock'] ?? null;
+        $status = $_POST['status'] ?? 'active';
+
+        if (
+            !$product_id ||
+            !$category_id ||
+            $name === '' ||
+            $price === null ||
+            $stock === null ||
+            $price < 0 ||
+            $stock < 0
+        ) {
+            $_SESSION['error'] = "Please complete all required fields correctly.";
+            header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+            exit;
+        }
+
+        $allowedStatuses = ['active', 'inactive'];
+
+        if (!in_array($status, $allowedStatuses)) {
+            $_SESSION['error'] = "Invalid product status.";
+            header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+            exit;
+        }
+
+        $image = null;
+
+        if (
+            isset($_FILES['image']) &&
+            $_FILES['image']['error'] === UPLOAD_ERR_OK
+        ) {
+            $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+
+            $image = 'product_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
+
+            move_uploaded_file(
+                $_FILES['image']['tmp_name'],
+                __DIR__ . '/../../public/uploads/' . $image
+            );
+        }
+
+        $productModel = new Product($this->db);
+
+        $updated = $productModel->updateForSeller(
+            $product_id,
+            $_SESSION['user_id'],
+            $category_id,
+            $name,
+            $description,
+            $price,
+            $stock,
+            $status,
+            $image
+        );
+
+        if ($updated) {
+            $_SESSION['success'] = "Product updated successfully.";
+        } else {
+            $_SESSION['error'] = "No changes were made or update failed.";
+        }
+
+        header("Location: /public/index.php?page=my-products");
+        exit;
+    }
 }

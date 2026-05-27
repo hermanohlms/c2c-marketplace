@@ -56,6 +56,14 @@
                         </span>
                     </div>
                 </div>
+
+                <a
+                    class="btn btn-secondary"
+                    href="/public/index.php?page=edit-product&id=<?php echo htmlspecialchars($product['id']); ?>">
+                    Edit Product
+                </a>
+
+
                 <form action="/public/index.php" method="POST" class="inline-update-form">
                     <input type="hidden" name="action" value="update-stock">
                     <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
@@ -70,8 +78,12 @@
                             required>
                     </label>
 
+
+
                     <button type="submit">Update Stock</button>
                 </form>
+
+
 
                 <form action="/public/index.php" method="POST" class="inline-update-form">
                     <input type="hidden" name="action" value="update-seller-product-status">
@@ -92,7 +104,10 @@
                     </button>
                 </form>
 
+
             </div>
+
+
 
         <?php endforeach; ?>
 

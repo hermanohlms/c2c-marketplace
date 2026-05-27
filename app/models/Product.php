@@ -387,4 +387,91 @@ class Product
 
         return $stmt->rowCount() > 0;
     }
+
+    public function findByIdForSeller($product_id, $seller_id)
+    {
+        $sql = "
+        SELECT *
+        FROM products
+        WHERE id = :product_id
+        AND seller_id = :seller_id
+        LIMIT 1
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':product_id' => $product_id,
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateForSeller(
+        $product_id,
+        $seller_id,
+        $category_id,
+        $name,
+        $description,
+        $price,
+        $stock,
+        $status,
+        $image = null
+    ) {
+        if ($image) {
+            $sql = "
+            UPDATE products
+            SET category_id = :category_id,
+                name = :name,
+                description = :description,
+                price = :price,
+                stock = :stock,
+                status = :status,
+                image = :image
+            WHERE id = :product_id
+            AND seller_id = :seller_id
+        ";
+
+            $params = [
+                ':category_id' => $category_id,
+                ':name' => $name,
+                ':description' => $description,
+                ':price' => $price,
+                ':stock' => $stock,
+                ':status' => $status,
+                ':image' => $image,
+                ':product_id' => $product_id,
+                ':seller_id' => $seller_id
+            ];
+        } else {
+            $sql = "
+            UPDATE products
+            SET category_id = :category_id,
+                name = :name,
+                description = :description,
+                price = :price,
+                stock = :stock,
+                status = :status
+            WHERE id = :product_id
+            AND seller_id = :seller_id
+        ";
+
+            $params = [
+                ':category_id' => $category_id,
+                ':name' => $name,
+                ':description' => $description,
+                ':price' => $price,
+                ':stock' => $stock,
+                ':status' => $status,
+                ':product_id' => $product_id,
+                ':seller_id' => $seller_id
+            ];
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->rowCount() > 0;
+    }
 }

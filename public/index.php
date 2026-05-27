@@ -108,6 +108,12 @@ if ($action === 'register') {
 } elseif ($action === 'update-seller-product-status') {
 
     $productController->updateSellerProductStatus();
+} elseif ($page === 'edit-product') {
+
+    $productController->edit();
+} elseif ($action === 'update-product') {
+
+    $productController->update();
 } elseif ($page === 'messages') {
 
     $messageController->inbox();
