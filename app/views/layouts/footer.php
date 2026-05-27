@@ -1,5 +1,3 @@
-<hr>
-
 </main>
 
 <footer>
@@ -8,6 +6,7 @@
 
 <script src="/public/assets/js/cart.js"></script>
 <script src="/public/assets/js/nav.js"></script>
+<script src="/public/assets/js/wishlist.js"></script>
 
 </body>
 

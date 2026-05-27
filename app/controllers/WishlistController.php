@@ -44,6 +44,14 @@ class WishlistController
         $product_id = $_POST['product_id'] ?? null;
 
         if (!$product_id) {
+            if (isset($_POST['ajax'])) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid product.'
+                ]);
+                exit;
+            }
+
             $_SESSION['error'] = "Invalid product.";
             header("Location: /public/index.php?page=shop");
             exit;
@@ -51,6 +59,14 @@ class WishlistController
 
         $wishlistModel = new Wishlist($this->db);
         $wishlistModel->add($_SESSION['user_id'], $product_id);
+
+        if (isset($_POST['ajax'])) {
+            echo json_encode([
+                'success' => true,
+                'message' => 'Product added to wishlist.'
+            ]);
+            exit;
+        }
 
         $_SESSION['success'] = "Product added to wishlist.";
 
@@ -67,11 +83,54 @@ class WishlistController
         if ($product_id) {
             $wishlistModel = new Wishlist($this->db);
             $wishlistModel->remove($_SESSION['user_id'], $product_id);
+
+            if (isset($_POST['ajax'])) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Product removed from wishlist.'
+                ]);
+                exit;
+            }
+
+            $_SESSION['success'] = "Product removed from wishlist.";
+        } else {
+            if (isset($_POST['ajax'])) {
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Invalid product.'
+                ]);
+                exit;
+            }
+
+            $_SESSION['error'] = "Invalid product.";
         }
 
-        $_SESSION['success'] = "Product removed from wishlist.";
-
         header("Location: /public/index.php?page=wishlist");
+        exit;
+    }
+
+    public function count()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['count' => 0]);
+            exit;
+        }
+
+        $stmt = $this->db->prepare("
+        SELECT COUNT(*) AS total
+        FROM wishlists
+        WHERE user_id = :user_id
+    ");
+
+        $stmt->execute([
+            ':user_id' => $_SESSION['user_id']
+        ]);
+
+        $count = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+        echo json_encode([
+            'count' => $count
+        ]);
         exit;
     }
 }

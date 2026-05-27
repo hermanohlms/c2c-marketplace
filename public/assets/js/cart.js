@@ -13,6 +13,12 @@ async function updateCartCount() {
 
     if (cartCount) {
         cartCount.textContent = data.count;
+
+        if (parseInt(data.count) > 0) {
+            cartCount.style.display = "inline-grid";
+        } else {
+            cartCount.style.display = "none";
+        };
     }
 }
 

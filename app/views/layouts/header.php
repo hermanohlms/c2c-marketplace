@@ -44,15 +44,32 @@
 
                 <?php if ($_SESSION['user_role'] === 'buyer'): ?>
                     <a href="/public/index.php?page=my-orders">My Orders</a>
-                    <a href="/public/index.php?page=wishlist">Wishlist</a>
+                    <a href="/public/index.php?page=wishlist" class="notification-link">
+
+                        Wishlist
+
+                        <?php if (!empty($_SESSION['wishlist_count'])): ?>
+
+                            <span class="notification-badge">
+
+                                <?php echo htmlspecialchars($_SESSION['wishlist_count']); ?>
+
+                            </span>
+
+                        <?php endif; ?>
+
+                    </a>
                 <?php endif; ?>
 
                 <?php if ($_SESSION['user_role'] === 'admin'): ?>
                     <a href="/public/index.php?page=admin-dashboard">Admin Dashboard</a>
                 <?php endif; ?>
 
-                <a href="/public/index.php?page=cart">
-                    Cart (<span id="cart-count">0</span>)
+                <a href="/public/index.php?page=cart" class="notification-link">
+                    Cart
+                    <span id="cart-count" class="notification-badge">
+                        0
+                    </span>
                 </a>
 
                 <?php

@@ -1,49 +1,53 @@
 <?php $title = 'Shop'; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<h1>Shop</h1>
+<div class="shop-toolbar">
 
-<form class="filter-form" action="/public/index.php" method="GET">
+    <h1>Shop</h1>
 
-    <input type="hidden" name="page" value="shop">
+    <form class="filter-form" action="/public/index.php" method="GET">
 
-    <input
-        type="text"
-        name="search"
-        placeholder="Search products..."
-        value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+        <input type="hidden" name="page" value="shop">
 
-    <select name="category_id">
-        <option value="">All Categories</option>
+        <input
+            type="text"
+            name="search"
+            placeholder="Search products..."
+            value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
 
-        <?php foreach ($categories as $category): ?>
-            <option
-                value="<?php echo $category['id']; ?>"
-                <?php echo (($_GET['category_id'] ?? '') == $category['id']) ? 'selected' : ''; ?>>
-                <?php echo htmlspecialchars($category['name']); ?>
+        <select name="category_id">
+            <option value="">All Categories</option>
+
+            <?php foreach ($categories as $category): ?>
+                <option
+                    value="<?php echo htmlspecialchars($category['id']); ?>"
+                    <?php echo (($_GET['category_id'] ?? '') == $category['id']) ? 'selected' : ''; ?>>
+                    <?php echo htmlspecialchars($category['name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+
+        <select name="sort">
+            <option value="newest" <?php echo (($_GET['sort'] ?? '') === 'newest') ? 'selected' : ''; ?>>
+                Newest
             </option>
-        <?php endforeach; ?>
-    </select>
 
-    <select name="sort">
-        <option value="newest" <?php echo (($_GET['sort'] ?? '') === 'newest') ? 'selected' : ''; ?>>
-            Newest
-        </option>
+            <option value="price_low" <?php echo (($_GET['sort'] ?? '') === 'price_low') ? 'selected' : ''; ?>>
+                Price: Low to High
+            </option>
 
-        <option value="price_low" <?php echo (($_GET['sort'] ?? '') === 'price_low') ? 'selected' : ''; ?>>
-            Price: Low to High
-        </option>
+            <option value="price_high" <?php echo (($_GET['sort'] ?? '') === 'price_high') ? 'selected' : ''; ?>>
+                Price: High to Low
+            </option>
+        </select>
 
-        <option value="price_high" <?php echo (($_GET['sort'] ?? '') === 'price_high') ? 'selected' : ''; ?>>
-            Price: High to Low
-        </option>
-    </select>
+        <button type="submit">Filter</button>
 
-    <button type="submit">Filter</button>
+        <a class="filter-reset" href="/public/index.php?page=shop">Reset</a>
 
-    <a href="/public/index.php?page=shop">Reset</a>
+    </form>
 
-</form>
+</div>
 
 <?php if (empty($products)): ?>
 

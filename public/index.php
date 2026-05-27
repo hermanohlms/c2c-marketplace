@@ -56,6 +56,19 @@ if (isset($_SESSION['user_id'])) {
 
     $_SESSION['unread_messages'] =
         $messageModel->unreadCount($_SESSION['user_id']);
+
+    $wishlistStmt = $conn->prepare("
+    SELECT COUNT(*) AS total
+    FROM wishlists
+    WHERE user_id = :user_id
+");
+
+    $wishlistStmt->execute([
+        ':user_id' => $_SESSION['user_id']
+    ]);
+
+    $_SESSION['wishlist_count'] =
+        $wishlistStmt->fetch(PDO::FETCH_ASSOC)['total'];
 }
 if ($action === 'register') {
 
@@ -203,6 +216,9 @@ if ($action === 'register') {
 } elseif ($action === 'add-to-wishlist') {
 
     $wishlistController->add();
+} elseif ($action === 'wishlist-count') {
+
+    $wishlistController->count();
 } elseif ($action === 'remove-from-wishlist') {
 
     $wishlistController->remove();

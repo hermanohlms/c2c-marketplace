@@ -16,9 +16,9 @@
 
 
 .container {
-    width: min(1100px, 100%);
+    width: min(1400px, 100%);
     margin: 0 auto;
-    padding: 16px;
+    padding: 24px;
 }
 
 nav {
@@ -78,7 +78,6 @@ button:hover,
 input,
 select,
 textarea {
-    width: 100%;
     padding: 11px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -159,8 +158,11 @@ button {
 
 .product-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(280px, 1fr));
+
+    gap: 24px;
 }
 
 @media (min-width: 768px) {
@@ -1371,8 +1373,8 @@ footer {
 }
 
 .profile-avatar-img {
-    width: 38px;
-    height: 38px;
+    width: 52px;
+    height: 52px;
     border-radius: 999px;
     object-fit: cover;
     display: block;
@@ -1381,7 +1383,7 @@ footer {
 .site-header {
     background: white;
     border-bottom: 1px solid var(--border);
-    padding: 14px 16px;
+    padding: 22px 40px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1395,7 +1397,7 @@ footer {
     font-weight: 900;
     color: var(--dark);
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 2.5rem;
 }
 
 .nav-toggle {
@@ -1418,7 +1420,8 @@ footer {
     border-bottom: 1px solid var(--border);
     padding: 16px;
     flex-direction: column;
-    gap: 12px;
+    font-size: 1.3rem;
+    gap: 20px;
 }
 
 .site-nav.open {
@@ -1561,7 +1564,9 @@ footer {
 }
 
 .notification-link {
-    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .notification-badge {
@@ -1708,4 +1713,79 @@ footer {
 .chat-form button {
     width: 160px;
     max-width: 160px;
+}
+
+.shop-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.shop-toolbar {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.shop-toolbar h1 {
+    margin: 0;
+    font-size: 3rem;
+    line-height: 1;
+}
+
+.filter-form {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-wrap: nowrap;
+
+    background: white;
+
+    padding: 20px;
+
+    border-radius: var(--radius);
+
+    border: 1px solid var(--border);
+}
+
+.filter-form input {
+    flex: 1;
+    min-width: 260px;
+}
+
+.filter-form select {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+.filter-form button {
+    width: auto;
+    min-width: 120px;
+    flex-shrink: 0;
+}
+
+.filter-reset {
+    white-space: nowrap;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+@media (max-width: 992px) {
+
+    .shop-toolbar {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-form {
+        flex-wrap: wrap;
+    }
+
+    .filter-form input,
+    .filter-form select,
+    .filter-form button {
+        width: 100%;
+    }
 }
