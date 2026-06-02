@@ -86,7 +86,8 @@ class ProductController
 
             if ($created) {
 
-                echo "Product created successfully!";
+                header('Location: /public/index.php?page=dashboard');
+                exit();
             } else {
 
                 echo "Failed to create product.";

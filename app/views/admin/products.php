@@ -10,6 +10,24 @@
     <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
 </div>
 
+<form action="/public/index.php" method="GET" class="admin-search-form">
+    <input type="hidden" name="page" value="admin-products">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by product, category, seller, or email..."
+        value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+
+    <button type="submit">Search</button>
+
+    <?php if (!empty($_GET['search'])): ?>
+        <a class="btn btn-secondary" href="/public/index.php?page=admin-products">
+            Reset
+        </a>
+    <?php endif; ?>
+</form>
+
 <?php if (empty($products)): ?>
 
     <div class="card empty-state">
@@ -67,6 +85,27 @@
             </div>
 
         <?php endforeach; ?>
+
+    </div>
+
+<?php endif; ?>
+
+<?php if ($totalPages > 1): ?>
+
+    <div class="pagination-wrapper">
+
+        <div class="pagination">
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+
+                <a
+                    class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
+                    href="/public/index.php?page=admin-products&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>
+                </a>
+
+            <?php endfor; ?>
+
+        </div>
 
     </div>
 

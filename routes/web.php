@@ -167,6 +167,12 @@ if ($action === 'register') {
 } elseif ($page === 'admin-users') {
 
     $adminController->users();
+} elseif ($action === 'create-ticket') {
+
+    $supportController->create();
+} elseif ($action === 'update-support-ticket') {
+
+    $supportController->updateStatus();
 } elseif ($action === 'update-user') {
 
     $adminController->updateUser();
@@ -191,6 +197,15 @@ if ($action === 'register') {
 } elseif ($page === 'seller-earnings') {
 
     $orderController->sellerEarnings();
+} elseif ($page === 'contact') {
+
+    require_once __DIR__ . '/../app/views/support/contact.php';
+} elseif ($page === 'admin-tickets') {
+
+    $adminController->tickets();
+} elseif ($action === 'create-ticket') {
+
+    $supportController->create();
 } else {
 
     if ($page === 'login') {

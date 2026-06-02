@@ -5,8 +5,17 @@
 
 <?php if (empty($wishlistItems)): ?>
 
-    <p>Your wishlist is empty.</p>
-    <a href="/public/index.php?page=shop">Browse Products</a>
+    <div class="card empty-state">
+        <h2>Your wishlist is empty</h2>
+
+        <p>
+            Save products you like so you can easily find them again later.
+        </p>
+
+        <a class="btn" href="/public/index.php?page=shop">
+            Browse Products
+        </a>
+    </div>
 
 <?php else: ?>
 

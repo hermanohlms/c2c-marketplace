@@ -409,6 +409,7 @@ class Order
             users.email AS buyer_email,
 
             products.name AS product_name,
+            products.image AS product_image,
             order_items.quantity,
             order_items.price
 

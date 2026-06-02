@@ -10,6 +10,24 @@
     <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
 </div>
 
+<form action="/public/index.php" method="GET" class="admin-search-form">
+    <input type="hidden" name="page" value="admin-users">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search users..."
+        value="<?php echo htmlspecialchars($_GET['search'] ?? ''); ?>">
+
+    <button type="submit">Search</button>
+
+    <?php if (!empty($_GET['search'])): ?>
+        <a class="btn btn-secondary" href="/public/index.php?page=admin-users">
+            Reset
+        </a>
+    <?php endif; ?>
+</form>
+
 <div class="management-grid">
 
     <?php foreach ($users as $user): ?>
@@ -58,5 +76,23 @@
     <?php endforeach; ?>
 
 </div>
+
+<?php if ($totalPages > 1): ?>
+
+    <div class="pagination">
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+
+            <a
+                class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
+                href="/public/index.php?page=admin-users&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>">
+                <?php echo $i; ?>
+            </a>
+
+        <?php endfor; ?>
+
+    </div>
+
+<?php endif; ?>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

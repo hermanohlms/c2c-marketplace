@@ -47,17 +47,53 @@
                     <div>
                         <strong><?php echo htmlspecialchars($order['product_name']); ?></strong>
                         <p>
-                            <strong> Quantity: </strong> <?php echo htmlspecialchars($order['quantity']); ?>
+                            <strong>Quantity:</strong> <?php echo htmlspecialchars($order['quantity']); ?>
                         </p>
                         <p>
                             <strong>Price:</strong> R<?php echo number_format($order['price'], 2); ?>
                         </p>
-                        <p>
-                            <strong>Buyer:</strong><?php echo htmlspecialchars($order['buyer_name']); ?>
-                            (<?php echo htmlspecialchars($order['buyer_email']); ?>)
-                        </p>
                     </div>
 
+
+
+                </div>
+
+                <div class="delivery-address-card">
+                    <h4>Delivery Address</h4>
+
+                    <p>
+                        <strong>Name:</strong>
+                        <?php echo htmlspecialchars($order['delivery_name'] ?? ''); ?>
+                    </p>
+
+                    <p>
+                        <strong>Phone:</strong>
+                        <?php echo htmlspecialchars($order['delivery_phone'] ?? ''); ?>
+                    </p>
+
+                    <p>
+                        <strong>Address:</strong>
+                        <?php echo htmlspecialchars($order['address_line1'] ?? ''); ?>
+                    </p>
+
+                    <?php if (!empty($order['address_line2'])): ?>
+                        <p>
+                            <?php echo htmlspecialchars($order['address_line2']); ?>
+                        </p>
+                    <?php endif; ?>
+
+                    <p>
+                        <?php echo htmlspecialchars($order['city'] ?? ''); ?>,
+                        <?php echo htmlspecialchars($order['province'] ?? ''); ?>,
+                        <?php echo htmlspecialchars($order['postal_code'] ?? ''); ?>
+                    </p>
+
+                    <?php if (!empty($order['shipping_notes'])): ?>
+                        <p>
+                            <strong>Notes:</strong>
+                            <?php echo htmlspecialchars($order['shipping_notes']); ?>
+                        </p>
+                    <?php endif; ?>
                 </div>
 
                 <form action="/public/index.php" method="POST" class="status-form">

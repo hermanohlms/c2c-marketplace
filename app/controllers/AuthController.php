@@ -55,24 +55,42 @@ class AuthController
 
             $userModel = new User($this->db);
 
-            $created = $userModel->create(
-                $name,
-                $email,
-                $password,
-                $role
-            );
+            try {
 
-            if ($created) {
+                $created = $userModel->create(
+                    $name,
+                    $email,
+                    $password,
+                    $role
+                );
 
-                $_SESSION['success'] =
-                    "Account created successfully. Please login.";
+                if ($created) {
 
-                header("Location: /public/index.php?page=login");
-                exit;
-            } else {
+                    $_SESSION['success'] =
+                        "Account created successfully. Please login.";
+
+                    header("Location: /public/index.php?page=login");
+                    exit;
+                }
 
                 $_SESSION['error'] =
-                    "Registration failed. Email may already exist.";
+                    "Registration failed. Please try again.";
+
+                header("Location: /public/index.php?page=register");
+                exit;
+            } catch (PDOException $e) {
+
+                if ($e->getCode() === '23505') {
+
+                    $_SESSION['error'] =
+                        "An account with this email already exists.";
+
+                    header("Location: /public/index.php?page=register");
+                    exit;
+                }
+
+                $_SESSION['error'] =
+                    "Registration failed. Please try again.";
 
                 header("Location: /public/index.php?page=register");
                 exit;

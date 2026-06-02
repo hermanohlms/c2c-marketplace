@@ -41,8 +41,53 @@ class AdminController
     {
         $this->requireAdmin();
 
-        $categoryModel = new Category($this->db);
-        $categories = $categoryModel->getAll();
+        $search = trim($_GET['search'] ?? '');
+
+        $currentPage = max(1, (int)($_GET['p'] ?? 1));
+        $perPage = 6;
+        $offset = ($currentPage - 1) * $perPage;
+
+        $whereSql = "";
+        $params = [];
+
+        if ($search !== '') {
+            $whereSql = "
+            WHERE LOWER(name) LIKE LOWER(:search)
+            OR LOWER(description) LIKE LOWER(:search)
+        ";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $countStmt = $this->db->prepare("
+        SELECT COUNT(*) AS total
+        FROM categories
+        $whereSql
+    ");
+
+        $countStmt->execute($params);
+
+        $totalCategories = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPages = ceil($totalCategories / $perPage);
+
+        $stmt = $this->db->prepare("
+        SELECT *
+        FROM categories
+        $whereSql
+        ORDER BY created_at DESC
+        LIMIT :limit OFFSET :offset
+    ");
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         require_once __DIR__ . '/../views/admin/categories.php';
     }
@@ -77,8 +122,63 @@ class AdminController
     {
         $this->requireAdmin();
 
-        $productModel = new Product($this->db);
-        $products = $productModel->getAllForAdmin();
+        $search = trim($_GET['search'] ?? '');
+
+        $currentPage = max(1, (int)($_GET['p'] ?? 1));
+        $perPage = 6;
+        $offset = ($currentPage - 1) * $perPage;
+
+        $whereSql = "";
+        $params = [];
+
+        if ($search !== '') {
+            $whereSql = "
+            WHERE LOWER(products.name) LIKE LOWER(:search)
+            OR LOWER(categories.name) LIKE LOWER(:search)
+            OR LOWER(users.name) LIKE LOWER(:search)
+            OR LOWER(users.email) LIKE LOWER(:search)
+        ";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $countStmt = $this->db->prepare("
+        SELECT COUNT(*) AS total
+        FROM products
+        INNER JOIN users ON products.seller_id = users.id
+        LEFT JOIN categories ON products.category_id = categories.id
+        $whereSql
+    ");
+
+        $countStmt->execute($params);
+
+        $totalProducts = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPages = ceil($totalProducts / $perPage);
+
+        $stmt = $this->db->prepare("
+        SELECT 
+            products.*,
+            users.name AS seller_name,
+            users.email AS seller_email,
+            categories.name AS category_name
+        FROM products
+        INNER JOIN users ON products.seller_id = users.id
+        LEFT JOIN categories ON products.category_id = categories.id
+        $whereSql
+        ORDER BY products.created_at DESC
+        LIMIT :limit OFFSET :offset
+    ");
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         require_once __DIR__ . '/../views/admin/products.php';
     }
@@ -129,8 +229,53 @@ class AdminController
     {
         $this->requireAdmin();
 
-        $userModel = new User($this->db);
-        $users = $userModel->getAll();
+        $search = trim($_GET['search'] ?? '');
+
+        $currentPage = max(1, (int)($_GET['p'] ?? 1));
+        $perPage = 6;
+        $offset = ($currentPage - 1) * $perPage;
+
+        $whereSql = "";
+        $params = [];
+
+        if ($search !== '') {
+            $whereSql = "
+            WHERE LOWER(name) LIKE LOWER(:search)
+            OR LOWER(email) LIKE LOWER(:search)
+        ";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        $countStmt = $this->db->prepare("
+        SELECT COUNT(*) AS total
+        FROM users
+        $whereSql
+    ");
+
+        $countStmt->execute($params);
+
+        $totalUsers = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+        $totalPages = ceil($totalUsers / $perPage);
+
+        $stmt = $this->db->prepare("
+        SELECT *
+        FROM users
+        $whereSql
+        ORDER BY created_at DESC
+        LIMIT :limit OFFSET :offset
+    ");
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         require_once __DIR__ . '/../views/admin/users.php';
     }
@@ -235,5 +380,23 @@ class AdminController
 
         header("Location: /public/index.php?page=admin-categories");
         exit;
+    }
+
+    public function tickets()
+    {
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+            abort403();
+        }
+
+        $stmt = $this->db->query("
+        SELECT support_tickets.*, users.name AS user_name, users.email
+        FROM support_tickets
+        JOIN users ON support_tickets.user_id = users.id
+        ORDER BY support_tickets.created_at DESC
+    ");
+
+        $tickets = $stmt->fetchAll();
+
+        require_once __DIR__ . '/../views/admin/tickets.php';
     }
 }

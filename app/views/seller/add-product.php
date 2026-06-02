@@ -7,7 +7,7 @@
         <p>Create a new listing for buyers to discover.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=dashboard">Back</a>
+    <a class="btn btn-secondary" href="/public/index.php?page=dashboard">Back to dashboard</a>
 </div>
 
 <section class="form-page card">
@@ -20,6 +20,7 @@
 
         <label>
             Category
+            <br>
             <select name="category_id" required>
                 <option value="">Select Category</option>
 
@@ -33,26 +34,31 @@
 
         <label>
             Product Name
+            <br>
             <input type="text" name="name" placeholder="Product name" required>
         </label>
 
         <label>
             Description
+            <br>
             <textarea name="description" placeholder="Describe your product"></textarea>
         </label>
 
         <label>
             Price
+            <br>
             <input type="number" step="0.01" name="price" placeholder="0.00" required>
         </label>
 
         <label>
             Stock
+            <br>
             <input type="number" name="stock" placeholder="Available quantity" required>
         </label>
 
         <label>
             Product Image
+            <br>
             <input type="file" name="image" required>
         </label>
 

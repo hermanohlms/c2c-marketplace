@@ -7,7 +7,13 @@
         <p>View and manage your product listings.</p>
     </div>
 
-    <a class="btn" href="/public/index.php?page=add-product">Add Product</a>
+    <div class="header-actions">
+        <a
+            href="/public/index.php?page=dashboard"
+            class="btn btn-secondary">
+            Back to Dashboard
+        </a>
+    </div>
 </div>
 
 <?php if (empty($products)): ?>

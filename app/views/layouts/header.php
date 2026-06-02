@@ -15,7 +15,7 @@
     <header class="site-header">
 
         <a class="site-logo" href="/public/index.php?page=home">
-            Marketplace
+            One-Stop-Shop
         </a>
 
         <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
@@ -40,7 +40,7 @@
                 <?php if ($_SESSION['user_role'] === 'seller'): ?>
                     <a href="/public/index.php?page=dashboard">Seller Dashboard</a>
                     <a href="/public/index.php?page=seller-earnings">Earnings</a>
-                    <a href="/public/index.php?page=seller-orders">Incoming Orders</a>
+                    <a href="/public/index.php?page=contact">Contact Support</a>
                 <?php endif; ?>
 
                 <?php if ($_SESSION['user_role'] === 'buyer'): ?>
@@ -60,10 +60,20 @@
                         <?php endif; ?>
 
                     </a>
+
                 <?php endif; ?>
 
                 <?php if ($_SESSION['user_role'] === 'admin'): ?>
                     <a href="/public/index.php?page=admin-dashboard">Admin Dashboard</a>
+                    <a href="/public/index.php?page=admin-tickets" class="notification-link">
+                        Support Tickets
+
+                        <?php if (!empty($_SESSION['open_support_tickets'])): ?>
+                            <span class="notification-badge">
+                                <?php echo htmlspecialchars($_SESSION['open_support_tickets']); ?>
+                            </span>
+                        <?php endif; ?>
+                    </a>
                 <?php endif; ?>
 
                 <?php if ($_SESSION['user_role'] === 'buyer'): ?>
@@ -75,6 +85,8 @@
                             0
                         </span>
                     </a>
+
+                    <a href="/public/index.php?page=contact">Contact Support</a>
 
                 <?php endif; ?>
 

@@ -28,9 +28,11 @@ require_once __DIR__ . '/../app/helpers/data_helper.php';
 require_once __DIR__ . '/../app/helpers/email_helper.php';
 require_once __DIR__ . '/../app/helpers/csrf_helper.php';
 require_once __DIR__ . '/../app/helpers/error_helper.php';
+require_once __DIR__ . '/../app/controllers/SupportController.php';
 
 
-$action = $_POST['action'] ?? null;
+
+$action = $_POST['action'] ?? $_GET['action'] ?? null;
 $page = $_GET['page'] ?? 'home';
 
 $csrfExemptActions = [
@@ -50,7 +52,7 @@ if (
     validateCsrf();
 }
 
-
+$supportController = new SupportController($conn);
 $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
@@ -77,10 +79,10 @@ if (isset($_SESSION['user_id'])) {
         $messageModel->unreadCount($_SESSION['user_id']);
 
     $wishlistStmt = $conn->prepare("
-    SELECT COUNT(*) AS total
-    FROM wishlists
-    WHERE user_id = :user_id
-");
+        SELECT COUNT(*) AS total
+        FROM wishlists
+        WHERE user_id = :user_id
+    ");
 
     $wishlistStmt->execute([
         ':user_id' => $_SESSION['user_id']
@@ -88,6 +90,19 @@ if (isset($_SESSION['user_id'])) {
 
     $_SESSION['wishlist_count'] =
         $wishlistStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
+    if (($_SESSION['user_role'] ?? '') === 'admin') {
+        $ticketStmt = $conn->prepare("
+            SELECT COUNT(*) AS total
+            FROM support_tickets
+            WHERE status = 'open'
+        ");
+
+        $ticketStmt->execute();
+
+        $_SESSION['open_support_tickets'] =
+            $ticketStmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
 }
 
 require_once __DIR__ . '/../routes/web.php';
