@@ -136,14 +136,14 @@ class ProductController
         $id = $_GET['id'] ?? null;
 
         if (!$id) {
-            die("Product not found.");
+            abort404();
         }
 
         $productModel = new Product($this->db);
         $product = $productModel->findById($id);
 
         if (!$product) {
-            die("Product not found.");
+            abort404();
         }
 
         $reviewModel = new Review($this->db);

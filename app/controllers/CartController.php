@@ -17,14 +17,14 @@ class CartController
         $product_id = $_POST['product_id'] ?? null;
 
         if (!$product_id) {
-            die("Product not found.");
+            abort404();
         }
 
         $productModel = new Product($this->db);
         $product = $productModel->findById($product_id);
 
         if (!$product) {
-            die("Product not found.");
+            abort404();
         }
 
         if (!isset($_SESSION['cart'])) {

@@ -27,6 +27,7 @@ require_once __DIR__ . '/../app/models/Message.php';
 require_once __DIR__ . '/../app/helpers/data_helper.php';
 require_once __DIR__ . '/../app/helpers/email_helper.php';
 require_once __DIR__ . '/../app/helpers/csrf_helper.php';
+require_once __DIR__ . '/../app/helpers/error_helper.php';
 
 
 $action = $_POST['action'] ?? null;
@@ -37,9 +38,14 @@ $csrfExemptActions = [
     'wishlist-count'
 ];
 
+$csrfExemptPages = [
+    'payfast-itn'
+];
+
 if (
     $_SERVER['REQUEST_METHOD'] === 'POST' &&
-    !in_array($action, $csrfExemptActions)
+    !in_array($action, $csrfExemptActions) &&
+    !in_array($page, $csrfExemptPages)
 ) {
     validateCsrf();
 }
@@ -92,11 +98,11 @@ if ($action === 'register') {
 } elseif ($page === 'dashboard') {
 
     if (!isset($_SESSION['user_id'])) {
-        die("Access denied.");
+        abort403();
     }
 
     if ($_SESSION['user_role'] !== 'seller') {
-        die("Seller access only.");
+        abort403();
     }
 
     $analytics = $orderModel->getSellerAnalytics($_SESSION['user_id']);
@@ -108,11 +114,11 @@ if ($action === 'register') {
 } elseif ($page === 'my-products') {
 
     if (!isset($_SESSION['user_id'])) {
-        die("Access denied.");
+        abort403();
     }
 
     if ($_SESSION['user_role'] !== 'seller') {
-        die("Seller access only.");
+        abort403();
     }
 
     $productController->myProducts();
@@ -125,11 +131,11 @@ if ($action === 'register') {
 } elseif ($page === 'add-product') {
 
     if (!isset($_SESSION['user_id'])) {
-        die("Access denied.");
+        abort403();
     }
 
     if ($_SESSION['user_role'] !== 'seller') {
-        die("Seller access only.");
+        abort403();
     }
 
     $productController->showAddProductForm();

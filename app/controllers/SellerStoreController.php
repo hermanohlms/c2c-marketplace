@@ -18,7 +18,7 @@ class SellerStoreController
         $seller_id = $_GET['id'] ?? null;
 
         if (!$seller_id) {
-            die("Seller not found.");
+            abort404();
         }
 
         $userModel = new User($this->db);
@@ -27,7 +27,7 @@ class SellerStoreController
         $seller = $userModel->findSellerById($seller_id);
 
         if (!$seller) {
-            die("Seller not found.");
+            abort404();
         }
 
         $products = $productModel->getActiveBySeller($seller_id);
