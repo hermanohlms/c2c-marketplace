@@ -10,19 +10,61 @@ class Order
         $this->conn = $db;
     }
 
-    public function create($buyer_id, $total_amount)
-    {
+    public function create(
+        $buyer_id,
+        $total_amount,
+        $delivery_name,
+        $delivery_phone,
+        $address_line1,
+        $address_line2,
+        $city,
+        $province,
+        $postal_code,
+        $shipping_notes
+    ) {
         $sql = "
-            INSERT INTO orders (buyer_id, total_amount, status)
-            VALUES (:buyer_id, :total_amount, 'pending')
-            RETURNING id
-        ";
+        INSERT INTO orders (
+            buyer_id,
+            total_amount,
+            status,
+            delivery_name,
+            delivery_phone,
+            address_line1,
+            address_line2,
+            city,
+            province,
+            postal_code,
+            shipping_notes
+        )
+        VALUES (
+            :buyer_id,
+            :total_amount,
+            'pending',
+            :delivery_name,
+            :delivery_phone,
+            :address_line1,
+            :address_line2,
+            :city,
+            :province,
+            :postal_code,
+            :shipping_notes
+        )
+        RETURNING id
+    ";
 
         $stmt = $this->conn->prepare($sql);
 
         $stmt->execute([
             ':buyer_id' => $buyer_id,
-            ':total_amount' => $total_amount
+            ':total_amount' => $total_amount,
+            ':delivery_name' => $delivery_name,
+            ':delivery_phone' => $delivery_phone,
+            ':address_line1' => $address_line1,
+            ':address_line2' => $address_line2,
+            ':city' => $city,
+            ':province' => $province,
+            ':postal_code' => $postal_code,
+            ':shipping_notes' => $shipping_notes
         ]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC)['id'];
@@ -31,18 +73,33 @@ class Order
     public function addItem($order_id, $product_id, $quantity, $price)
     {
         $sql = "
-            INSERT INTO order_items (order_id, product_id, quantity, price)
-            VALUES (:order_id, :product_id, :quantity, :price)
-        ";
+        INSERT INTO order_items
+        (
+            order_id,
+            product_id,
+            quantity,
+            price
+        )
+        VALUES
+        (
+            :order_id,
+            :product_id,
+            :quantity,
+            :price
+        )
+        RETURNING id
+    ";
 
         $stmt = $this->conn->prepare($sql);
 
-        return $stmt->execute([
+        $stmt->execute([
             ':order_id' => $order_id,
             ':product_id' => $product_id,
             ':quantity' => $quantity,
             ':price' => $price
         ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['id'];
     }
 
     public function getByBuyer($buyer_id)
@@ -226,6 +283,156 @@ class Order
         $stmt->execute([
             ':order_id' => $order_id
         ]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function markDeliveredByBuyer($order_id, $buyer_id)
+    {
+        $sql = "
+        UPDATE orders
+        SET status = 'delivered'
+        WHERE id = :order_id
+        AND buyer_id = :buyer_id
+        AND status = 'shipped'
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':order_id' => $order_id,
+            ':buyer_id' => $buyer_id
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function countByBuyer($buyer_id)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total
+        FROM orders
+        WHERE buyer_id = :buyer_id
+        AND status != 'pending'
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([':buyer_id' => $buyer_id]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public function countBySeller($seller_id)
+    {
+        $sql = "
+        SELECT COUNT(DISTINCT orders.id) AS total
+        FROM orders
+        INNER JOIN order_items
+            ON orders.id = order_items.order_id
+        INNER JOIN products
+            ON order_items.product_id = products.id
+        WHERE products.seller_id = :seller_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
+
+    public function getByBuyerPaginated($buyer_id, $limit, $offset)
+    {
+        $sql = "
+        SELECT *
+        FROM orders
+        WHERE buyer_id = :buyer_id
+        AND status != 'pending'
+        ORDER BY created_at DESC
+        LIMIT :limit OFFSET :offset
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':buyer_id', $buyer_id);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
+
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($orders as &$order) {
+            $itemsSql = "
+            SELECT 
+                order_items.*,
+                products.name AS product_name,
+                products.image AS product_image
+            FROM order_items
+            INNER JOIN products
+                ON order_items.product_id = products.id
+            WHERE order_items.order_id = :order_id
+        ";
+
+            $itemsStmt = $this->conn->prepare($itemsSql);
+
+            $itemsStmt->execute([
+                ':order_id' => $order['id']
+            ]);
+
+            $order['items'] = $itemsStmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return $orders;
+    }
+
+    public function getBySellerPaginated($seller_id, $limit, $offset)
+    {
+        $sql = "
+        SELECT 
+            orders.id AS order_id,
+            orders.status,
+            orders.created_at,
+            orders.delivery_name,
+            orders.delivery_phone,
+            orders.address_line1,
+            orders.address_line2,
+            orders.city,
+            orders.province,
+            orders.postal_code,
+            orders.shipping_notes,
+            orders.tracking_number,
+
+            users.name AS buyer_name,
+            users.email AS buyer_email,
+
+            products.name AS product_name,
+            order_items.quantity,
+            order_items.price
+
+        FROM orders
+        INNER JOIN users 
+            ON orders.buyer_id = users.id
+        INNER JOIN order_items 
+            ON orders.id = order_items.order_id
+        INNER JOIN products 
+            ON order_items.product_id = products.id
+
+        WHERE products.seller_id = :seller_id
+
+        ORDER BY orders.created_at DESC
+        LIMIT :limit OFFSET :offset
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':seller_id', $seller_id);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

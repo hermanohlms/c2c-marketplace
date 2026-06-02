@@ -39,6 +39,7 @@
 
                 <?php if ($_SESSION['user_role'] === 'seller'): ?>
                     <a href="/public/index.php?page=dashboard">Seller Dashboard</a>
+                    <a href="/public/index.php?page=seller-earnings">Earnings</a>
                     <a href="/public/index.php?page=seller-orders">Incoming Orders</a>
                 <?php endif; ?>
 
@@ -65,12 +66,17 @@
                     <a href="/public/index.php?page=admin-dashboard">Admin Dashboard</a>
                 <?php endif; ?>
 
-                <a href="/public/index.php?page=cart" class="notification-link">
-                    Cart
-                    <span id="cart-count" class="notification-badge">
-                        0
-                    </span>
-                </a>
+                <?php if ($_SESSION['user_role'] === 'buyer'): ?>
+
+                    <a href="/public/index.php?page=cart" class="notification-link">
+                        Cart
+
+                        <span id="cart-count" class="notification-badge">
+                            0
+                        </span>
+                    </a>
+
+                <?php endif; ?>
 
                 <?php
                 $unreadNotifications = $_SESSION['unread_notifications'] ?? 0;

@@ -8,6 +8,7 @@
     </div>
 
     <form action="/public/index.php" method="POST">
+        <?php echo csrfField(); ?>
         <input type="hidden" name="action" value="mark-notifications-read">
         <button type="submit" class="btn btn-secondary">Mark All Read</button>
     </form>

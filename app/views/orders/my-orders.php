@@ -72,11 +72,38 @@
 
                 </div>
 
+                <?php if ($order['status'] === 'shipped'): ?>
+
+                    <form action="/public/index.php" method="POST">
+                        <?php echo csrfField(); ?>
+
+                        <input type="hidden" name="action" value="confirm-order-received">
+                        <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order['id']); ?>">
+
+                        <button type="submit" class="btn">
+                            Confirm Order Received
+                        </button>
+                    </form>
+
+                <?php endif; ?>
+
             </div>
 
         <?php endforeach; ?>
 
     </div>
+
+    <?php if ($totalPages > 1): ?>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a
+                    class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
+                    href="/public/index.php?page=my-orders&p=<?php echo $i; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
 
 <?php endif; ?>
 

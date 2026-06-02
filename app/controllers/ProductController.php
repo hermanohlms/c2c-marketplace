@@ -120,10 +120,23 @@ class ProductController
 
         $productModel = new Product($this->db);
 
+        $currentPage = max(1, (int)($_GET['p'] ?? 1));
+        $perPage = 12;
+        $offset = ($currentPage - 1) * $perPage;
+
+        $totalProducts = $productModel->countSearchAndFilter(
+            $search,
+            $category_id
+        );
+
+        $totalPages = ceil($totalProducts / $perPage);
+
         $products = $productModel->searchAndFilter(
             $search,
             $category_id,
-            $sort
+            $sort,
+            $perPage,
+            $offset
         );
 
         $categories = $productModel->getCategories();

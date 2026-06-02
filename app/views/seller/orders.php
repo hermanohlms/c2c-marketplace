@@ -46,11 +46,14 @@
 
                     <div>
                         <strong><?php echo htmlspecialchars($order['product_name']); ?></strong>
-                        <p>Quantity: <?php echo htmlspecialchars($order['quantity']); ?></p>
-                        <p>Price: R<?php echo number_format($order['price'], 2); ?></p>
                         <p>
-                            Buyer:
-                            <?php echo htmlspecialchars($order['buyer_name']); ?>
+                            <strong> Quantity: </strong> <?php echo htmlspecialchars($order['quantity']); ?>
+                        </p>
+                        <p>
+                            <strong>Price:</strong> R<?php echo number_format($order['price'], 2); ?>
+                        </p>
+                        <p>
+                            <strong>Buyer:</strong><?php echo htmlspecialchars($order['buyer_name']); ?>
                             (<?php echo htmlspecialchars($order['buyer_email']); ?>)
                         </p>
                     </div>
@@ -83,6 +86,18 @@
         <?php endforeach; ?>
 
     </div>
+
+    <?php if ($totalPages > 1): ?>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a
+                    class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
+                    href="/public/index.php?page=seller-orders&p=<?php echo $i; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
+        </div>
+    <?php endif; ?>
 
 <?php endif; ?>
 

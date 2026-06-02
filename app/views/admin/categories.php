@@ -43,6 +43,37 @@
         <?php else: ?>
             <div class="mini-list">
                 <?php foreach ($categories as $category): ?>
+                    <form action="/public/index.php" method="POST" class="stack-form">
+                        <?php echo csrfField(); ?>
+
+                        <input type="hidden" name="action" value="update-category">
+                        <input type="hidden" name="category_id" value="<?php echo htmlspecialchars($category['id']); ?>">
+
+                        <label>
+                            Name
+                            <input
+                                type="text"
+                                name="name"
+                                value="<?php echo htmlspecialchars($category['name']); ?>"
+                                required>
+                        </label>
+
+                        <label>
+                            Description
+                            <textarea name="description"><?php echo htmlspecialchars($category['description'] ?? ''); ?></textarea>
+                        </label>
+
+                        <button type="submit">Update Category</button>
+                    </form>
+
+                    <form action="/public/index.php" method="POST" onsubmit="return confirm('Delete this category? Products will become uncategorized.');">
+                        <?php echo csrfField(); ?>
+
+                        <input type="hidden" name="action" value="delete-category">
+                        <input type="hidden" name="category_id" value="<?php echo htmlspecialchars($category['id']); ?>">
+
+                        <button type="submit" class="btn-secondary">Delete Category</button>
+                    </form>
                     <div class="mini-list-item vertical">
                         <strong><?php echo htmlspecialchars($category['name']); ?></strong>
                         <span>

@@ -145,7 +145,7 @@ class Product
         return $stmt->rowCount() > 0;
     }
 
-    public function searchAndFilter($search, $category_id, $sort)
+    public function searchAndFilter($search, $category_id, $sort, $limit = 12, $offset = 0)
     {
         $sql = "
                 SELECT 
@@ -191,8 +191,17 @@ class Product
             $sql .= " ORDER BY products.created_at DESC";
         }
 
+        $sql .= " LIMIT :limit OFFSET :offset";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute($params);
+
+        foreach ($params as $key => $value) {
+            $stmt->bindValue($key, $value);
+        }
+
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
+        $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -473,5 +482,35 @@ class Product
         $stmt->execute($params);
 
         return $stmt->rowCount() > 0;
+    }
+
+    public function countSearchAndFilter($search, $category_id)
+    {
+        $sql = "
+        SELECT COUNT(*) AS total
+        FROM products
+        WHERE status = 'active'
+    ";
+
+        $params = [];
+
+        if (!empty($search)) {
+            $sql .= " AND (
+            LOWER(name) LIKE LOWER(:search)
+            OR LOWER(description) LIKE LOWER(:search)
+        )";
+
+            $params[':search'] = '%' . $search . '%';
+        }
+
+        if (!empty($category_id)) {
+            $sql .= " AND category_id = :category_id";
+            $params[':category_id'] = $category_id;
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute($params);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
 }

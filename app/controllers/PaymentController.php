@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../helpers/payfast_helper.php';
 require_once __DIR__ . '/../models/Order.php';
 require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Escrow.php';
 
 class PaymentController
 {
@@ -76,6 +77,15 @@ class PaymentController
     {
         $data = $_POST;
 
+        if (getenv('PAYFAST_VALIDATE_IP') === 'true') {
+            $clientIp = $this->getClientIp();
+
+            if (!$this->isAllowedPayfastIp($clientIp)) {
+                http_response_code(403);
+                exit('Invalid PayFast source IP');
+            }
+        }
+
         if (empty($data)) {
             http_response_code(400);
             exit('No ITN data received');
@@ -135,6 +145,8 @@ class PaymentController
 
                 $orderItems = $orderModel->getItemsByOrderId($order_id);
 
+                $escrowModel = new Escrow($this->db);
+
                 foreach ($orderItems as $item) {
                     $reduced = $productModel->reduceStock(
                         $item['product_id'],
@@ -146,6 +158,22 @@ class PaymentController
                             "Could not reduce stock for product ID " . $item['product_id']
                         );
                     }
+
+                    $product = $productModel->findById($item['product_id']);
+
+                    if (!$product || empty($product['seller_id'])) {
+                        throw new Exception("Seller not found for product ID " . $item['product_id']);
+                    }
+
+
+                    $grossAmount = $item['price'] * $item['quantity'];
+
+                    $escrowModel->createForOrderItem(
+                        $order_id,
+                        $item['id'],
+                        $product['seller_id'],
+                        $grossAmount
+                    );
                 }
 
                 $stmt = $this->db->prepare("
@@ -247,5 +275,22 @@ class PaymentController
 
         http_response_code(200);
         exit('Payment not complete');
+    }
+
+    private function getClientIp()
+    {
+        return $_SERVER['HTTP_CF_CONNECTING_IP']
+            ?? $_SERVER['HTTP_X_FORWARDED_FOR']
+            ?? $_SERVER['REMOTE_ADDR']
+            ?? '';
+    }
+
+    private function isAllowedPayfastIp($ip)
+    {
+        $allowedIps = [
+            '144.126.193.139'
+        ];
+
+        return in_array($ip, $allowedIps);
     }
 }

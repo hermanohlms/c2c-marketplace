@@ -23,6 +23,8 @@ $total = 0;
         <form action="/public/index.php" method="POST" class="cart-items-form">
             <input type="hidden" name="action" value="update-cart">
 
+            <?php echo csrfField(); ?>
+
             <div class="cart-items-list">
 
                 <?php foreach ($cart as $item): ?>
@@ -94,12 +96,9 @@ $total = 0;
                 <strong>R<?php echo number_format($total, 2); ?></strong>
             </div>
 
-            <form action="/public/index.php" method="POST">
-                <input type="hidden" name="action" value="checkout">
-                <button type="submit" class="checkout-btn">
-                    Proceed to Checkout
-                </button>
-            </form>
+            <a href="/public/index.php?page=checkout" class="btn checkout-btn">
+                Proceed to Checkout
+            </a>
 
             <a class="continue-link" href="/public/index.php?page=shop">
                 Continue Shopping

@@ -174,4 +174,66 @@ class AdminController
         header("Location: /public/index.php?page=admin-users");
         exit;
     }
+
+    public function updateCategory()
+    {
+        $this->requireAdmin();
+
+        $category_id = $_POST['category_id'] ?? null;
+        $name = trim($_POST['name'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+
+        if (!$category_id || $name === '') {
+            $_SESSION['error'] = "Category name is required.";
+            header("Location: /public/index.php?page=admin-categories");
+            exit;
+        }
+
+        $stmt = $this->db->prepare("
+        UPDATE categories
+        SET name = :name,
+            description = :description
+        WHERE id = :id
+    ");
+
+        $updated = $stmt->execute([
+            ':name' => $name,
+            ':description' => $description,
+            ':id' => $category_id
+        ]);
+
+        $_SESSION[$updated ? 'success' : 'error'] =
+            $updated ? "Category updated." : "Could not update category.";
+
+        header("Location: /public/index.php?page=admin-categories");
+        exit;
+    }
+
+    public function deleteCategory()
+    {
+        $this->requireAdmin();
+
+        $category_id = $_POST['category_id'] ?? null;
+
+        if (!$category_id) {
+            $_SESSION['error'] = "Invalid category.";
+            header("Location: /public/index.php?page=admin-categories");
+            exit;
+        }
+
+        $stmt = $this->db->prepare("
+        DELETE FROM categories
+        WHERE id = :id
+    ");
+
+        $deleted = $stmt->execute([
+            ':id' => $category_id
+        ]);
+
+        $_SESSION[$deleted ? 'success' : 'error'] =
+            $deleted ? "Category deleted." : "Could not delete category.";
+
+        header("Location: /public/index.php?page=admin-categories");
+        exit;
+    }
 }

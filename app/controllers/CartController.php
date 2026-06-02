@@ -148,4 +148,19 @@ class CartController
             'count' => $count
         ]);
     }
+
+    private function requireBuyer()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = "Please login first.";
+            header("Location: /public/index.php?page=login");
+            exit;
+        }
+
+        if ($_SESSION['user_role'] !== 'buyer') {
+            $_SESSION['error'] = "Only buyers can use the cart.";
+            header("Location: /public/index.php?page=shop");
+            exit;
+        }
+    }
 }

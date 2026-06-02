@@ -1789,3 +1789,36 @@ footer {
         width: 100%;
     }
 }
+
+.pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 32px 0;
+    justify-content: center;
+}
+
+.pagination a {
+    display: inline-grid;
+    place-items: center;
+    min-width: 42px;
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 800;
+}
+
+.pagination a.active,
+.pagination a:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.checkout-layout {
+    max-width: 720px;
+}
