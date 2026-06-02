@@ -26,6 +26,9 @@
                 </p>
 
                 <form action="/public/index.php" method="POST" class="stack-form">
+
+                    <?php echo csrfField(); ?>
+
                     <input type="hidden" name="action" value="update-user">
                     <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($user['id']); ?>">
 

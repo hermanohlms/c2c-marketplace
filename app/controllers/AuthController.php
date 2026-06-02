@@ -16,10 +16,42 @@ class AuthController
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $role = $_POST['role'];
+            $name = trim($_POST['name'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $rawPassword = $_POST['password'] ?? '';
+
+            $role = $_POST['role'] ?? 'buyer';
+
+            $allowedRoles = ['buyer', 'seller'];
+
+            if (!in_array($role, $allowedRoles)) {
+                $role = 'buyer';
+            }
+
+            // Validation
+
+            if ($name === '' || $email === '' || $rawPassword === '') {
+                $_SESSION['error'] = "All fields are required.";
+                header("Location: /public/index.php?page=register");
+                exit;
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error'] = "Please enter a valid email address.";
+                header("Location: /public/index.php?page=register");
+                exit;
+            }
+
+            if (strlen($rawPassword) < 6) {
+                $_SESSION['error'] = "Password must be at least 6 characters long.";
+                header("Location: /public/index.php?page=register");
+                exit;
+            }
+
+            $password = password_hash(
+                $rawPassword,
+                PASSWORD_DEFAULT
+            );
 
             $userModel = new User($this->db);
 
@@ -31,9 +63,19 @@ class AuthController
             );
 
             if ($created) {
-                echo "User registered successfully!";
+
+                $_SESSION['success'] =
+                    "Account created successfully. Please login.";
+
+                header("Location: /public/index.php?page=login");
+                exit;
             } else {
-                echo "Registration failed.";
+
+                $_SESSION['error'] =
+                    "Registration failed. Email may already exist.";
+
+                header("Location: /public/index.php?page=register");
+                exit;
             }
         }
     }

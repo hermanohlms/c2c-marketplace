@@ -58,6 +58,9 @@
                 </div>
 
                 <form action="/public/index.php" method="POST" class="status-form">
+
+                    <?php echo csrfField(); ?>
+
                     <input type="hidden" name="action" value="update-order-status">
                     <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>">
 

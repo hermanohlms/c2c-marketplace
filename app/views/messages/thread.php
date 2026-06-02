@@ -46,6 +46,9 @@
     </div>
 
     <form action="/public/index.php" method="POST" class="chat-form">
+
+        <?php echo csrfField(); ?>
+
         <input type="hidden" name="action" value="send-message">
         <input type="hidden" name="conversation_id" value="<?php echo htmlspecialchars($conversation['id']); ?>">
 

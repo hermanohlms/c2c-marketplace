@@ -36,6 +36,8 @@
         <form
             action="/public/update-profile.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
+            <?php echo csrfField(); ?>
+
             <label>
                 Name
                 <input

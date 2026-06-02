@@ -49,6 +49,9 @@
                     </span>
 
                     <form action="/public/index.php" method="POST" class="inline-update-form">
+
+                        <?php echo csrfField(); ?>
+
                         <input type="hidden" name="action" value="update-product-status">
                         <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 

@@ -26,10 +26,23 @@ require_once __DIR__ . '/../app/models/Product.php';
 require_once __DIR__ . '/../app/models/Message.php';
 require_once __DIR__ . '/../app/helpers/data_helper.php';
 require_once __DIR__ . '/../app/helpers/email_helper.php';
+require_once __DIR__ . '/../app/helpers/csrf_helper.php';
 
 
 $action = $_POST['action'] ?? null;
 $page = $_GET['page'] ?? 'home';
+
+$csrfExemptActions = [
+    'cart-count',
+    'wishlist-count'
+];
+
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    !in_array($action, $csrfExemptActions)
+) {
+    validateCsrf();
+}
 
 
 $orderModel = new Order($conn);

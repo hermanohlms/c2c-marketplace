@@ -35,6 +35,9 @@
                 <br><br>
 
                 <form action="/public/index.php" method="POST">
+
+                    <?php echo csrfField(); ?>
+
                     <input type="hidden" name="action" value="remove-from-wishlist">
                     <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
 

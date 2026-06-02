@@ -61,6 +61,9 @@
         <div class="product-actions">
 
             <form action="/public/index.php" method="POST" class="ajax-add-to-cart">
+
+                <?php echo csrfField(); ?>
+
                 <input type="hidden" name="action" value="add-to-cart">
                 <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 
@@ -73,6 +76,9 @@
             ): ?>
 
                 <form action="/public/index.php" method="POST">
+
+                    <?php echo csrfField(); ?>
+
                     <input type="hidden" name="action" value="start-conversation">
                     <input type="hidden" name="seller_id" value="<?php echo htmlspecialchars($product['seller_id']); ?>">
                     <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
@@ -85,6 +91,9 @@
             <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'buyer'): ?>
 
                 <form action="/public/index.php" method="POST">
+
+                    <?php echo csrfField(); ?>
+
                     <input type="hidden" name="action" value="add-to-wishlist">
                     <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 
@@ -123,6 +132,9 @@
         <h3>Leave a Review</h3>
 
         <form action="/public/index.php" method="POST" class="review-form">
+
+            <?php echo csrfField(); ?>
+
             <input type="hidden" name="action" value="create-review">
             <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 

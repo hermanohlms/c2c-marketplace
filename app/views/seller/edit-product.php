@@ -21,6 +21,8 @@
 
     <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
+        <?php echo csrfField(); ?>
+
         <input type="hidden" name="action" value="update-product">
         <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 

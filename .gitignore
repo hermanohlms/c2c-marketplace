@@ -1,10 +1,8 @@
 # Environment files
 .env
-
-# Uploads
+/vendor
+node_modules/
 public/uploads/*
-
-# Keep uploads folder
 !public/uploads/.gitkeep
 
 # OS/editor files
@@ -14,10 +12,6 @@ Thumbs.db
 
 # Logs
 *.log
-
-# Dependencies if added later
-vendor/
-node_modules/
 
 # Docker volumes/backups
 *.sql

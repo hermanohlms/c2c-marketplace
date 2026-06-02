@@ -28,10 +28,49 @@ class ProductController
 
             $image = $_FILES['image']['name'];
 
-            move_uploaded_file(
-                $_FILES['image']['tmp_name'],
-                __DIR__ . '/../../public/uploads/' . $image
-            );
+            $image = null;
+
+            if (
+                isset($_FILES['image']) &&
+                $_FILES['image']['error'] === UPLOAD_ERR_OK
+            ) {
+                $allowedMimeTypes = [
+                    'image/jpeg' => 'jpg',
+                    'image/png' => 'png',
+                    'image/webp' => 'webp'
+                ];
+
+                $maxSize = 2 * 1024 * 1024; // 2MB
+
+                if ($_FILES['image']['size'] > $maxSize) {
+                    $_SESSION['error'] = "Image must be smaller than 2MB.";
+                    header("Location: /public/index.php?page=add-product");
+                    exit;
+                }
+
+                $mimeType = mime_content_type($_FILES['image']['tmp_name']);
+
+                if (!array_key_exists($mimeType, $allowedMimeTypes)) {
+                    $_SESSION['error'] = "Only JPG, PNG, and WEBP images are allowed.";
+                    header("Location: /public/index.php?page=add-product");
+                    exit;
+                }
+
+                $extension = $allowedMimeTypes[$mimeType];
+
+                $image = 'product_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
+
+                move_uploaded_file(
+                    $_FILES['image']['tmp_name'],
+                    __DIR__ . '/../../public/uploads/' . $image
+                );
+            }
+
+            if (!$image) {
+                $_SESSION['error'] = "Product image is required.";
+                header("Location: /public/index.php?page=add-product");
+                exit;
+            }
 
             $productModel = new Product($this->db);
 

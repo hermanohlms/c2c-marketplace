@@ -14,6 +14,8 @@
 
     <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
+        <?php echo csrfField(); ?>
+
         <input type="hidden" name="action" value="create-product">
 
         <label>

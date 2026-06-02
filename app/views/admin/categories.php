@@ -16,6 +16,9 @@
         <h2>Add Category</h2>
 
         <form action="/public/index.php" method="POST" class="stack-form">
+
+            <?php echo csrfField(); ?>
+
             <input type="hidden" name="action" value="create-category">
 
             <label>

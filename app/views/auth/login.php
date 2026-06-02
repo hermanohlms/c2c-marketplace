@@ -13,6 +13,8 @@
 
         <form action="/public/index.php" method="POST" class="auth-form">
 
+            <?php echo csrfField(); ?>
+
             <input type="hidden" name="action" value="login">
 
             <label>
