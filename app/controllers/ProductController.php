@@ -315,7 +315,29 @@ class ProductController
             isset($_FILES['image']) &&
             $_FILES['image']['error'] === UPLOAD_ERR_OK
         ) {
-            $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $allowedMimeTypes = [
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/webp' => 'webp'
+            ];
+
+            $maxSize = 2 * 1024 * 1024; // 2MB
+
+            if ($_FILES['image']['size'] > $maxSize) {
+                $_SESSION['error'] = "Product image must be smaller than 2MB.";
+                header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+                exit;
+            }
+
+            $mimeType = mime_content_type($_FILES['image']['tmp_name']);
+
+            if (!array_key_exists($mimeType, $allowedMimeTypes)) {
+                $_SESSION['error'] = "Only JPG, PNG, and WEBP images are allowed.";
+                header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+                exit;
+            }
+
+            $extension = $allowedMimeTypes[$mimeType];
 
             $image = 'product_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
 

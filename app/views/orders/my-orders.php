@@ -42,6 +42,19 @@
                     <strong>R<?php echo number_format($order['total_amount'], 2); ?></strong>
                 </div>
 
+                <?php if (!empty($order['tracking_number'])): ?>
+
+                    <div class="delivery-address-card">
+                        <h4>Tracking Information</h4>
+
+                        <p>
+                            <strong>Tracking Number:</strong>
+                            <?php echo htmlspecialchars($order['tracking_number']); ?>
+                        </p>
+                    </div>
+
+                <?php endif; ?>
+
                 <h4>Items</h4>
 
                 <div class="order-items-list">

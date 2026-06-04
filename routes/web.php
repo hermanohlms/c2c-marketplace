@@ -182,6 +182,9 @@ if ($action === 'register') {
 } elseif ($page === 'profile') {
 
     $profileController->show();
+} elseif ($action === 'update-profile') {
+
+    $profileController->update();
 } elseif ($page === 'seller') {
 
     $sellerStoreController->show();
@@ -203,9 +206,15 @@ if ($action === 'register') {
 } elseif ($page === 'admin-tickets') {
 
     $adminController->tickets();
-} elseif ($action === 'create-ticket') {
+} elseif ($action === 'request-payout') {
 
-    $supportController->create();
+    $orderController->requestPayout();
+} elseif ($page === 'admin-payouts') {
+
+    $adminController->payouts();
+} elseif ($action === 'update-payout') {
+
+    $adminController->updatePayout();
 } else {
 
     if ($page === 'login') {

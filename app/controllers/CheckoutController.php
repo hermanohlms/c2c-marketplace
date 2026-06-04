@@ -115,6 +115,32 @@ class CheckoutController
                 'order'
             );
 
+            $userStmt = $this->db->prepare("
+                SELECT email, name
+                FROM users
+                WHERE id = :id
+                LIMIT 1
+            ");
+
+            $userStmt->execute([
+                ':id' => $_SESSION['user_id']
+            ]);
+
+            $buyer = $userStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($buyer) {
+                sendEmail(
+                    $buyer['email'],
+                    "Order Received - #{$order_id}",
+                    "
+                        <h2>Order Received</h2>
+                        <p>Hello {$buyer['name']},</p>
+                        <p>Your order <strong>#{$order_id}</strong> has been received and is awaiting payment confirmation.</p>
+                        <p>Total: <strong>R" . number_format($total, 2) . "</strong></p>
+                    "
+                );
+            }
+
             header("Location: /public/index.php?page=payfast-start");
             exit;
         } catch (Exception $e) {

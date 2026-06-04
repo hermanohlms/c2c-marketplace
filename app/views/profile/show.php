@@ -33,10 +33,11 @@
 
         <h2>Edit Profile</h2>
 
-        <form
-            action="/public/update-profile.php" method="POST" enctype="multipart/form-data" class="stack-form">
+        <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
             <?php echo csrfField(); ?>
+
+            <input type="hidden" name="action" value="update-profile">
 
             <label>
                 Name

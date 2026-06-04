@@ -28,6 +28,12 @@
         <span>Manage Users →</span>
     </a>
 
+    <a href="/public/index.php?page=admin-payouts" class="admin-dashboard-card card">
+        <h3>Payout Requests</h3>
+        <p>Review and approve seller payout requests.</p>
+        <span>Manage payouts →</span>
+    </a>
+
 </section>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

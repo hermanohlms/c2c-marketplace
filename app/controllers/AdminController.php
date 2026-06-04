@@ -4,6 +4,7 @@ require_once __DIR__ . '/../models/Category.php';
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/Notification.php';
+require_once __DIR__ . '/../models/Escrow.php';
 
 class AdminController
 {
@@ -398,5 +399,72 @@ class AdminController
         $tickets = $stmt->fetchAll();
 
         require_once __DIR__ . '/../views/admin/tickets.php';
+    }
+
+    public function payouts()
+    {
+        $this->requireAdmin();
+
+        $escrowModel = new Escrow($this->db);
+        $payouts = $escrowModel->getPayoutRequests();
+
+        require_once __DIR__ . '/../views/admin/payouts.php';
+    }
+
+    public function updatePayout()
+    {
+        $this->requireAdmin();
+
+        $payout_id = $_POST['payout_id'] ?? null;
+        $decision = $_POST['decision'] ?? null;
+
+        if (!$payout_id || !in_array($decision, ['approve', 'reject'])) {
+            $_SESSION['error'] = "Invalid payout update.";
+            header("Location: /public/index.php?page=admin-payouts");
+            exit;
+        }
+
+        $escrowModel = new Escrow($this->db);
+
+        if ($decision === 'approve') {
+            $updated = $escrowModel->approvePayout($payout_id);
+
+
+            if ($updated && $decision === 'approve') {
+                $stmt = $this->db->prepare("
+                    SELECT users.email, users.name, seller_payouts.amount
+                    FROM seller_payouts
+                    INNER JOIN users ON seller_payouts.seller_id = users.id
+                    WHERE seller_payouts.id = :payout_id
+                    LIMIT 1
+                ");
+
+                $stmt->execute([
+                    ':payout_id' => $payout_id
+                ]);
+
+                $seller = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($seller) {
+                    sendEmail(
+                        $seller['email'],
+                        "Payout Approved",
+                        "
+                            <h2>Payout Approved</h2>
+                            <p>Hello {$seller['name']},</p>
+                            <p>Your payout request of <strong>R" . number_format($seller['amount'], 2) . "</strong> has been approved.</p>
+                        "
+                    );
+                }
+            }
+        } else {
+            $updated = $escrowModel->rejectPayout($payout_id);
+        }
+
+        $_SESSION[$updated ? 'success' : 'error'] =
+            $updated ? "Payout updated." : "Could not update payout.";
+
+        header("Location: /public/index.php?page=admin-payouts");
+        exit;
     }
 }

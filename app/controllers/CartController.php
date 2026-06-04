@@ -14,6 +14,9 @@ class CartController
 
     public function add()
     {
+
+        $this->requireBuyer();
+
         $product_id = $_POST['product_id'] ?? null;
 
         if (!$product_id) {
@@ -85,6 +88,9 @@ class CartController
 
     public function remove()
     {
+
+        $this->requireBuyer();
+
         $product_id = $_POST['product_id'] ?? null;
 
         if ($product_id && isset($_SESSION['cart'][$product_id])) {
@@ -97,11 +103,17 @@ class CartController
 
     public function view()
     {
+
+        $this->requireBuyer();
+
         require_once __DIR__ . '/../views/cart/index.php';
     }
 
     public function update()
     {
+
+        $this->requireBuyer();
+
         $quantities = $_POST['quantities'] ?? [];
 
         $productModel = new Product($this->db);

@@ -24,6 +24,7 @@ require_once __DIR__ . '/../app/models/Notification.php';
 require_once __DIR__ . '/../app/models/Order.php';
 require_once __DIR__ . '/../app/models/Product.php';
 require_once __DIR__ . '/../app/models/Message.php';
+require_once __DIR__ . '/../app/models/Escrow.php';
 require_once __DIR__ . '/../app/helpers/data_helper.php';
 require_once __DIR__ . '/../app/helpers/email_helper.php';
 require_once __DIR__ . '/../app/helpers/csrf_helper.php';
@@ -56,7 +57,8 @@ $supportController = new SupportController($conn);
 $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
-
+$escrowModel = new Escrow($conn);
+$escrowModel->releaseExpiredShippedOrders(14);
 $messageController = new MessageController($conn);
 $notificationController = new NotificationController($conn);
 $sellerStoreController = new SellerStoreController($conn);

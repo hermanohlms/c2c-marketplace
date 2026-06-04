@@ -1939,3 +1939,50 @@
             font-size: 1.7rem;
         }
     }
+
+    .payout-request-card {
+        max-width: 700px;
+        margin-bottom: 32px;
+    }
+
+    .payout-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+    }
+
+    .payout-actions button {
+        width: auto;
+        min-width: 120px;
+    }
+
+    @media (max-width: 700px) {
+        .payout-actions {
+            flex-direction: column;
+        }
+
+        .payout-actions button {
+            width: 100%;
+        }
+    }
+
+    .monthly-breakdown-card {
+        margin: 24px 0 32px;
+    }
+
+    .monthly-breakdown-list {
+        display: grid;
+        gap: 12px;
+    }
+
+    .monthly-breakdown-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .monthly-breakdown-row:last-child {
+        border-bottom: none;
+    }

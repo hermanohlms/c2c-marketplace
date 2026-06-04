@@ -54,8 +54,6 @@
                         </p>
                     </div>
 
-
-
                 </div>
 
                 <div class="delivery-address-card">
@@ -99,6 +97,16 @@
                 <form action="/public/index.php" method="POST" class="status-form">
 
                     <?php echo csrfField(); ?>
+
+                    <label>
+                        Tracking Number
+                        <input
+                            type="text"
+                            name="tracking_number"
+                            value="<?php echo htmlspecialchars($order['tracking_number'] ?? ''); ?>"
+                            placeholder="Courier tracking number">
+                    </label>
+
 
                     <input type="hidden" name="action" value="update-order-status">
                     <input type="hidden" name="order_id" value="<?php echo htmlspecialchars($order['order_id']); ?>">

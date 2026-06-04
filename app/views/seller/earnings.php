@@ -32,6 +32,81 @@
 
 </section>
 
+</section>
+
+<?php if ($summary['available_balance'] > 0): ?>
+
+    <section class="card payout-request-card">
+
+        <h2>Request Payout</h2>
+
+        <p>
+            Available balance:
+            <strong>
+                R<?php echo number_format($summary['available_balance'], 2); ?>
+            </strong>
+        </p>
+
+        <form action="/public/index.php" method="POST" class="stack-form">
+
+            <?php echo csrfField(); ?>
+
+            <input type="hidden" name="action" value="request-payout">
+
+            <label>
+                Amount
+                <br>
+                <input
+                    type="number"
+                    name="amount"
+                    step="0.01"
+                    min="1"
+                    max="<?php echo htmlspecialchars($summary['available_balance']); ?>"
+                    value="<?php echo htmlspecialchars($summary['available_balance']); ?>"
+                    required>
+            </label>
+
+            <button type="submit">
+                Request Payout
+            </button>
+
+        </form>
+
+    </section>
+
+<?php endif; ?>
+
+<section class="analytics-grid">
+
+    <div class="analytics-card">
+        <span>This Month</span>
+        <strong>R<?php echo number_format($monthlySummary['this_month'], 2); ?></strong>
+    </div>
+
+    <div class="analytics-card">
+        <span>Last Month</span>
+        <strong>R<?php echo number_format($monthlySummary['last_month'], 2); ?></strong>
+    </div>
+
+</section>
+
+<?php if (!empty($monthlyBreakdown)): ?>
+
+    <section class="card monthly-breakdown-card">
+        <h2>Monthly Earnings</h2>
+
+        <div class="monthly-breakdown-list">
+            <?php foreach ($monthlyBreakdown as $month): ?>
+                <div class="monthly-breakdown-row">
+                    <span><?php echo htmlspecialchars($month['month']); ?></span>
+                    <strong>R<?php echo number_format($month['total'], 2); ?></strong>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+
+<?php endif; ?>
+
 <div class="page-header">
     <div>
         <h2>Transaction History</h2>

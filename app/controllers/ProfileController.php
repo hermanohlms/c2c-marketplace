@@ -4,15 +4,12 @@ require_once __DIR__ . '/../models/User.php';
 
 class ProfileController
 {
-
     private $db;
 
     public function __construct($db)
     {
         $this->db = $db;
     }
-
-
 
     private function requireLogin()
     {
@@ -22,8 +19,6 @@ class ProfileController
             exit;
         }
     }
-
-
 
     public function show()
     {
@@ -54,9 +49,32 @@ class ProfileController
             isset($_FILES['profile_image']) &&
             $_FILES['profile_image']['error'] === UPLOAD_ERR_OK
         ) {
-            $extension = pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION);
+            $allowedMimeTypes = [
+                'image/jpeg' => 'jpg',
+                'image/png' => 'png',
+                'image/webp' => 'webp'
+            ];
 
-            $profileImage = 'profile_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
+            $maxSize = 2 * 1024 * 1024;
+
+            if ($_FILES['profile_image']['size'] > $maxSize) {
+                $_SESSION['error'] = "Profile image must be smaller than 2MB.";
+                header("Location: /public/index.php?page=profile");
+                exit;
+            }
+
+            $mimeType = mime_content_type($_FILES['profile_image']['tmp_name']);
+
+            if (!array_key_exists($mimeType, $allowedMimeTypes)) {
+                $_SESSION['error'] = "Only JPG, PNG, and WEBP profile images are allowed.";
+                header("Location: /public/index.php?page=profile");
+                exit;
+            }
+
+            $extension = $allowedMimeTypes[$mimeType];
+
+            $profileImage =
+                'profile_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
 
             move_uploaded_file(
                 $_FILES['profile_image']['tmp_name'],

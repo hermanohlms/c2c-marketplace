@@ -172,7 +172,7 @@ class Order
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function updateStatusForSeller($order_id, $seller_id, $status)
+    public function updateStatusForSeller($order_id, $seller_id, $status, $tracking_number = null)
     {
         $allowedStatuses = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
 
@@ -180,49 +180,68 @@ class Order
             return false;
         }
 
-        $sql = "
-        UPDATE orders
-        SET status = :status
-        WHERE id = :order_id
-        AND id IN (
-            SELECT order_items.order_id
-            FROM order_items
-            INNER JOIN products ON order_items.product_id = products.id
-            WHERE products.seller_id = :seller_id
-        )
-    ";
+        $tracking_number = trim($tracking_number ?? '');
+
+        if ($tracking_number !== '') {
+            $sql = "
+            UPDATE orders
+            SET status = :status,
+                tracking_number = :tracking_number,
+                shipped_at = CASE
+                    WHEN :status_for_shipped = 'shipped'
+                    THEN CURRENT_TIMESTAMP
+                    ELSE shipped_at
+                END
+            WHERE id = :order_id
+            AND EXISTS (
+                SELECT 1
+                FROM order_items
+                INNER JOIN products
+                    ON order_items.product_id = products.id
+                WHERE order_items.order_id = orders.id
+                AND products.seller_id = :seller_id
+            )
+        ";
+
+            $params = [
+                ':status' => $status,
+                ':status_for_shipped' => $status,
+                ':tracking_number' => $tracking_number,
+                ':order_id' => $order_id,
+                ':seller_id' => $seller_id
+            ];
+        } else {
+            $sql = "
+            UPDATE orders
+            SET status = :status,
+                shipped_at = CASE
+                    WHEN :status_for_shipped = 'shipped'
+                    THEN CURRENT_TIMESTAMP
+                    ELSE shipped_at
+                END
+            WHERE id = :order_id
+            AND EXISTS (
+                SELECT 1
+                FROM order_items
+                INNER JOIN products
+                    ON order_items.product_id = products.id
+                WHERE order_items.order_id = orders.id
+                AND products.seller_id = :seller_id
+            )
+        ";
+
+            $params = [
+                ':status' => $status,
+                ':status_for_shipped' => $status,
+                ':order_id' => $order_id,
+                ':seller_id' => $seller_id
+            ];
+        }
 
         $stmt = $this->conn->prepare($sql);
-
-        $stmt->execute([
-            ':status' => $status,
-            ':order_id' => $order_id,
-            ':seller_id' => $seller_id
-        ]);
+        $stmt->execute($params);
 
         return $stmt->rowCount() > 0;
-    }
-
-    public function getSellerAnalytics($seller_id)
-    {
-        $sql = "
-        SELECT
-            COALESCE(SUM(order_items.quantity * order_items.price), 0) AS total_revenue,
-            COUNT(DISTINCT orders.id) AS total_orders,
-            COALESCE(SUM(order_items.quantity), 0) AS total_items_sold
-        FROM order_items
-        INNER JOIN orders ON order_items.order_id = orders.id
-        INNER JOIN products ON order_items.product_id = products.id
-        WHERE products.seller_id = :seller_id
-    ";
-
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->execute([
-            ':seller_id' => $seller_id
-        ]);
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getTopSellingProducts($seller_id)
@@ -436,5 +455,57 @@ class Order
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateStatusAndTracking($order_id, $status, $tracking_number = null)
+    {
+        $sql = "
+        UPDATE orders
+        SET status = :status,
+            tracking_number = CASE
+                WHEN :tracking_number IS NOT NULL AND :tracking_number != ''
+                THEN :tracking_number
+                ELSE tracking_number
+            END,
+            shipped_at = CASE
+                WHEN :status = 'shipped' THEN CURRENT_TIMESTAMP
+                ELSE shipped_at
+            END
+        WHERE id = :id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':status' => $status,
+            ':tracking_number' => $tracking_number,
+            ':id' => $order_id
+        ]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    public function getSellerAnalytics($seller_id)
+    {
+        $sql = "
+        SELECT
+            COALESCE(SUM(order_items.quantity * order_items.price), 0) AS total_revenue,
+            COUNT(DISTINCT orders.id) AS total_orders,
+            COALESCE(SUM(order_items.quantity), 0) AS total_items_sold
+        FROM order_items
+        INNER JOIN orders
+            ON order_items.order_id = orders.id
+        INNER JOIN products
+            ON order_items.product_id = products.id
+        WHERE products.seller_id = :seller_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
