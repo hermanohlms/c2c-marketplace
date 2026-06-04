@@ -27,7 +27,9 @@
         <p class="product-seller">
             Sold by
             <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
-                <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
+                <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
+                    <?php echo htmlspecialchars($product['seller_name']); ?>
+                </a>
             </a>
         </p>
 

@@ -157,7 +157,7 @@ class User
     public function findSellerById($id)
     {
         $sql = "
-        SELECT id, name, email, phone, profile_image, created_at
+        SELECT id, name, email, phone, profile_image, created_at, store_description
         FROM users
         WHERE id = :id
         AND role = 'seller'
@@ -171,5 +171,22 @@ class User
         ]);
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateStoreDescription($user_id, $store_description)
+    {
+        $stmt = $this->conn->prepare("
+        UPDATE users
+        SET store_description = :store_description
+        WHERE id = :id
+        AND role = 'seller'
+    ");
+
+        $stmt->execute([
+            ':store_description' => $store_description,
+            ':id' => $user_id
+        ]);
+
+        return $stmt->rowCount() > 0;
     }
 }

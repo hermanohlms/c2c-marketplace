@@ -513,4 +513,23 @@ class Product
 
         return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
     }
+
+    public function getSellerRating($seller_id)
+    {
+        $sql = "
+        SELECT COALESCE(AVG(reviews.rating), 0) AS average_rating
+        FROM reviews
+        INNER JOIN products
+            ON reviews.product_id = products.id
+        WHERE products.seller_id = :seller_id
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['average_rating'];
+    }
 }

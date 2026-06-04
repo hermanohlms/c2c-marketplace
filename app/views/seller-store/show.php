@@ -19,22 +19,71 @@
         <div>
             <h1><?php echo htmlspecialchars($seller['name']); ?></h1>
 
-            <p class="muted">
-                Seller since <?php echo htmlspecialchars(date('F Y', strtotime($seller['created_at']))); ?>
-            </p>
+            <div class="seller-store-stats">
 
-            <?php if (!empty($seller['phone'])): ?>
-                <p class="muted">Contact: <?php echo htmlspecialchars($seller['phone']); ?></p>
+                <span>
+                    <?php echo count($products); ?> Products listed
+                </span>
+                <br>
+                <span>
+                    <?php echo htmlspecialchars($sales ?? 0); ?> Sales made
+                </span>
+                <br>
+                <span>
+                    <?php echo number_format($rating ?? 0, 1); ?>/5 star rating
+                </span>
+
+            </div>
+
+            <?php if (!empty($seller['store_description'])): ?>
+                <p class="seller-store-description">
+                    <?php echo nl2br(htmlspecialchars($seller['store_description'])); ?>
+                </p>
             <?php endif; ?>
+
+            <?php if (
+                isset($_SESSION['user_id']) &&
+                $_SESSION['user_role'] === 'seller' &&
+                $_SESSION['user_id'] == $seller['id']
+            ): ?>
+
+                <form action="/public/index.php" method="POST" class="stack-form store-description-form">
+                    <?php echo csrfField(); ?>
+
+                    <input type="hidden" name="action" value="update-store-description">
+
+                    <label>
+                        Store Description
+                        <textarea
+                            name="store_description"
+                            rows="5"
+                            placeholder="Tell buyers about your store..."><?php echo htmlspecialchars($seller['store_description'] ?? ''); ?></textarea>
+                    </label>
+
+                    <button type="submit">Update Store Description</button>
+                </form>
+
+            <?php endif; ?>
+
+            <div class="seller-store-meta">
+                <span>Seller since <?php echo htmlspecialchars(date('F Y', strtotime($seller['created_at']))); ?></span>
+
+                <?php if (!empty($seller['phone'])): ?>
+                    <span>Contact: <?php echo htmlspecialchars($seller['phone']); ?></span>
+                <?php endif; ?>
+            </div>
         </div>
 
     </div>
 
 </section>
 
-<div class="page-header">
+<div class="page-header seller-products-header">
     <div>
-        <h2>Products by <?php echo htmlspecialchars($seller['name']); ?></h2>
+        <h2>
+            Products by <?php echo htmlspecialchars($seller['name']); ?>
+            (<?php echo count($products); ?>)
+        </h2>
         <p>Browse this seller’s active listings.</p>
     </div>
 

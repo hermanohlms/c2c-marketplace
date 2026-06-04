@@ -43,6 +43,9 @@
             <a class="btn btn-secondary" href="/public/index.php?page=my-products">My Products</a>
             <a class="btn btn-secondary" href="/public/index.php?page=seller-orders">Incoming Orders</a>
             <a class="btn btn-secondary" href="/public/index.php?page=add-product">Add Product</a>
+            <a class="btn btn-secondary" href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
+                View My Store
+            </a>
         </div>
     </div>
 

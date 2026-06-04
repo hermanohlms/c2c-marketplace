@@ -112,7 +112,7 @@
                     </select>
 
                     <button type="submit">
-                        <?php echo $product['status'] === 'active' ? 'Remove from Shop' : 'Reactivate'; ?>
+                        <?php echo $product['status'] === 'active' ? 'Deactivate' : 'Reactivate'; ?>
                     </button>
                 </form>
 

@@ -100,6 +100,7 @@
 
                     <label>
                         Tracking Number
+                        <br><br>
                         <input
                             type="text"
                             name="tracking_number"
@@ -113,6 +114,7 @@
 
                     <label>
                         Update Status
+                        <br><br>
                         <select name="status" required>
                             <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
                             <option value="paid" <?php echo $order['status'] === 'paid' ? 'selected' : ''; ?>>Paid</option>

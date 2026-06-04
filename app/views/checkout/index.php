@@ -22,41 +22,49 @@
 
         <label>
             Full Name
+            <br>
             <input type="text" name="delivery_name" required>
         </label>
 
         <label>
             Phone Number
+            <br>
             <input type="text" name="delivery_phone" required>
         </label>
 
         <label>
             Address Line 1
+            <br>
             <input type="text" name="address_line1" required>
         </label>
 
         <label>
             Address Line 2
+            <br>
             <input type="text" name="address_line2">
         </label>
 
         <label>
             City
+            <br>
             <input type="text" name="city" required>
         </label>
 
         <label>
             Province
+            <br>
             <input type="text" name="province" required>
         </label>
 
         <label>
             Postal Code
+            <br>
             <input type="text" name="postal_code" required>
         </label>
 
         <label>
             Shipping Notes
+            <br>
             <textarea name="shipping_notes" placeholder="Optional delivery notes"></textarea>
         </label>
 

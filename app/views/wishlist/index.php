@@ -31,27 +31,53 @@
                         alt="<?php echo htmlspecialchars($item['name']); ?>">
                 <?php endif; ?>
 
-                <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+                <p class="wishlist-category">
+                    <?php echo htmlspecialchars($item['category_name'] ?? 'No category'); ?>
+                </p>
 
-                <p><?php echo htmlspecialchars($item['category_name'] ?? 'No category'); ?></p>
+                <h3 class="wishlist-title">
+                    <?php echo htmlspecialchars($item['name']); ?>
+                </h3>
 
-                <p><strong>R<?php echo number_format($item['price'], 2); ?></strong></p>
+                <p class="wishlist-price">
+                    R<?php echo number_format($item['price'], 2); ?>
+                </p>
 
-                <a href="/public/index.php?page=product&id=<?php echo htmlspecialchars($item['product_id']); ?>">
-                    View Product
-                </a>
+                <div class="wishlist-actions">
 
-                <br><br>
+                    <form action="/public/index.php" method="GET">
+                        <input type="hidden" name="page" value="product">
+                        <input type="hidden" name="id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
 
-                <form action="/public/index.php" method="POST">
+                        <button type="submit">
+                            View Product
+                        </button>
+                    </form>
 
-                    <?php echo csrfField(); ?>
+                    <form action="/public/index.php" method="POST">
+                        <?php echo csrfField(); ?>
 
-                    <input type="hidden" name="action" value="remove-from-wishlist">
-                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
+                        <input type="hidden" name="action" value="add-to-cart">
+                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
+                        <input type="hidden" name="quantity" value="1">
 
-                    <button type="submit">Remove</button>
-                </form>
+                        <button type="submit">
+                            Add to Cart
+                        </button>
+                    </form>
+
+                    <form action="/public/index.php" method="POST">
+                        <?php echo csrfField(); ?>
+
+                        <input type="hidden" name="action" value="remove-from-wishlist">
+                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
+
+                        <button type="submit" class="btn-secondary">
+                            Remove
+                        </button>
+                    </form>
+
+                </div>
 
             </div>
 

@@ -508,4 +508,26 @@ class Order
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function getSellerSalesCount($seller_id)
+    {
+        $sql = "
+        SELECT COALESCE(SUM(order_items.quantity), 0) AS total_sales
+        FROM order_items
+        INNER JOIN products
+            ON order_items.product_id = products.id
+        INNER JOIN orders
+            ON order_items.order_id = orders.id
+        WHERE products.seller_id = :seller_id
+        AND orders.status IN ('paid', 'shipped', 'delivered')
+    ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':seller_id' => $seller_id
+        ]);
+
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total_sales'];
+    }
 }

@@ -65,6 +65,9 @@ if ($action === 'register') {
 } elseif ($action === 'update-product') {
 
     $productController->update();
+} elseif ($action === 'update-store-description') {
+
+    $sellerStoreController->updateDescription();
 } elseif ($page === 'messages') {
 
     $messageController->inbox();
