@@ -27,7 +27,7 @@ A PHP, PostgreSQL, and Docker-based e-commerce marketplace with buyer, seller, a
 - PostgreSQL
 - Docker
 - HTML/CSS/JavaScript
-- MVC-style structure
+
 
 ## Setup
 
