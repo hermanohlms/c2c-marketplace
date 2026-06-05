@@ -10,6 +10,107 @@
         --radius: 14px;
     }
 
+    body[data-theme="dark"] {
+        --primary: #7dd3fc;
+        --primary-dark: #38bdf8;
+        --dark: #ffffff;
+        --text: #ffffff;
+        --muted: #ffffff;
+        --light: #d1d5db;
+        --bg: #d1d5db;
+        --border: #374151;
+        background: #202122;
+        color: #ffffff;
+    }
+
+    /* black surfaces */
+    body[data-theme="dark"] .card,
+    body[data-theme="dark"] .product-card,
+    body[data-theme="dark"] .order-card,
+    body[data-theme="dark"] .category-card,
+    body[data-theme="dark"] .analytics-card,
+    body[data-theme="dark"] .site-header,
+    body[data-theme="dark"] .site-nav,
+    body[data-theme="dark"] .profile-dropdown,
+    body[data-theme="dark"] footer,
+    body[data-theme="dark"] form {
+        background: #000000 !important;
+    }
+
+    body[data-theme="dark"] div {
+        border-color: #374151;
+    }
+
+    body[data-theme="dark"] .filter-form {
+        background: transparent !important;
+        border: transparent !important;
+    }
+
+    body[data-theme="dark"] .admin-search-form {
+        background: transparent !important;
+        border: transparent !important;
+    }
+
+    /* all text white */
+    body[data-theme="dark"] h1,
+    body[data-theme="dark"] h2,
+    body[data-theme="dark"] h3,
+    body[data-theme="dark"] h4,
+    body[data-theme="dark"] p,
+    body[data-theme="dark"] span,
+    body[data-theme="dark"] label,
+    body[data-theme="dark"] strong,
+    body[data-theme="dark"] small,
+    body[data-theme="dark"] a,
+    body[data-theme="dark"] .muted,
+    body[data-theme="dark"] .product-category,
+    body[data-theme="dark"] .product-title,
+    body[data-theme="dark"] .product-price {
+        color: #ffffff;
+    }
+
+    body[data-theme="dark"] .status-pill {
+        background: #7dd3fc;
+        color: #000000;
+        border: none;
+        font-weight: 700;
+    }
+
+    body[data-theme="dark"] input,
+    body[data-theme="dark"] select,
+    body[data-theme="dark"] textarea {
+        background: #111111;
+        color: #ffffff;
+        border-color: #4b5563;
+    }
+
+    body[data-theme="dark"] input::placeholder,
+    body[data-theme="dark"] textarea::placeholder {
+        color: #d1d5db;
+    }
+
+    body[data-theme="dark"] button,
+    body[data-theme="dark"] .btn {
+        background: #4185a4;
+        color: #020617;
+        border-color: #7dd3fc;
+    }
+
+    body[data-theme="dark"] button:hover,
+    body[data-theme="dark"] .btn:hover {
+        background: #4185a4;
+    }
+
+    body[data-theme="dark"] .btn-secondary {
+        background: #3e5e74;
+        color: #ffffff;
+        border-color: #7dd3fc;
+    }
+
+    body[data-theme="dark"] .btn-secondary:hover {
+        background: #1f2937;
+    }
+
     * {
         box-sizing: border-box;
     }

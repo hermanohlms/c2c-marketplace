@@ -143,6 +143,9 @@
 
                         <a href="/public/index.php?page=profile">My Profile</a>
                         <a href="/public/index.php?page=logout">Logout</a>
+                        <button type="button" id="theme-toggle" class="profile-theme-toggle">
+                            🌙 Dark Mode
+                        </button>
 
                     </div>
 
