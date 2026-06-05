@@ -175,7 +175,3 @@
     <?php endif; ?>
 
     <main class="container">
-
-
-
-</body>
