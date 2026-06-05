@@ -104,7 +104,7 @@ class CheckoutController
 
             $_SESSION['last_order_id'] = $order_id;
 
-            $_SESSION['success'] = "Order placed successfully.";
+            $_SESSION['success'] = "Order created. Please complete payment.";
 
             $notificationModel = new Notification($this->db);
 

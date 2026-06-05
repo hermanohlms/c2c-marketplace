@@ -14,7 +14,9 @@ return [
     'sandbox_url' => 'https://sandbox.payfast.co.za/eng/process',
     'live_url' => 'https://www.payfast.co.za/eng/process',
 
-    'return_url' => 'http://localhost:8080/index.php?page=payment-success',
-    'cancel_url' => 'http://localhost:8080/index.php?page=payment-cancelled',
-    'notify_url' => 'https://YOUR-NGROK-URL.ngrok-free.app/index.php?page=payfast-itn'
+    'app_url' => rtrim(getenv('APP_URL'), '/'),
+
+    'return_url' => rtrim(getenv('APP_URL'), '/') . '/index.php?page=payment-success',
+    'cancel_url' => rtrim(getenv('APP_URL'), '/') . '/index.php?page=payment-cancelled',
+    'notify_url' => rtrim(getenv('APP_URL'), '/') . '/index.php?page=payfast-itn'
 ];

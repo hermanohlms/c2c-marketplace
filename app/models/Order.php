@@ -332,7 +332,7 @@ class Order
         SELECT COUNT(*) AS total
         FROM orders
         WHERE buyer_id = :buyer_id
-        AND status != 'pending'
+        AND status IN ('paid', 'shipped', 'delivered')
     ";
 
         $stmt = $this->conn->prepare($sql);
@@ -351,6 +351,7 @@ class Order
         INNER JOIN products
             ON order_items.product_id = products.id
         WHERE products.seller_id = :seller_id
+        AND orders.status IN ('paid', 'shipped', 'delivered')
     ";
 
         $stmt = $this->conn->prepare($sql);
@@ -368,7 +369,7 @@ class Order
         SELECT *
         FROM orders
         WHERE buyer_id = :buyer_id
-        AND status != 'pending'
+        AND status IN ('paid', 'shipped', 'delivered')
         ORDER BY created_at DESC
         LIMIT :limit OFFSET :offset
     ";
@@ -441,6 +442,7 @@ class Order
             ON order_items.product_id = products.id
 
         WHERE products.seller_id = :seller_id
+        AND orders.status IN ('paid', 'shipped', 'delivered')
 
         ORDER BY orders.created_at DESC
         LIMIT :limit OFFSET :offset

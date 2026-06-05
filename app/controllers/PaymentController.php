@@ -62,14 +62,32 @@ class PaymentController
 
     public function success()
     {
+        unset($_SESSION['last_order_id']);
+
         $_SESSION['success'] = "Payment submitted. We are waiting for PayFast confirmation.";
         require_once __DIR__ . '/../views/payments/success.php';
     }
 
     public function cancelled()
     {
-        $_SESSION['error'] = "Payment was cancelled.";
-        header("Location: /index.php?page=my-orders");
+        if (!empty($_SESSION['last_order_id'])) {
+            $stmt = $this->db->prepare("
+            UPDATE orders
+            SET status = 'cancelled'
+            WHERE id = :id
+            AND status = 'pending'
+        ");
+
+            $stmt->execute([
+                ':id' => $_SESSION['last_order_id']
+            ]);
+
+            unset($_SESSION['last_order_id']);
+        }
+
+        $_SESSION['error'] = "Payment was cancelled. Your order was not completed.";
+
+        header("Location: /index.php?page=cart");
         exit;
     }
 
