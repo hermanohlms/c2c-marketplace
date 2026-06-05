@@ -62,7 +62,7 @@ class ProductController
 
                 move_uploaded_file(
                     $_FILES['image']['tmp_name'],
-                    __DIR__ . '/../../uploads/' . $image
+                    __DIR__ . '/../../public/uploads/' . $image
                 );
             }
 
@@ -343,7 +343,7 @@ class ProductController
 
             move_uploaded_file(
                 $_FILES['image']['tmp_name'],
-                __DIR__ . '/../../uploads/' . $image
+                __DIR__ . '/../../public/uploads/' . $image
             );
         }
 

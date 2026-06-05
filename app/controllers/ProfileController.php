@@ -78,7 +78,7 @@ class ProfileController
 
             move_uploaded_file(
                 $_FILES['profile_image']['tmp_name'],
-                __DIR__ . '/../../uploads/' . $profileImage
+                __DIR__ . '/../../public/uploads/' . $profileImage
             );
         }
 
