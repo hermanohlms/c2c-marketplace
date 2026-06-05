@@ -7,12 +7,12 @@
         <p>Create a new listing for buyers to discover.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=dashboard">Back to dashboard</a>
+    <a class="btn btn-secondary" href="/index.php?page=dashboard">Back to dashboard</a>
 </div>
 
 <section class="form-page card">
 
-    <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
+    <form action="/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
         <?php echo csrfField(); ?>
 

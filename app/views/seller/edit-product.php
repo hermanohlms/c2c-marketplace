@@ -7,19 +7,19 @@
         <p>Update your product details, image, stock, and status.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=my-products">Back to My Products</a>
+    <a class="btn btn-secondary" href="/index.php?page=my-products">Back to My Products</a>
 </div>
 
 <section class="form-page card">
 
     <?php if (!empty($product['image'])): ?>
         <img
-            src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+            src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
             alt="<?php echo htmlspecialchars($product['name']); ?>"
             style="max-width: 240px; border-radius: 14px; margin-bottom: 20px;">
     <?php endif; ?>
 
-    <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
+    <form action="/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
         <?php echo csrfField(); ?>
 

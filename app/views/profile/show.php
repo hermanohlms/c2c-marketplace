@@ -14,7 +14,7 @@
 
         <?php if (!empty($user['profile_image'])): ?>
             <img
-                src="/public/uploads/<?php echo htmlspecialchars($user['profile_image']); ?>"
+                src="/uploads/<?php echo htmlspecialchars($user['profile_image']); ?>"
                 alt="<?php echo htmlspecialchars($user['name']); ?>"
                 class="profile-large-image">
         <?php else: ?>
@@ -33,7 +33,7 @@
 
         <h2>Edit Profile</h2>
 
-        <form action="/public/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
+        <form action="/index.php" method="POST" enctype="multipart/form-data" class="stack-form">
 
             <?php echo csrfField(); ?>
 

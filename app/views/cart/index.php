@@ -13,14 +13,14 @@ $total = 0;
     <div class="card empty-cart">
         <h2>Your cart is empty</h2>
         <p>Start browsing products and add something you like.</p>
-        <a class="btn" href="/public/index.php?page=shop">Continue Shopping</a>
+        <a class="btn" href="/index.php?page=shop">Continue Shopping</a>
     </div>
 
 <?php else: ?>
 
     <section class="cart-page">
 
-        <form action="/public/index.php" method="POST" class="cart-items-form">
+        <form action="/index.php" method="POST" class="cart-items-form">
             <input type="hidden" name="action" value="update-cart">
 
             <?php echo csrfField(); ?>
@@ -38,7 +38,7 @@ $total = 0;
 
                         <?php if (!empty($item['image'])): ?>
                             <img
-                                src="/public/uploads/<?php echo htmlspecialchars($item['image']); ?>"
+                                src="/uploads/<?php echo htmlspecialchars($item['image']); ?>"
                                 alt="<?php echo htmlspecialchars($item['name']); ?>"
                                 class="cart-item-image">
                         <?php endif; ?>
@@ -96,11 +96,11 @@ $total = 0;
                 <strong>R<?php echo number_format($total, 2); ?></strong>
             </div>
 
-            <a href="/public/index.php?page=checkout" class="btn checkout-btn">
+            <a href="/index.php?page=checkout" class="btn checkout-btn">
                 Proceed to Checkout
             </a>
 
-            <a class="continue-link" href="/public/index.php?page=shop">
+            <a class="continue-link" href="/index.php?page=shop">
                 Continue Shopping
             </a>
         </aside>

@@ -5,7 +5,7 @@
     <title><?php echo $title ?? 'E-Commerce'; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
 
 </head>
 
@@ -14,7 +14,7 @@
 
     <header class="site-header">
 
-        <a class="site-logo" href="/public/index.php?page=home">
+        <a class="site-logo" href="/index.php?page=home">
             One-Stop-Shop
         </a>
 
@@ -24,28 +24,28 @@
 
         <nav class="site-nav" id="site-nav">
 
-            <a href="/public/index.php?page=home">Home</a>
-            <a href="/public/index.php?page=shop">Shop</a>
+            <a href="/index.php?page=home">Home</a>
+            <a href="/index.php?page=shop">Shop</a>
 
 
             <?php if (!isset($_SESSION['user_id'])): ?>
 
-                <a href="/public/index.php?page=register">Register</a>
-                <a href="/public/index.php?page=login">Login</a>
+                <a href="/index.php?page=register">Register</a>
+                <a href="/index.php?page=login">Login</a>
 
             <?php endif; ?>
 
             <?php if (isset($_SESSION['user_id'])): ?>
 
                 <?php if ($_SESSION['user_role'] === 'seller'): ?>
-                    <a href="/public/index.php?page=dashboard">Seller Dashboard</a>
-                    <a href="/public/index.php?page=seller-earnings">Earnings</a>
-                    <a href="/public/index.php?page=contact">Contact Support</a>
+                    <a href="/index.php?page=dashboard">Seller Dashboard</a>
+                    <a href="/index.php?page=seller-earnings">Earnings</a>
+                    <a href="/index.php?page=contact">Contact Support</a>
                 <?php endif; ?>
 
                 <?php if ($_SESSION['user_role'] === 'buyer'): ?>
-                    <a href="/public/index.php?page=my-orders">My Orders</a>
-                    <a href="/public/index.php?page=wishlist" class="notification-link">
+                    <a href="/index.php?page=my-orders">My Orders</a>
+                    <a href="/index.php?page=wishlist" class="notification-link">
 
                         Wishlist
 
@@ -64,8 +64,8 @@
                 <?php endif; ?>
 
                 <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                    <a href="/public/index.php?page=admin-dashboard">Admin Dashboard</a>
-                    <a href="/public/index.php?page=admin-tickets" class="notification-link">
+                    <a href="/index.php?page=admin-dashboard">Admin Dashboard</a>
+                    <a href="/index.php?page=admin-tickets" class="notification-link">
                         Support Tickets
 
                         <?php if (!empty($_SESSION['open_support_tickets'])): ?>
@@ -78,7 +78,7 @@
 
                 <?php if ($_SESSION['user_role'] === 'buyer'): ?>
 
-                    <a href="/public/index.php?page=cart" class="notification-link">
+                    <a href="/index.php?page=cart" class="notification-link">
                         Cart
 
                         <span id="cart-count" class="notification-badge">
@@ -86,7 +86,7 @@
                         </span>
                     </a>
 
-                    <a href="/public/index.php?page=contact">Contact Support</a>
+                    <a href="/index.php?page=contact">Contact Support</a>
 
                 <?php endif; ?>
 
@@ -94,7 +94,7 @@
                 $unreadNotifications = $_SESSION['unread_notifications'] ?? 0;
                 ?>
 
-                <a href="/public/index.php?page=notifications" class="notification-link">
+                <a href="/index.php?page=notifications" class="notification-link">
                     Notifications
                     <?php if ($unreadNotifications > 0): ?>
                         <span class="notification-badge">
@@ -103,7 +103,7 @@
                     <?php endif; ?>
                 </a>
 
-                <a href="/public/index.php?page=messages" class="notification-link">
+                <a href="/index.php?page=messages" class="notification-link">
                     Messages
                     <?php if (!empty($_SESSION['unread_messages']) && $_SESSION['unread_messages'] > 0): ?>
                         <span class="notification-badge">
@@ -118,7 +118,7 @@
 
                         <?php if (!empty($_SESSION['profile_image'])): ?>
                             <img
-                                src="/public/uploads/<?php echo htmlspecialchars($_SESSION['profile_image']); ?>"
+                                src="/uploads/<?php echo htmlspecialchars($_SESSION['profile_image']); ?>"
                                 alt="<?php echo htmlspecialchars($_SESSION['user_name']); ?>"
                                 class="profile-avatar-img">
                         <?php else: ?>
@@ -141,8 +141,8 @@
 
                         <hr>
 
-                        <a href="/public/index.php?page=profile">My Profile</a>
-                        <a href="/public/index.php?page=logout">Logout</a>
+                        <a href="/index.php?page=profile">My Profile</a>
+                        <a href="/index.php?page=logout">Logout</a>
                         <button type="button" id="theme-toggle" class="profile-theme-toggle">
                             🌙 Dark Mode
                         </button>

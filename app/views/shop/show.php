@@ -1,14 +1,14 @@
 <?php $title = $product['name']; ?>
 <?php require_once __DIR__ . '/../layouts/header.php'; ?>
 
-<a class="back-link" href="/public/index.php?page=shop">← Back to Shop</a>
+<a class="back-link" href="/index.php?page=shop">← Back to Shop</a>
 
 <section class="product-detail-page">
 
     <div class="product-detail-image-wrap">
         <?php if (!empty($product['image'])): ?>
             <img
-                src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                 alt="<?php echo htmlspecialchars($product['name']); ?>"
                 class="product-detail-image">
         <?php else: ?>
@@ -26,8 +26,8 @@
 
         <p class="product-seller">
             Sold by
-            <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
-                <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
+            <a href="/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
+                <a href="/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
                     <?php echo htmlspecialchars($product['seller_name']); ?>
                 </a>
             </a>
@@ -62,7 +62,7 @@
 
         <div class="product-actions">
 
-            <form action="/public/index.php" method="POST" class="ajax-add-to-cart">
+            <form action="/index.php" method="POST" class="ajax-add-to-cart">
 
                 <?php echo csrfField(); ?>
 
@@ -77,7 +77,7 @@
                 $_SESSION['user_role'] === 'buyer'
             ): ?>
 
-                <form action="/public/index.php" method="POST">
+                <form action="/index.php" method="POST">
 
                     <?php echo csrfField(); ?>
 
@@ -92,7 +92,7 @@
 
             <?php if (isset($_SESSION['user_id']) && $_SESSION['user_role'] === 'buyer'): ?>
 
-                <form action="/public/index.php" method="POST">
+                <form action="/index.php" method="POST">
 
                     <?php echo csrfField(); ?>
 
@@ -133,7 +133,7 @@
 
         <h3>Leave a Review</h3>
 
-        <form action="/public/index.php" method="POST" class="review-form">
+        <form action="/index.php" method="POST" class="review-form">
 
             <?php echo csrfField(); ?>
 

@@ -9,7 +9,7 @@
 
     <div class="header-actions">
         <a
-            href="/public/index.php?page=dashboard"
+            href="/index.php?page=dashboard"
             class="btn btn-secondary">
             Back to Dashboard
         </a>
@@ -21,7 +21,7 @@
     <div class="card empty-state">
         <h2>No products yet</h2>
         <p>Add your first product to start selling.</p>
-        <a class="btn" href="/public/index.php?page=add-product">Add Product</a>
+        <a class="btn" href="/index.php?page=add-product">Add Product</a>
     </div>
 
 <?php else: ?>
@@ -34,7 +34,7 @@
 
                 <?php if (!empty($product['image'])): ?>
                     <img
-                        src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                        src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                         alt="<?php echo htmlspecialchars($product['name']); ?>"
                         class="product-image">
                 <?php endif; ?>
@@ -65,12 +65,12 @@
 
                 <a
                     class="btn btn-secondary"
-                    href="/public/index.php?page=edit-product&id=<?php echo htmlspecialchars($product['id']); ?>">
+                    href="/index.php?page=edit-product&id=<?php echo htmlspecialchars($product['id']); ?>">
                     Edit Product
                 </a>
 
 
-                <form action="/public/index.php" method="POST" class="inline-update-form">
+                <form action="/index.php" method="POST" class="inline-update-form">
 
                     <?php echo csrfField(); ?>
 
@@ -94,7 +94,7 @@
 
 
 
-                <form action="/public/index.php" method="POST" class="inline-update-form">
+                <form action="/index.php" method="POST" class="inline-update-form">
 
                     <?php echo csrfField(); ?>
 

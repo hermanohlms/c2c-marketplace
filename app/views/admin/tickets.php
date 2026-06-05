@@ -20,7 +20,7 @@
             <small><?php echo formatTime($ticket['created_at']); ?></small>
         </small>
 
-        <form action="/public/index.php" method="POST" class="ticket-status-form">
+        <form action="/index.php" method="POST" class="ticket-status-form">
             <?php echo csrfField(); ?>
 
             <input type="hidden" name="action" value="update-support-ticket">

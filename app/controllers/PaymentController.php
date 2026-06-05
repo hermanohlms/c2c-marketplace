@@ -21,7 +21,7 @@ class PaymentController
     {
         if (!isset($_SESSION['last_order_id'])) {
             $_SESSION['error'] = "No order found for payment.";
-            header("Location: /public/index.php?page=cart");
+            header("Location: /index.php?page=cart");
             exit;
         }
 
@@ -33,7 +33,7 @@ class PaymentController
 
         if (!$order) {
             $_SESSION['error'] = "Order not found.";
-            header("Location: /public/index.php?page=cart");
+            header("Location: /index.php?page=cart");
             exit;
         }
 
@@ -69,7 +69,7 @@ class PaymentController
     public function cancelled()
     {
         $_SESSION['error'] = "Payment was cancelled.";
-        header("Location: /public/index.php?page=my-orders");
+        header("Location: /index.php?page=my-orders");
         exit;
     }
 

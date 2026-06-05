@@ -19,7 +19,7 @@ class SupportController
         $message = trim($_POST['message'] ?? '');
 
         if ($subject === '' || $message === '') {
-            header('Location: /public/index.php?page=contact&error=empty');
+            header('Location: /index.php?page=contact&error=empty');
             exit;
         }
 
@@ -35,7 +35,7 @@ class SupportController
             ':status' => 'open'
         ]);
 
-        header('Location: /public/index.php?page=contact&success=ticket_submitted');
+        header('Location: /index.php?page=contact&success=ticket_submitted');
         exit;
     }
 
@@ -43,7 +43,7 @@ class SupportController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
             $_SESSION['error'] = "Admin access only.";
-            header("Location: /public/index.php?page=home");
+            header("Location: /index.php?page=home");
             exit;
         }
 
@@ -54,7 +54,7 @@ class SupportController
 
         if (!$ticket_id || !in_array($status, $allowedStatuses)) {
             $_SESSION['error'] = "Invalid ticket update.";
-            header("Location: /public/index.php?page=admin-tickets");
+            header("Location: /index.php?page=admin-tickets");
             exit;
         }
 
@@ -72,7 +72,7 @@ class SupportController
         $_SESSION[$updated ? 'success' : 'error'] =
             $updated ? "Ticket updated successfully." : "Could not update ticket.";
 
-        header("Location: /public/index.php?page=admin-tickets");
+        header("Location: /index.php?page=admin-tickets");
         exit;
     }
 }

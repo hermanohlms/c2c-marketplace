@@ -18,13 +18,13 @@ class ReviewController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login to leave a review.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Only buyers can leave reviews.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -34,7 +34,7 @@ class ReviewController
 
         if (!$product_id || !$rating) {
             $_SESSION['error'] = "Invalid review.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -42,7 +42,7 @@ class ReviewController
 
         if ($rating < 1 || $rating > 5) {
             $_SESSION['error'] = "Rating must be between 1 and 5.";
-            header("Location: /public/index.php?page=product&id=" . $product_id);
+            header("Location: /index.php?page=product&id=" . $product_id);
             exit;
         }
 
@@ -50,13 +50,13 @@ class ReviewController
 
         if (!$reviewModel->hasPurchasedProduct($_SESSION['user_id'], $product_id)) {
             $_SESSION['error'] = "You can only review products you have purchased.";
-            header("Location: /public/index.php?page=product&id=" . $product_id);
+            header("Location: /index.php?page=product&id=" . $product_id);
             exit;
         }
 
         if ($reviewModel->hasReviewed($_SESSION['user_id'], $product_id)) {
             $_SESSION['error'] = "You have already reviewed this product.";
-            header("Location: /public/index.php?page=product&id=" . $product_id);
+            header("Location: /index.php?page=product&id=" . $product_id);
             exit;
         }
 
@@ -88,7 +88,7 @@ class ReviewController
             $_SESSION['error'] = "Could not submit review.";
         }
 
-        header("Location: /public/index.php?page=product&id=" . $product_id);
+        header("Location: /index.php?page=product&id=" . $product_id);
         exit;
     }
 }

@@ -16,7 +16,7 @@ class MessageController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
     }
@@ -37,7 +37,7 @@ class MessageController
 
         if ($_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Only buyers can contact sellers.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -46,7 +46,7 @@ class MessageController
 
         if (!$seller_id) {
             $_SESSION['error'] = "Invalid seller.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -58,7 +58,7 @@ class MessageController
             $product_id
         );
 
-        header("Location: /public/index.php?page=messages-thread&id=" . $conversation_id);
+        header("Location: /index.php?page=messages-thread&id=" . $conversation_id);
         exit;
     }
 
@@ -70,7 +70,7 @@ class MessageController
 
         if (!$conversation_id) {
             $_SESSION['error'] = "Conversation not found.";
-            header("Location: /public/index.php?page=messages");
+            header("Location: /index.php?page=messages");
             exit;
         }
 
@@ -83,7 +83,7 @@ class MessageController
 
         if (!$conversation) {
             $_SESSION['error'] = "Conversation not found.";
-            header("Location: /public/index.php?page=messages");
+            header("Location: /index.php?page=messages");
             exit;
         }
 
@@ -106,7 +106,7 @@ class MessageController
 
         if (!$conversation_id || $message === '') {
             $_SESSION['error'] = "Message cannot be empty.";
-            header("Location: /public/index.php?page=messages");
+            header("Location: /index.php?page=messages");
             exit;
         }
 
@@ -119,7 +119,7 @@ class MessageController
 
         if (!$conversation) {
             $_SESSION['error'] = "Conversation not found.";
-            header("Location: /public/index.php?page=messages");
+            header("Location: /index.php?page=messages");
             exit;
         }
 
@@ -129,7 +129,7 @@ class MessageController
             $message
         );
 
-        header("Location: /public/index.php?page=messages-thread&id=" . $conversation_id);
+        header("Location: /index.php?page=messages-thread&id=" . $conversation_id);
         exit;
     }
 }

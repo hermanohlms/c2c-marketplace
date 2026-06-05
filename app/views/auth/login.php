@@ -11,7 +11,7 @@
             Log in to continue shopping, managing orders, or selling products.
         </p>
 
-        <form action="/public/index.php" method="POST" class="auth-form">
+        <form action="/index.php" method="POST" class="auth-form">
 
             <?php echo csrfField(); ?>
 
@@ -33,7 +33,7 @@
 
         <p class="auth-footer-text">
             Don't have an account?
-            <a href="/public/index.php?page=register">Create one</a>
+            <a href="/index.php?page=register">Create one</a>
         </p>
 
     </div>

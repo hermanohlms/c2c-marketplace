@@ -16,13 +16,13 @@ class WishlistController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Buyer access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
     }
@@ -53,7 +53,7 @@ class WishlistController
             }
 
             $_SESSION['error'] = "Invalid product.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -70,7 +70,7 @@ class WishlistController
 
         $_SESSION['success'] = "Product added to wishlist.";
 
-        header("Location: /public/index.php?page=product&id=" . $product_id);
+        header("Location: /index.php?page=product&id=" . $product_id);
         exit;
     }
 
@@ -105,7 +105,7 @@ class WishlistController
             $_SESSION['error'] = "Invalid product.";
         }
 
-        header("Location: /public/index.php?page=wishlist");
+        header("Location: /index.php?page=wishlist");
         exit;
     }
 

@@ -16,7 +16,7 @@ class NotificationController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
     }
@@ -40,7 +40,7 @@ class NotificationController
 
         $_SESSION['success'] = "Notifications marked as read.";
 
-        header("Location: /public/index.php?page=notifications");
+        header("Location: /index.php?page=notifications");
         exit;
     }
 }

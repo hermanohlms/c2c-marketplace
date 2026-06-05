@@ -4,7 +4,7 @@
 <h1>Contact Support</h1>
 
 <section class="form-page card">
-    <form action="/public/index.php" method="POST" class="stack-form">
+    <form action="/index.php" method="POST" class="stack-form">
         <?php echo csrfField(); ?>
 
         <input type="hidden" name="action" value="create-ticket">

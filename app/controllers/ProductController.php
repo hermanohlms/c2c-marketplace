@@ -44,7 +44,7 @@ class ProductController
 
                 if ($_FILES['image']['size'] > $maxSize) {
                     $_SESSION['error'] = "Image must be smaller than 2MB.";
-                    header("Location: /public/index.php?page=add-product");
+                    header("Location: /index.php?page=add-product");
                     exit;
                 }
 
@@ -52,7 +52,7 @@ class ProductController
 
                 if (!array_key_exists($mimeType, $allowedMimeTypes)) {
                     $_SESSION['error'] = "Only JPG, PNG, and WEBP images are allowed.";
-                    header("Location: /public/index.php?page=add-product");
+                    header("Location: /index.php?page=add-product");
                     exit;
                 }
 
@@ -62,13 +62,13 @@ class ProductController
 
                 move_uploaded_file(
                     $_FILES['image']['tmp_name'],
-                    __DIR__ . '/../../public/uploads/' . $image
+                    __DIR__ . '/../../uploads/' . $image
                 );
             }
 
             if (!$image) {
                 $_SESSION['error'] = "Product image is required.";
-                header("Location: /public/index.php?page=add-product");
+                header("Location: /index.php?page=add-product");
                 exit;
             }
 
@@ -86,7 +86,7 @@ class ProductController
 
             if ($created) {
 
-                header('Location: /public/index.php?page=dashboard');
+                header('Location: /index.php?page=dashboard');
                 exit();
             } else {
 
@@ -171,7 +171,7 @@ class ProductController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -180,7 +180,7 @@ class ProductController
 
         if (!$product_id || $stock === null || $stock < 0) {
             $_SESSION['error'] = "Invalid stock amount.";
-            header("Location: /public/index.php?page=my-products");
+            header("Location: /index.php?page=my-products");
             exit;
         }
 
@@ -198,7 +198,7 @@ class ProductController
             $_SESSION['error'] = "Could not update stock.";
         }
 
-        header("Location: /public/index.php?page=my-products");
+        header("Location: /index.php?page=my-products");
         exit;
     }
 
@@ -206,7 +206,7 @@ class ProductController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -215,7 +215,7 @@ class ProductController
 
         if (!$product_id || !$status) {
             $_SESSION['error'] = "Invalid product status.";
-            header("Location: /public/index.php?page=my-products");
+            header("Location: /index.php?page=my-products");
             exit;
         }
 
@@ -233,7 +233,7 @@ class ProductController
             $_SESSION['error'] = "Could not update product status.";
         }
 
-        header("Location: /public/index.php?page=my-products");
+        header("Location: /index.php?page=my-products");
         exit;
     }
 
@@ -241,7 +241,7 @@ class ProductController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -249,7 +249,7 @@ class ProductController
 
         if (!$product_id) {
             $_SESSION['error'] = "Product not found.";
-            header("Location: /public/index.php?page=my-products");
+            header("Location: /index.php?page=my-products");
             exit;
         }
 
@@ -262,7 +262,7 @@ class ProductController
 
         if (!$product) {
             $_SESSION['error'] = "Product not found or access denied.";
-            header("Location: /public/index.php?page=my-products");
+            header("Location: /index.php?page=my-products");
             exit;
         }
 
@@ -275,7 +275,7 @@ class ProductController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -297,7 +297,7 @@ class ProductController
             $stock < 0
         ) {
             $_SESSION['error'] = "Please complete all required fields correctly.";
-            header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+            header("Location: /index.php?page=edit-product&id=" . $product_id);
             exit;
         }
 
@@ -305,7 +305,7 @@ class ProductController
 
         if (!in_array($status, $allowedStatuses)) {
             $_SESSION['error'] = "Invalid product status.";
-            header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+            header("Location: /index.php?page=edit-product&id=" . $product_id);
             exit;
         }
 
@@ -325,7 +325,7 @@ class ProductController
 
             if ($_FILES['image']['size'] > $maxSize) {
                 $_SESSION['error'] = "Product image must be smaller than 2MB.";
-                header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+                header("Location: /index.php?page=edit-product&id=" . $product_id);
                 exit;
             }
 
@@ -333,7 +333,7 @@ class ProductController
 
             if (!array_key_exists($mimeType, $allowedMimeTypes)) {
                 $_SESSION['error'] = "Only JPG, PNG, and WEBP images are allowed.";
-                header("Location: /public/index.php?page=edit-product&id=" . $product_id);
+                header("Location: /index.php?page=edit-product&id=" . $product_id);
                 exit;
             }
 
@@ -343,7 +343,7 @@ class ProductController
 
             move_uploaded_file(
                 $_FILES['image']['tmp_name'],
-                __DIR__ . '/../../public/uploads/' . $image
+                __DIR__ . '/../../uploads/' . $image
             );
         }
 
@@ -367,7 +367,7 @@ class ProductController
             $_SESSION['error'] = "No changes were made or update failed.";
         }
 
-        header("Location: /public/index.php?page=my-products");
+        header("Location: /index.php?page=my-products");
         exit;
     }
 }

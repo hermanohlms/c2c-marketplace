@@ -2,7 +2,7 @@ async function updateCartCount() {
     const formData = new FormData();
     formData.append("action", "cart-count");
 
-    const response = await fetch("/public/index.php", {
+    const response = await fetch("/index.php", {
         method: "POST",
         body: formData
     });
@@ -34,7 +34,7 @@ document.addEventListener("submit", async function (event) {
     const formData = new FormData(form);
     formData.append("ajax", "1");
 
-    const response = await fetch("/public/index.php", {
+    const response = await fetch("/index.php", {
         method: "POST",
         body: formData
     });

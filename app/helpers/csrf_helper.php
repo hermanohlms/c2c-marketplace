@@ -24,7 +24,7 @@ function validateCsrf()
         !hash_equals($_SESSION['csrf_token'], $token)
     ) {
         $_SESSION['error'] = "Invalid security token. Please try again.";
-        header("Location: /public/index.php?page=home");
+        header("Location: /index.php?page=home");
         exit;
     }
 }

@@ -13,10 +13,10 @@
         </p>
 
         <div class="hero-actions">
-            <a class="btn" href="/public/index.php?page=shop">Start Shopping</a>
+            <a class="btn" href="/index.php?page=shop">Start Shopping</a>
 
             <?php if (!isset($_SESSION['user_id'])): ?>
-                <a class="btn btn-secondary" href="/public/index.php?page=register">
+                <a class="btn btn-secondary" href="/index.php?page=register">
                     Create Account
                 </a>
             <?php endif; ?>
@@ -91,7 +91,7 @@
         <p>Find products, contact sellers, and shop with a secure order process.</p>
     </div>
 
-    <a class="btn" href="/public/index.php?page=shop">Browse Shop</a>
+    <a class="btn" href="/index.php?page=shop">Browse Shop</a>
 
 </section>
 

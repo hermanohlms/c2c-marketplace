@@ -10,7 +10,7 @@
         <?php endif; ?>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=messages">
+    <a class="btn btn-secondary" href="/index.php?page=messages">
         Back to Messages
     </a>
 </div>
@@ -45,7 +45,7 @@
 
     </div>
 
-    <form action="/public/index.php" method="POST" class="chat-form">
+    <form action="/index.php" method="POST" class="chat-form">
 
         <?php echo csrfField(); ?>
 

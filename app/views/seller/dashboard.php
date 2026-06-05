@@ -7,7 +7,7 @@
         <p>Track sales, manage products, and monitor inventory.</p>
     </div>
 
-    <a class="btn" href="/public/index.php?page=add-product">Add Product</a>
+    <a class="btn" href="/index.php?page=add-product">Add Product</a>
 </div>
 
 <div class="analytics-grid">
@@ -40,10 +40,10 @@
         <h2>Seller Actions</h2>
 
         <div class="action-list">
-            <a class="btn btn-secondary" href="/public/index.php?page=my-products">My Products</a>
-            <a class="btn btn-secondary" href="/public/index.php?page=seller-orders">Incoming Orders</a>
-            <a class="btn btn-secondary" href="/public/index.php?page=add-product">Add Product</a>
-            <a class="btn btn-secondary" href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
+            <a class="btn btn-secondary" href="/index.php?page=my-products">My Products</a>
+            <a class="btn btn-secondary" href="/index.php?page=seller-orders">Incoming Orders</a>
+            <a class="btn btn-secondary" href="/index.php?page=add-product">Add Product</a>
+            <a class="btn btn-secondary" href="/index.php?page=seller&id=<?php echo htmlspecialchars($_SESSION['user_id']); ?>">
                 View My Store
             </a>
         </div>
@@ -85,7 +85,7 @@
 
                     <?php if (!empty($product['image'])): ?>
                         <img
-                            src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                            src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                             alt="<?php echo htmlspecialchars($product['name']); ?>">
                     <?php endif; ?>
 

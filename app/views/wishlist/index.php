@@ -12,7 +12,7 @@
             Save products you like so you can easily find them again later.
         </p>
 
-        <a class="btn" href="/public/index.php?page=shop">
+        <a class="btn" href="/index.php?page=shop">
             Browse Products
         </a>
     </div>
@@ -27,7 +27,7 @@
 
                 <?php if (!empty($item['image'])): ?>
                     <img
-                        src="/public/uploads/<?php echo htmlspecialchars($item['image']); ?>"
+                        src="/uploads/<?php echo htmlspecialchars($item['image']); ?>"
                         alt="<?php echo htmlspecialchars($item['name']); ?>">
                 <?php endif; ?>
 
@@ -45,7 +45,7 @@
 
                 <div class="wishlist-actions">
 
-                    <form action="/public/index.php" method="GET">
+                    <form action="/index.php" method="GET">
                         <input type="hidden" name="page" value="product">
                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
 
@@ -54,7 +54,7 @@
                         </button>
                     </form>
 
-                    <form action="/public/index.php" method="POST">
+                    <form action="/index.php" method="POST">
                         <?php echo csrfField(); ?>
 
                         <input type="hidden" name="action" value="add-to-cart">
@@ -66,7 +66,7 @@
                         </button>
                     </form>
 
-                    <form action="/public/index.php" method="POST">
+                    <form action="/index.php" method="POST">
                         <?php echo csrfField(); ?>
 
                         <input type="hidden" name="action" value="remove-from-wishlist">

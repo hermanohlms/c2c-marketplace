@@ -7,10 +7,10 @@
         <p>Review listings and control product visibility.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
+    <a class="btn btn-secondary" href="/index.php?page=admin-dashboard">Back</a>
 </div>
 
-<form action="/public/index.php" method="GET" class="admin-search-form">
+<form action="/index.php" method="GET" class="admin-search-form">
     <input type="hidden" name="page" value="admin-products">
 
     <input
@@ -22,7 +22,7 @@
     <button type="submit">Search</button>
 
     <?php if (!empty($_GET['search'])): ?>
-        <a class="btn btn-secondary" href="/public/index.php?page=admin-products">
+        <a class="btn btn-secondary" href="/index.php?page=admin-products">
             Reset
         </a>
     <?php endif; ?>
@@ -45,7 +45,7 @@
 
                 <?php if (!empty($product['image'])): ?>
                     <img
-                        src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                        src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                         alt="<?php echo htmlspecialchars($product['name']); ?>">
                 <?php endif; ?>
 
@@ -66,7 +66,7 @@
                         <?php echo htmlspecialchars($product['status']); ?>
                     </span>
 
-                    <form action="/public/index.php" method="POST" class="inline-update-form">
+                    <form action="/index.php" method="POST" class="inline-update-form">
 
                         <?php echo csrfField(); ?>
 
@@ -100,7 +100,7 @@
 
                 <a
                     class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                    href="/public/index.php?page=admin-products&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>
+                    href="/index.php?page=admin-products&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>
                 </a>
 
             <?php endfor; ?>

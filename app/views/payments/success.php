@@ -16,11 +16,11 @@
         </p>
 
         <div class="payment-result-actions">
-            <a class="btn" href="/public/index.php?page=my-orders">
+            <a class="btn" href="/index.php?page=my-orders">
                 View My Orders
             </a>
 
-            <a class="btn btn-secondary" href="/public/index.php?page=shop">
+            <a class="btn btn-secondary" href="/index.php?page=shop">
                 Continue Shopping
             </a>
         </div>

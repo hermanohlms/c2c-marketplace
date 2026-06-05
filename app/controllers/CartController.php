@@ -40,7 +40,7 @@ class CartController
 
                 $_SESSION['error'] = "Not enough stock available.";
 
-                header("Location: /public/index.php?page=product&id=" . $product_id);
+                header("Location: /index.php?page=product&id=" . $product_id);
                 exit;
             }
 
@@ -51,7 +51,7 @@ class CartController
 
                 $_SESSION['error'] = "This product is out of stock.";
 
-                header("Location: /public/index.php?page=product&id=" . $product_id);
+                header("Location: /index.php?page=product&id=" . $product_id);
                 exit;
             }
 
@@ -82,7 +82,7 @@ class CartController
             exit;
         }
 
-        header("Location: /public/index.php?page=cart");
+        header("Location: /index.php?page=cart");
         exit;
     }
 
@@ -97,7 +97,7 @@ class CartController
             unset($_SESSION['cart'][$product_id]);
         }
 
-        header("Location: /public/index.php?page=cart");
+        header("Location: /index.php?page=cart");
         exit;
     }
 
@@ -142,7 +142,7 @@ class CartController
             }
         }
 
-        header("Location: /public/index.php?page=cart");
+        header("Location: /index.php?page=cart");
         exit;
     }
 
@@ -165,13 +165,13 @@ class CartController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Only buyers can use the cart.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
     }

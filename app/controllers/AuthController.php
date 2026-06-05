@@ -32,19 +32,19 @@ class AuthController
 
             if ($name === '' || $email === '' || $rawPassword === '') {
                 $_SESSION['error'] = "All fields are required.";
-                header("Location: /public/index.php?page=register");
+                header("Location: /index.php?page=register");
                 exit;
             }
 
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $_SESSION['error'] = "Please enter a valid email address.";
-                header("Location: /public/index.php?page=register");
+                header("Location: /index.php?page=register");
                 exit;
             }
 
             if (strlen($rawPassword) < 6) {
                 $_SESSION['error'] = "Password must be at least 6 characters long.";
-                header("Location: /public/index.php?page=register");
+                header("Location: /index.php?page=register");
                 exit;
             }
 
@@ -69,14 +69,14 @@ class AuthController
                     $_SESSION['success'] =
                         "Account created successfully. Please login.";
 
-                    header("Location: /public/index.php?page=login");
+                    header("Location: /index.php?page=login");
                     exit;
                 }
 
                 $_SESSION['error'] =
                     "Registration failed. Please try again.";
 
-                header("Location: /public/index.php?page=register");
+                header("Location: /index.php?page=register");
                 exit;
             } catch (PDOException $e) {
 
@@ -85,14 +85,14 @@ class AuthController
                     $_SESSION['error'] =
                         "An account with this email already exists.";
 
-                    header("Location: /public/index.php?page=register");
+                    header("Location: /index.php?page=register");
                     exit;
                 }
 
                 $_SESSION['error'] =
                     "Registration failed. Please try again.";
 
-                header("Location: /public/index.php?page=register");
+                header("Location: /index.php?page=register");
                 exit;
             }
         }
@@ -119,17 +119,17 @@ class AuthController
                     $_SESSION['profile_image'] = $user['profile_image'] ?? null;
 
                     if ($user['role'] === 'seller') {
-                        header("Location: /public/index.php?page=dashboard");
+                        header("Location: /index.php?page=dashboard");
                         exit;
                     }
 
                     if ($user['role'] === 'buyer') {
-                        header("Location: /public/index.php?page=shop");
+                        header("Location: /index.php?page=shop");
                         exit;
                     }
 
                     if ($user['role'] === 'admin') {
-                        header("Location: /public/index.php?page=admin-dashboard");
+                        header("Location: /index.php?page=admin-dashboard");
                         exit;
                     }
                 } else {

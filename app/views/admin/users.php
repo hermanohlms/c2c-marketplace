@@ -7,10 +7,10 @@
         <p>Control account roles and active status.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
+    <a class="btn btn-secondary" href="/index.php?page=admin-dashboard">Back</a>
 </div>
 
-<form action="/public/index.php" method="GET" class="admin-search-form">
+<form action="/index.php" method="GET" class="admin-search-form">
     <input type="hidden" name="page" value="admin-users">
 
     <input
@@ -22,7 +22,7 @@
     <button type="submit">Search</button>
 
     <?php if (!empty($_GET['search'])): ?>
-        <a class="btn btn-secondary" href="/public/index.php?page=admin-users">
+        <a class="btn btn-secondary" href="/index.php?page=admin-users">
             Reset
         </a>
     <?php endif; ?>
@@ -43,7 +43,7 @@
                 <p>Joined: <?php echo formatDateTime($user['created_at']); ?>
                 </p>
 
-                <form action="/public/index.php" method="POST" class="stack-form">
+                <form action="/index.php" method="POST" class="stack-form">
 
                     <?php echo csrfField(); ?>
 
@@ -85,7 +85,7 @@
 
             <a
                 class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                href="/public/index.php?page=admin-users&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>">
+                href="/index.php?page=admin-users&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>">
                 <?php echo $i; ?>
             </a>
 

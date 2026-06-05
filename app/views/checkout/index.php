@@ -7,12 +7,12 @@
         <p>Enter your delivery details before continuing to payment.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=cart">Back to Cart</a>
+    <a class="btn btn-secondary" href="/index.php?page=cart">Back to Cart</a>
 </div>
 
 <section class="checkout-layout">
 
-    <form action="/public/index.php" method="POST" class="card stack-form">
+    <form action="/index.php" method="POST" class="card stack-form">
 
         <?php echo csrfField(); ?>
 

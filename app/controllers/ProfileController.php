@@ -15,7 +15,7 @@ class ProfileController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
     }
@@ -39,7 +39,7 @@ class ProfileController
 
         if ($name === '') {
             $_SESSION['error'] = "Name is required.";
-            header("Location: /public/index.php?page=profile");
+            header("Location: /index.php?page=profile");
             exit;
         }
 
@@ -59,7 +59,7 @@ class ProfileController
 
             if ($_FILES['profile_image']['size'] > $maxSize) {
                 $_SESSION['error'] = "Profile image must be smaller than 2MB.";
-                header("Location: /public/index.php?page=profile");
+                header("Location: /index.php?page=profile");
                 exit;
             }
 
@@ -67,7 +67,7 @@ class ProfileController
 
             if (!array_key_exists($mimeType, $allowedMimeTypes)) {
                 $_SESSION['error'] = "Only JPG, PNG, and WEBP profile images are allowed.";
-                header("Location: /public/index.php?page=profile");
+                header("Location: /index.php?page=profile");
                 exit;
             }
 
@@ -78,7 +78,7 @@ class ProfileController
 
             move_uploaded_file(
                 $_FILES['profile_image']['tmp_name'],
-                __DIR__ . '/../../public/uploads/' . $profileImage
+                __DIR__ . '/../../uploads/' . $profileImage
             );
         }
 
@@ -103,7 +103,7 @@ class ProfileController
             $_SESSION['error'] = "Could not update profile.";
         }
 
-        header("Location: /public/index.php?page=profile");
+        header("Location: /index.php?page=profile");
         exit;
     }
 }

@@ -7,7 +7,7 @@
 
         <?php if (!empty($seller['profile_image'])): ?>
             <img
-                src="/public/uploads/<?php echo htmlspecialchars($seller['profile_image']); ?>"
+                src="/uploads/<?php echo htmlspecialchars($seller['profile_image']); ?>"
                 alt="<?php echo htmlspecialchars($seller['name']); ?>"
                 class="seller-store-image">
         <?php else: ?>
@@ -47,7 +47,7 @@
                 $_SESSION['user_id'] == $seller['id']
             ): ?>
 
-                <form action="/public/index.php" method="POST" class="stack-form store-description-form">
+                <form action="/index.php" method="POST" class="stack-form store-description-form">
                     <?php echo csrfField(); ?>
 
                     <input type="hidden" name="action" value="update-store-description">
@@ -87,7 +87,7 @@
         <p>Browse this seller’s active listings.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=shop">Back to Shop</a>
+    <a class="btn btn-secondary" href="/index.php?page=shop">Back to Shop</a>
 </div>
 
 <?php if (empty($products)): ?>
@@ -105,10 +105,10 @@
 
             <div class="product-card">
 
-                <a href="/public/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>" class="product-image-link">
+                <a href="/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>" class="product-image-link">
                     <?php if (!empty($product['image'])): ?>
                         <img
-                            src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                            src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                             alt="<?php echo htmlspecialchars($product['name']); ?>"
                             class="product-image">
                     <?php else: ?>
@@ -147,7 +147,7 @@
 
                         <a
                             class="btn product-btn"
-                            href="/public/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>">
+                            href="/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>">
                             View
                         </a>
                     </div>

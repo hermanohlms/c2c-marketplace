@@ -47,7 +47,7 @@
             </strong>
         </p>
 
-        <form action="/public/index.php" method="POST" class="stack-form">
+        <form action="/index.php" method="POST" class="stack-form">
 
             <?php echo csrfField(); ?>
 

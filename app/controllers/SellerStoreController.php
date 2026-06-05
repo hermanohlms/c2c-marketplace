@@ -42,7 +42,7 @@ class SellerStoreController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -58,7 +58,7 @@ class SellerStoreController
         $_SESSION[$updated ? 'success' : 'error'] =
             $updated ? "Store description updated." : "Could not update store description.";
 
-        header("Location: /public/index.php?page=seller&id=" . $_SESSION['user_id']);
+        header("Location: /index.php?page=seller&id=" . $_SESSION['user_id']);
         exit;
     }
 }

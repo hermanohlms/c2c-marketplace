@@ -23,7 +23,7 @@
         color: #ffffff;
     }
 
-    /* black surfaces */
+
     body[data-theme="dark"] .card,
     body[data-theme="dark"] .product-card,
     body[data-theme="dark"] .order-card,
@@ -51,7 +51,6 @@
         border: transparent !important;
     }
 
-    /* all text white */
     body[data-theme="dark"] h1,
     body[data-theme="dark"] h2,
     body[data-theme="dark"] h3,

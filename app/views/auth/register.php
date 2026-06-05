@@ -11,7 +11,7 @@
             Join the marketplace as a buyer or seller.
         </p>
 
-        <form action="/public/index.php" method="POST" class="auth-form">
+        <form action="/index.php" method="POST" class="auth-form">
 
             <?php echo csrfField(); ?>
 
@@ -46,7 +46,7 @@
 
         <p class="auth-footer-text">
             Already have an account?
-            <a href="/public/index.php?page=login">Login</a>
+            <a href="/index.php?page=login">Login</a>
         </p>
 
     </div>

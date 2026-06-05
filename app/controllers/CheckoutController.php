@@ -18,13 +18,13 @@ class CheckoutController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login before checkout.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Only buyers can checkout.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -32,7 +32,7 @@ class CheckoutController
 
         if (empty($cart)) {
             $_SESSION['error'] = "Your cart is empty.";
-            header("Location: /public/index.php?page=cart");
+            header("Location: /index.php?page=cart");
             exit;
         }
 
@@ -54,7 +54,7 @@ class CheckoutController
             $postal_code === ''
         ) {
             $_SESSION['error'] = "Please complete all required delivery details.";
-            header("Location: /public/index.php?page=checkout");
+            header("Location: /index.php?page=checkout");
             exit;
         }
 
@@ -141,14 +141,14 @@ class CheckoutController
                 );
             }
 
-            header("Location: /public/index.php?page=payfast-start");
+            header("Location: /index.php?page=payfast-start");
             exit;
         } catch (Exception $e) {
             $this->db->rollBack();
 
             $_SESSION['error'] = $e->getMessage();
 
-            header("Location: /public/index.php?page=checkout");
+            header("Location: /index.php?page=checkout");
             exit;
         }
     }
@@ -157,13 +157,13 @@ class CheckoutController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if (empty($_SESSION['cart'])) {
             $_SESSION['error'] = "Your cart is empty.";
-            header("Location: /public/index.php?page=cart");
+            header("Location: /index.php?page=cart");
             exit;
         }
 

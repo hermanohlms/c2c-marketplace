@@ -5,7 +5,7 @@
 
     <h1>Shop</h1>
 
-    <form class="filter-form" action="/public/index.php" method="GET">
+    <form class="filter-form" action="/index.php" method="GET">
 
         <input type="hidden" name="page" value="shop">
 
@@ -43,7 +43,7 @@
 
         <button type="submit">Filter</button>
 
-        <a class="filter-reset" href="/public/index.php?page=shop">Reset</a>
+        <a class="filter-reset" href="/index.php?page=shop">Reset</a>
 
     </form>
 
@@ -65,7 +65,7 @@
 
                     <a
                         class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                        href="/public/index.php?page=shop&search=<?php echo urlencode($search); ?>&category_id=<?php echo urlencode($category_id); ?>&sort=<?php echo urlencode($sort); ?>&p=<?php echo $i; ?>">
+                        href="/index.php?page=shop&search=<?php echo urlencode($search); ?>&category_id=<?php echo urlencode($category_id); ?>&sort=<?php echo urlencode($sort); ?>&p=<?php echo $i; ?>">
                         <?php echo $i; ?>
                     </a>
 
@@ -79,10 +79,10 @@
 
             <div class="product-card">
 
-                <a href="/public/index.php?page=product&id=<?php echo $product['id']; ?>" class="product-image-link">
+                <a href="/index.php?page=product&id=<?php echo $product['id']; ?>" class="product-image-link">
                     <?php if (!empty($product['image'])): ?>
                         <img
-                            src="/public/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                            src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
                             alt="<?php echo htmlspecialchars($product['name']); ?>"
                             class="product-image">
                     <?php else: ?>
@@ -116,7 +116,7 @@
 
                     <p class="product-seller">
                         Seller:
-                        <a href="/public/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
+                        <a href="/index.php?page=seller&id=<?php echo htmlspecialchars($product['seller_id']); ?>">
                             <?php echo htmlspecialchars($product['seller_name'] ?? 'Unknown'); ?>
                         </a>
                     </p>
@@ -128,7 +128,7 @@
 
                         <a
                             class="btn product-btn"
-                            href="/public/index.php?page=product&id=<?php echo $product['id']; ?>">
+                            href="/index.php?page=product&id=<?php echo $product['id']; ?>">
                             View
                         </a>
                     </div>

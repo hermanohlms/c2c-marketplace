@@ -18,13 +18,13 @@ class OrderController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Buyer access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -50,13 +50,13 @@ class OrderController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -82,13 +82,13 @@ class OrderController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -98,7 +98,7 @@ class OrderController
 
         if (!$order_id || !$status) {
             $_SESSION['error'] = "Invalid order update.";
-            header("Location: /public/index.php?page=seller-orders");
+            header("Location: /index.php?page=seller-orders");
             exit;
         }
 
@@ -179,7 +179,7 @@ class OrderController
             $_SESSION['error'] = "Could not update order status.";
         }
 
-        header("Location: /public/index.php?page=seller-orders");
+        header("Location: /index.php?page=seller-orders");
         exit;
     }
 
@@ -190,7 +190,7 @@ class OrderController
 
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
 
@@ -209,7 +209,7 @@ class OrderController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'buyer') {
             $_SESSION['error'] = "Buyer access only.";
-            header("Location: /public/index.php?page=my-orders");
+            header("Location: /index.php?page=my-orders");
             exit;
         }
 
@@ -217,7 +217,7 @@ class OrderController
 
         if (!$order_id) {
             $_SESSION['error'] = "Invalid order.";
-            header("Location: /public/index.php?page=my-orders");
+            header("Location: /index.php?page=my-orders");
             exit;
         }
 
@@ -264,7 +264,7 @@ class OrderController
             $_SESSION['error'] = "Could not confirm this order. It may not be shipped yet.";
         }
 
-        header("Location: /public/index.php?page=my-orders");
+        header("Location: /index.php?page=my-orders");
         exit;
     }
 
@@ -272,7 +272,7 @@ class OrderController
     {
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'seller') {
             $_SESSION['error'] = "Seller access only.";
-            header("Location: /public/index.php?page=seller-earnings");
+            header("Location: /index.php?page=seller-earnings");
             exit;
         }
 
@@ -288,7 +288,7 @@ class OrderController
         $_SESSION[$created ? 'success' : 'error'] =
             $created ? "Payout request submitted." : "Invalid payout amount.";
 
-        header("Location: /public/index.php?page=seller-earnings");
+        header("Location: /index.php?page=seller-earnings");
         exit;
     }
 }

@@ -7,7 +7,7 @@
         <p>Manage orders that include your products.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=dashboard">Back to Dashboard</a>
+    <a class="btn btn-secondary" href="/index.php?page=dashboard">Back to Dashboard</a>
 </div>
 
 <?php if (empty($orders)): ?>
@@ -40,7 +40,7 @@
 
                     <?php if (!empty($order['product_image'])): ?>
                         <img
-                            src="/public/uploads/<?php echo htmlspecialchars($order['product_image']); ?>"
+                            src="/uploads/<?php echo htmlspecialchars($order['product_image']); ?>"
                             alt="<?php echo htmlspecialchars($order['product_name']); ?>">
                     <?php endif; ?>
 
@@ -94,7 +94,7 @@
                     <?php endif; ?>
                 </div>
 
-                <form action="/public/index.php" method="POST" class="status-form">
+                <form action="/index.php" method="POST" class="status-form">
 
                     <?php echo csrfField(); ?>
 
@@ -138,7 +138,7 @@
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <a
                     class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                    href="/public/index.php?page=seller-orders&p=<?php echo $i; ?>">
+                    href="/index.php?page=seller-orders&p=<?php echo $i; ?>">
                     <?php echo $i; ?>
                 </a>
             <?php endfor; ?>

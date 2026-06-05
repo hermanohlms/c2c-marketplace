@@ -29,7 +29,7 @@
 
             <a
                 class="message-card card"
-                href="/public/index.php?page=messages-thread&id=<?php echo htmlspecialchars($conversation['id']); ?>">
+                href="/index.php?page=messages-thread&id=<?php echo htmlspecialchars($conversation['id']); ?>">
                 <div>
                     <h3><?php echo htmlspecialchars($otherName); ?></h3>
 

@@ -7,13 +7,13 @@
         <p>Create, search, update, and delete product categories.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
+    <a class="btn btn-secondary" href="/index.php?page=admin-dashboard">Back</a>
 </div>
 
 <section class="card category-create-block">
     <h2>Add Category</h2>
 
-    <form action="/public/index.php" method="POST" class="stack-form">
+    <form action="/index.php" method="POST" class="stack-form">
         <?php echo csrfField(); ?>
 
         <input type="hidden" name="action" value="create-category">
@@ -41,7 +41,7 @@
         <p>Search and manage all available product categories.</p>
     </div>
 
-    <form action="/public/index.php" method="GET" class="admin-search-form">
+    <form action="/index.php" method="GET" class="admin-search-form">
         <input type="hidden" name="page" value="admin-categories">
 
         <input
@@ -53,7 +53,7 @@
         <button type="submit">Search</button>
 
         <?php if (!empty($_GET['search'])): ?>
-            <a class="btn btn-secondary" href="/public/index.php?page=admin-categories">
+            <a class="btn btn-secondary" href="/index.php?page=admin-categories">
                 Reset
             </a>
         <?php endif; ?>
@@ -74,7 +74,7 @@
 
                 <div class="category-card">
 
-                    <form action="/public/index.php" method="POST" class="stack-form">
+                    <form action="/index.php" method="POST" class="stack-form">
                         <?php echo csrfField(); ?>
 
                         <input type="hidden" name="action" value="update-category">
@@ -111,7 +111,7 @@
                     </form>
                     <br>
                     <form
-                        action="/public/index.php"
+                        action="/index.php"
                         method="POST"
                         onsubmit="return confirm('Delete this category? Products will become uncategorized.');">
                         <?php echo csrfField(); ?>
@@ -141,7 +141,7 @@
 
                     <a
                         class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                        href="/public/index.php?page=admin-categories&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>">
+                        href="/index.php?page=admin-categories&search=<?php echo urlencode($search); ?>&p=<?php echo $i; ?>">
                         <?php echo $i; ?>
                     </a>
 

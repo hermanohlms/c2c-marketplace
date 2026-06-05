@@ -7,7 +7,7 @@
         <p>Approve or reject seller payout requests.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=admin-dashboard">Back</a>
+    <a class="btn btn-secondary" href="/index.php?page=admin-dashboard">Back</a>
 </div>
 
 <?php if (empty($payouts)): ?>
@@ -56,7 +56,7 @@
 
                     <?php if ($payout['status'] === 'pending'): ?>
 
-                        <form action="/public/index.php" method="POST" class="payout-actions">
+                        <form action="/index.php" method="POST" class="payout-actions">
                             <?php echo csrfField(); ?>
 
                             <input type="hidden" name="action" value="update-payout">

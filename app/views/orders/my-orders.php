@@ -7,7 +7,7 @@
         <p>Track your purchases and review products you have bought.</p>
     </div>
 
-    <a class="btn btn-secondary" href="/public/index.php?page=shop">Continue Shopping</a>
+    <a class="btn btn-secondary" href="/index.php?page=shop">Continue Shopping</a>
 </div>
 
 <?php if (empty($orders)): ?>
@@ -15,7 +15,7 @@
     <div class="card empty-state">
         <h2>No orders yet</h2>
         <p>Once you checkout, your orders will appear here.</p>
-        <a class="btn" href="/public/index.php?page=shop">Start Shopping</a>
+        <a class="btn" href="/index.php?page=shop">Start Shopping</a>
     </div>
 
 <?php else: ?>
@@ -65,7 +65,7 @@
 
                             <?php if (!empty($item['product_image'])): ?>
                                 <img
-                                    src="/public/uploads/<?php echo htmlspecialchars($item['product_image']); ?>"
+                                    src="/uploads/<?php echo htmlspecialchars($item['product_image']); ?>"
                                     alt="<?php echo htmlspecialchars($item['product_name']); ?>">
                             <?php endif; ?>
 
@@ -74,7 +74,7 @@
                                 <p>Quantity: <?php echo htmlspecialchars($item['quantity']); ?></p>
                                 <p>Price: R<?php echo number_format($item['price'], 2); ?></p>
 
-                                <a href="/public/index.php?page=product&id=<?php echo htmlspecialchars($item['product_id']); ?>">
+                                <a href="/index.php?page=product&id=<?php echo htmlspecialchars($item['product_id']); ?>">
                                     Review Product
                                 </a>
                             </div>
@@ -87,7 +87,7 @@
 
                 <?php if ($order['status'] === 'shipped'): ?>
 
-                    <form action="/public/index.php" method="POST">
+                    <form action="/index.php" method="POST">
                         <?php echo csrfField(); ?>
 
                         <input type="hidden" name="action" value="confirm-order-received">
@@ -111,7 +111,7 @@
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <a
                     class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                    href="/public/index.php?page=my-orders&p=<?php echo $i; ?>">
+                    href="/index.php?page=my-orders&p=<?php echo $i; ?>">
                     <?php echo $i; ?>
                 </a>
             <?php endfor; ?>

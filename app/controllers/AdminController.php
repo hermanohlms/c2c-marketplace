@@ -20,13 +20,13 @@ class AdminController
     {
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = "Please login first.";
-            header("Location: /public/index.php?page=login");
+            header("Location: /index.php?page=login");
             exit;
         }
 
         if ($_SESSION['user_role'] !== 'admin') {
             $_SESSION['error'] = "Admin access only.";
-            header("Location: /public/index.php?page=shop");
+            header("Location: /index.php?page=shop");
             exit;
         }
     }
@@ -102,7 +102,7 @@ class AdminController
 
         if ($name === '') {
             $_SESSION['error'] = "Category name is required.";
-            header("Location: /public/index.php?page=admin-categories");
+            header("Location: /index.php?page=admin-categories");
             exit;
         }
 
@@ -115,7 +115,7 @@ class AdminController
             $_SESSION['error'] = "Category could not be created. It may already exist.";
         }
 
-        header("Location: /public/index.php?page=admin-categories");
+        header("Location: /index.php?page=admin-categories");
         exit;
     }
 
@@ -193,7 +193,7 @@ class AdminController
 
         if (!$product_id || !$status) {
             $_SESSION['error'] = "Invalid product update.";
-            header("Location: /public/index.php?page=admin-products");
+            header("Location: /index.php?page=admin-products");
             exit;
         }
 
@@ -222,7 +222,7 @@ class AdminController
             $_SESSION['error'] = "Could not update product status.";
         }
 
-        header("Location: /public/index.php?page=admin-products");
+        header("Location: /index.php?page=admin-products");
         exit;
     }
 
@@ -291,13 +291,13 @@ class AdminController
 
         if (!$user_id || !$role || !$status) {
             $_SESSION['error'] = "Invalid user update.";
-            header("Location: /public/index.php?page=admin-users");
+            header("Location: /index.php?page=admin-users");
             exit;
         }
 
         if ($user_id == $_SESSION['user_id'] && $status === 'inactive') {
             $_SESSION['error'] = "You cannot deactivate your own admin account.";
-            header("Location: /public/index.php?page=admin-users");
+            header("Location: /index.php?page=admin-users");
             exit;
         }
 
@@ -317,7 +317,7 @@ class AdminController
             'admin'
         );
 
-        header("Location: /public/index.php?page=admin-users");
+        header("Location: /index.php?page=admin-users");
         exit;
     }
 
@@ -331,7 +331,7 @@ class AdminController
 
         if (!$category_id || $name === '') {
             $_SESSION['error'] = "Category name is required.";
-            header("Location: /public/index.php?page=admin-categories");
+            header("Location: /index.php?page=admin-categories");
             exit;
         }
 
@@ -351,7 +351,7 @@ class AdminController
         $_SESSION[$updated ? 'success' : 'error'] =
             $updated ? "Category updated." : "Could not update category.";
 
-        header("Location: /public/index.php?page=admin-categories");
+        header("Location: /index.php?page=admin-categories");
         exit;
     }
 
@@ -363,7 +363,7 @@ class AdminController
 
         if (!$category_id) {
             $_SESSION['error'] = "Invalid category.";
-            header("Location: /public/index.php?page=admin-categories");
+            header("Location: /index.php?page=admin-categories");
             exit;
         }
 
@@ -379,7 +379,7 @@ class AdminController
         $_SESSION[$deleted ? 'success' : 'error'] =
             $deleted ? "Category deleted." : "Could not delete category.";
 
-        header("Location: /public/index.php?page=admin-categories");
+        header("Location: /index.php?page=admin-categories");
         exit;
     }
 
@@ -420,7 +420,7 @@ class AdminController
 
         if (!$payout_id || !in_array($decision, ['approve', 'reject'])) {
             $_SESSION['error'] = "Invalid payout update.";
-            header("Location: /public/index.php?page=admin-payouts");
+            header("Location: /index.phppage=admin-payouts");
             exit;
         }
 
@@ -464,7 +464,7 @@ class AdminController
         $_SESSION[$updated ? 'success' : 'error'] =
             $updated ? "Payout updated." : "Could not update payout.";
 
-        header("Location: /public/index.php?page=admin-payouts");
+        header("Location: /index.php?page=admin-payouts");
         exit;
     }
 }

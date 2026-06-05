@@ -9,6 +9,6 @@
     <p>Order number: #<?php echo htmlspecialchars($_GET['order_id']); ?></p>
 <?php endif; ?>
 
-<a href="/public/index.php?page=shop">Continue Shopping</a>
+<a href="/index.php?page=shop">Continue Shopping</a>
 
 <?php require_once __DIR__ . '/../layouts/footer.php'; ?>

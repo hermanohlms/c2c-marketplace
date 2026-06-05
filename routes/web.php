@@ -37,7 +37,7 @@ if ($action === 'register') {
 
     session_destroy();
 
-    header("Location: /public/index.php?page=login");
+    header("Location: /index.php?page=login");
     exit;
 } elseif ($page === 'add-product') {
 
