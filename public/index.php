@@ -57,8 +57,8 @@ $supportController = new SupportController($conn);
 $orderModel = new Order($conn);
 $productModel = new Product($conn);
 
-$escrowModel = new Escrow($conn);
-$escrowModel->releaseExpiredShippedOrders(14);
+//$escrowModel = new Escrow($conn);
+//$escrowModel->releaseExpiredShippedOrders(14);
 $messageController = new MessageController($conn);
 $notificationController = new NotificationController($conn);
 $sellerStoreController = new SellerStoreController($conn);
