@@ -76,7 +76,7 @@
         <div class="card">
             <span class="step-number"></span>
             <h3>Confirm delivery</h3>
-            <p>Once received, confirm your order so seller funds can be released.</p>
+            <p>Once received, confirm your order so seller funds can be released. All orders are shipped through Courier Guy and can be tracked on their website with your tracking number.</p>
         </div>
     </div>
 

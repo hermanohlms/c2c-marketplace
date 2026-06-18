@@ -9,6 +9,8 @@ function generatePayfastSignature($data, $passphrase = '')
 {
     unset($data['signature']);
 
+    ksort($data);
+
     $pfOutput = '';
 
     foreach ($data as $key => $value) {
@@ -19,9 +21,9 @@ function generatePayfastSignature($data, $passphrase = '')
 
     $pfOutput = rtrim($pfOutput, '&');
 
-    if ($passphrase !== '') {
+    if (!empty($passphrase)) {
         $pfOutput .= '&passphrase=' . payfastUrlEncode($passphrase);
     }
 
-    return strtolower(md5($pfOutput));
+    return md5($pfOutput);
 }
