@@ -138,7 +138,10 @@ class AuthController
                 }
             } else {
 
-                echo "User not found.";
+                $_SESSION['error'] = "Incorrect email or password.";
+
+                header("Location: /index.php?page=login");
+                exit;
             }
         }
     }
