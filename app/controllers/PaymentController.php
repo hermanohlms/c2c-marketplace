@@ -20,19 +20,6 @@ class PaymentController
     public function startPayfast()
     {
 
-        $passphrase = $this->config['sandbox']
-            ? ''
-            : ($this->config['passphrase'] ?? '');
-
-        $data['signature'] = generatePayfastSignature(
-            $data,
-            $passphrase
-        );
-
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
 
         if (!isset($_SESSION['last_order_id'])) {
             $_SESSION['error'] = "No order found for payment.";
@@ -62,6 +49,21 @@ class PaymentController
             'amount' => number_format((float) $order['total_amount'], 2, '.', ''),
             'item_name' => 'Order #' . $order['id']
         ];
+
+        $passphrase = $this->config['sandbox']
+            ? ''
+            : ($this->config['passphrase'] ?? '');
+
+        $data['signature'] = generatePayfastSignature(
+            $data,
+            $passphrase
+        );
+
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        exit;
+
 
         $data['signature'] = generatePayfastSignature(
             $data,
