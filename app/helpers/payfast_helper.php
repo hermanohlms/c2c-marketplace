@@ -4,19 +4,17 @@ function generatePayfastSignature($data, $passphrase = '')
 {
     unset($data['signature']);
 
-    $pfOutput = '';
-
     foreach ($data as $key => $value) {
-        if ($value !== '' && $value !== null) {
-            $pfOutput .= $key . '=' . urlencode(trim((string)$value)) . '&';
+        if ($value === '' || $value === null) {
+            unset($data[$key]);
         }
     }
 
-    $pfOutput = rtrim($pfOutput, '&');
+    $signatureString = http_build_query($data);
 
-    if (!empty($passphrase)) {
-        $pfOutput .= '&passphrase=' . urlencode(trim($passphrase));
+    if (trim($passphrase) !== '') {
+        $signatureString .= '&passphrase=' . urlencode(trim($passphrase));
     }
 
-    return md5($pfOutput);
+    return md5($signatureString);
 }
