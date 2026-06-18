@@ -50,20 +50,6 @@ class PaymentController
             'item_name' => 'Order #' . $order['id']
         ];
 
-        $passphrase = $this->config['sandbox']
-            ? ''
-            : ($this->config['passphrase'] ?? '');
-
-        $data['signature'] = generatePayfastSignature(
-            $data,
-            $passphrase
-        );
-
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
-
 
         $data['signature'] = generatePayfastSignature(
             $data,
