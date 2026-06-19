@@ -31,10 +31,10 @@ class CartController
     {
         $this->requireBuyer();
 
-        $product_id = $_POST['product_id'] ?? null;
+        $product_id = (int)($_POST['product_id'] ?? 0);
         $quantity = max(1, (int)($_POST['quantity'] ?? 1));
 
-        if (!$product_id) {
+        if ($product_id <= 0) {
             $_SESSION['error'] = "Invalid product.";
             header("Location: /index.php?page=shop");
             exit;
@@ -50,7 +50,7 @@ class CartController
         }
 
         if ($quantity > (int)$product['stock']) {
-            $_SESSION['error'] = "Not enough stock available.";
+            $_SESSION['error'] = "Only " . $product['stock'] . " items available in stock.";
             header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/index.php?page=shop'));
             exit;
         }
@@ -117,16 +117,12 @@ class CartController
             }
 
             if ($quantity > (int)$product['stock']) {
-                $_SESSION['error'] = "Not enough stock available for " . $product['name'] . ".";
+                $_SESSION['error'] = "Only " . $product['stock'] . " items available for " . $product['name'] . ".";
                 header("Location: /index.php?page=cart");
                 exit;
             }
 
-            $cartModel->updateQuantity(
-                $_SESSION['user_id'],
-                $product_id,
-                $quantity
-            );
+            $cartModel->updateQuantity($_SESSION['user_id'], $product_id, $quantity);
         }
 
         $_SESSION['success'] = "Cart updated.";
@@ -134,13 +130,65 @@ class CartController
         exit;
     }
 
+    public function ajaxUpdate()
+    {
+        $this->requireBuyer();
+
+        header('Content-Type: application/json');
+
+        $product_id = (int)($_POST['product_id'] ?? 0);
+        $quantity = (int)($_POST['quantity'] ?? 0);
+
+        if ($product_id <= 0) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid product.'
+            ]);
+            exit;
+        }
+
+        $productModel = new Product($this->db);
+        $product = $productModel->findById($product_id);
+
+        if (!$product) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Product not found.'
+            ]);
+            exit;
+        }
+
+        if ($quantity > (int)$product['stock']) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Only ' . $product['stock'] . ' items available in stock.',
+                'max_stock' => (int)$product['stock']
+            ]);
+            exit;
+        }
+
+        $cartModel = new Cart($this->db);
+
+        if ($quantity <= 0) {
+            $cartModel->remove($_SESSION['user_id'], $product_id);
+        } else {
+            $cartModel->updateQuantity($_SESSION['user_id'], $product_id, $quantity);
+        }
+
+        echo json_encode([
+            'success' => true,
+            'message' => 'Cart updated.'
+        ]);
+        exit;
+    }
+
     public function remove()
     {
         $this->requireBuyer();
 
-        $product_id = $_POST['product_id'] ?? null;
+        $product_id = (int)($_POST['product_id'] ?? 0);
 
-        if (!$product_id) {
+        if ($product_id <= 0) {
             $_SESSION['error'] = "Invalid cart item.";
             header("Location: /index.php?page=cart");
             exit;
@@ -156,6 +204,8 @@ class CartController
 
     public function count()
     {
+        header('Content-Type: application/json');
+
         if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'buyer') {
             echo json_encode(['count' => 0]);
             exit;

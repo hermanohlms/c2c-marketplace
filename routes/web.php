@@ -95,6 +95,9 @@ if ($action === 'register') {
 } elseif ($action === 'remove-from-cart') {
 
     $cartController->remove();
+    if ($_POST['action'] === 'ajax-update-cart') {
+        $cartController->ajaxUpdate();
+    }
 } elseif ($page === 'cart') {
 
     $cartController->view();

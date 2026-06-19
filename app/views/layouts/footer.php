@@ -8,6 +8,7 @@
 <script src="/assets/js/nav.js"></script>
 <script src="/assets/js/wishlist.js"></script>
 <script src="/assets/js/theme.js"></script>
+<script src="/assets/js/cart-auto-update.js"></script>
 
 </body>
 

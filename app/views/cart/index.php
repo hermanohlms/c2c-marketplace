@@ -15,77 +15,68 @@
 
     <section class="cart-page">
 
-        <form action="/index.php" method="POST" class="cart-items-form">
-            <?php echo csrfField(); ?>
+        <div class="cart-items-list">
 
-            <input type="hidden" name="action" value="update-cart">
+            <?php foreach ($cartItems as $item): ?>
 
-            <div class="cart-items-list">
+                <?php
+                $itemSubtotal = $item['price'] * $item['quantity'];
+                ?>
 
-                <?php foreach ($cartItems as $item): ?>
+                <div class="cart-item-card" data-product-id="<?php echo htmlspecialchars($item['product_id']); ?>">
 
-                    <?php
-                    $itemSubtotal = $item['price'] * $item['quantity'];
-                    ?>
-
-                    <div class="cart-item-card">
-
-                        <?php if (!empty($item['image'])): ?>
-                            <img
-                                src="/uploads/<?php echo htmlspecialchars($item['image']); ?>"
-                                alt="<?php echo htmlspecialchars($item['name']); ?>"
-                                class="cart-item-image">
-                        <?php else: ?>
-                            <div class="cart-item-image product-image-placeholder">
-                                No Image
-                            </div>
-                        <?php endif; ?>
-
-                        <div class="cart-item-info">
-                            <h3><?php echo htmlspecialchars($item['name']); ?></h3>
-
-                            <p class="cart-item-price">
-                                R<?php echo number_format($item['price'], 2); ?>
-                            </p>
-
-                            <label class="quantity-label">
-                                Quantity
-                                <input
-                                    type="number"
-                                    name="quantities[<?php echo htmlspecialchars($item['product_id']); ?>]"
-                                    value="<?php echo htmlspecialchars($item['quantity']); ?>"
-                                    min="0"
-                                    max="<?php echo htmlspecialchars($item['stock']); ?>">
-                            </label>
-
-                            <p class="cart-item-subtotal">
-                                Subtotal:
-                                <strong>R<?php echo number_format($itemSubtotal, 2); ?></strong>
-                            </p>
-
-                            <form action="/index.php" method="POST">
-                                <?php echo csrfField(); ?>
-
-                                <input type="hidden" name="action" value="remove-from-cart">
-                                <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
-
-                                <button type="submit" class="btn btn-secondary">
-                                    Remove
-                                </button>
-                            </form>
+                    <?php if (!empty($item['image'])): ?>
+                        <img
+                            src="/uploads/<?php echo htmlspecialchars($item['image']); ?>"
+                            alt="<?php echo htmlspecialchars($item['name']); ?>"
+                            class="cart-item-image">
+                    <?php else: ?>
+                        <div class="cart-item-image product-image-placeholder">
+                            No Image
                         </div>
+                    <?php endif; ?>
 
+                    <div class="cart-item-info">
+                        <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+
+                        <p class="cart-item-price">
+                            R<?php echo number_format($item['price'], 2); ?>
+                        </p>
+
+                        <label class="quantity-label">
+                            Quantity
+                            <input
+                                type="number"
+                                class="cart-quantity-input"
+                                data-product-id="<?php echo htmlspecialchars($item['product_id']); ?>"
+                                data-stock="<?php echo htmlspecialchars($item['stock']); ?>"
+                                value="<?php echo htmlspecialchars($item['quantity']); ?>"
+                                min="0"
+                                max="<?php echo htmlspecialchars($item['stock']); ?>">
+                        </label>
+
+                        <p class="cart-item-subtotal">
+                            Subtotal:
+                            <strong>R<?php echo number_format($itemSubtotal, 2); ?></strong>
+                        </p>
+
+                        <form action="/index.php" method="POST">
+                            <?php echo csrfField(); ?>
+
+                            <input type="hidden" name="action" value="remove-from-cart">
+                            <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
+
+                            <button type="submit" class="btn btn-secondary">
+                                Remove
+                            </button>
+                        </form>
                     </div>
 
-                <?php endforeach; ?>
+                </div>
 
-            </div>
+            <?php endforeach; ?>
 
-        </form>
-
-        <button type="submit" class="btn btn-secondary">
-            Update Cart
-        </button>
+        </div>
 
         <aside class="cart-summary card">
             <h2>Order Summary</h2>
