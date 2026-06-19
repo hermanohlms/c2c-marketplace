@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../models/Product.php';
+require_once __DIR__ . '/../models/Cart.php';
 
 class CartController
 {
@@ -14,165 +15,95 @@ class CartController
 
     public function add()
     {
-
         $this->requireBuyer();
 
         $product_id = $_POST['product_id'] ?? null;
+        $quantity = max(1, (int)($_POST['quantity'] ?? 1));
 
         if (!$product_id) {
-            abort404();
-        }
-
-        $productModel = new Product($this->db);
-        $product = $productModel->findById($product_id);
-
-        if (!$product) {
-            abort404();
-        }
-
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = [];
-        }
-
-        if (isset($_SESSION['cart'][$product_id])) {
-
-            if ($_SESSION['cart'][$product_id]['quantity'] + 1 > $product['stock']) {
-
-                $_SESSION['error'] = "Not enough stock available.";
-
-                header("Location: /index.php?page=product&id=" . $product_id);
-                exit;
-            }
-
-            $_SESSION['cart'][$product_id]['quantity']++;
-        } else {
-
-            if ($product['stock'] <= 0) {
-
-                $_SESSION['error'] = "This product is out of stock.";
-
-                header("Location: /index.php?page=product&id=" . $product_id);
-                exit;
-            }
-
-            $_SESSION['cart'][$product_id] = [
-                'id' => $product['id'],
-                'name' => $product['name'],
-                'price' => $product['price'],
-                'image' => $product['image'],
-                'quantity' => 1
-            ];
-        }
-
-        if (
-            isset($_POST['ajax']) &&
-            $_POST['ajax'] === '1'
-        ) {
-            $count = 0;
-
-            foreach ($_SESSION['cart'] as $item) {
-                $count += $item['quantity'];
-            }
-
-            echo json_encode([
-                'success' => true,
-                'message' => 'Product added to cart.',
-                'count' => $count
-            ]);
+            $_SESSION['error'] = "Invalid product.";
+            header("Location: /index.php?page=shop");
             exit;
         }
 
+        $cartModel = new Cart($this->db);
+        $cartModel->add($_SESSION['user_id'], $product_id, $quantity);
+
+        $_SESSION['success'] = "Product added to cart.";
+        header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/index.php?page=cart'));
+        exit;
+    }
+
+    public function view()
+    {
+        $this->requireBuyer();
+
+        $cartModel = new Cart($this->db);
+        $cartItems = $cartModel->getItems($_SESSION['user_id']);
+
+        $total = 0;
+
+        foreach ($cartItems as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        require_once __DIR__ . '/../views/cart/view.php';
+    }
+
+    public function update()
+    {
+        $this->requireBuyer();
+
+        $product_id = $_POST['product_id'] ?? null;
+        $quantity = (int)($_POST['quantity'] ?? 1);
+
+        if (!$product_id) {
+            $_SESSION['error'] = "Invalid cart item.";
+            header("Location: /index.php?page=cart");
+            exit;
+        }
+
+        $cartModel = new Cart($this->db);
+        $cartModel->updateQuantity($_SESSION['user_id'], $product_id, $quantity);
+
+        $_SESSION['success'] = "Cart updated.";
         header("Location: /index.php?page=cart");
         exit;
     }
 
     public function remove()
     {
-
         $this->requireBuyer();
 
         $product_id = $_POST['product_id'] ?? null;
 
-        if ($product_id && isset($_SESSION['cart'][$product_id])) {
-            unset($_SESSION['cart'][$product_id]);
+        if (!$product_id) {
+            $_SESSION['error'] = "Invalid cart item.";
+            header("Location: /index.php?page=cart");
+            exit;
         }
 
-        header("Location: /index.php?page=cart");
-        exit;
-    }
+        $cartModel = new Cart($this->db);
+        $cartModel->remove($_SESSION['user_id'], $product_id);
 
-    public function view()
-    {
-
-        $this->requireBuyer();
-
-        require_once __DIR__ . '/../views/cart/index.php';
-    }
-
-    public function update()
-    {
-
-        $this->requireBuyer();
-
-        $quantities = $_POST['quantities'] ?? [];
-
-        $productModel = new Product($this->db);
-
-        foreach ($quantities as $product_id => $quantity) {
-
-            $quantity = (int) $quantity;
-
-            if ($quantity <= 0) {
-                unset($_SESSION['cart'][$product_id]);
-                continue;
-            }
-
-            $product = $productModel->findById($product_id);
-
-            if (!$product) {
-                unset($_SESSION['cart'][$product_id]);
-                continue;
-            }
-
-            if ($quantity > $product['stock']) {
-                $_SESSION['error'] = "Only " . $product['stock'] . " item(s) available for " . $product['name'] . ".";
-                $_SESSION['cart'][$product_id]['quantity'] = $product['stock'];
-            } else {
-                $_SESSION['cart'][$product_id]['quantity'] = $quantity;
-            }
-        }
-
+        $_SESSION['success'] = "Product removed from cart.";
         header("Location: /index.php?page=cart");
         exit;
     }
 
     public function count()
     {
-        $count = 0;
-
-        if (isset($_SESSION['cart'])) {
-            foreach ($_SESSION['cart'] as $item) {
-                $count += $item['quantity'];
-            }
+        if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'buyer') {
+            echo json_encode(['count' => 0]);
+            exit;
         }
+
+        $cartModel = new Cart($this->db);
 
         echo json_encode([
-            'count' => $count
+            'count' => (int)$cartModel->count($_SESSION['user_id'])
         ]);
-    }
 
-    private function requireBuyer()
-    {
-        if (!isset($_SESSION['user_id'])) {
-            $_SESSION['error'] = "Please login first.";
-            header("Location: /index.php?page=login");
-            exit;
-        }
-
-        if ($_SESSION['user_role'] !== 'buyer') {
-            $_SESSION['error'] = "Only buyers can use the cart.";
-            header("Location: /index.php?page=shop");
-            exit;
-        }
+        exit;
     }
 }

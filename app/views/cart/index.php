@@ -4,11 +4,11 @@
 <h1>Your Cart</h1>
 
 <?php
-$cart = $_SESSION['cart'] ?? [];
-$total = 0;
+$subtotal = 0;
+$deliveryFee = 49.99;
 ?>
 
-<?php if (empty($cart)): ?>
+<?php if (empty($cartItems)): ?>
 
     <div class="card empty-cart">
         <h2>Your cart is empty</h2>
@@ -27,11 +27,11 @@ $total = 0;
 
             <div class="cart-items-list">
 
-                <?php foreach ($cart as $item): ?>
+                <?php foreach ($cartItems as $item): ?>
 
                     <?php
-                    $subtotal = $item['price'] * $item['quantity'];
-                    $total += $subtotal;
+                    $itemSubtotal = $item['price'] * $item['quantity'];
+                    $subtotal += $itemSubtotal;
                     ?>
 
                     <div class="cart-item-card">
@@ -54,7 +54,7 @@ $total = 0;
                                 Quantity
                                 <input
                                     type="number"
-                                    name="quantities[<?php echo htmlspecialchars($item['id']); ?>]"
+                                    name="quantities[<?php echo htmlspecialchars($item['product_id']); ?>]"
                                     value="<?php echo htmlspecialchars($item['quantity']); ?>"
                                     min="0">
                             </label>
@@ -77,16 +77,14 @@ $total = 0;
         </form>
 
         <aside class="cart-summary card">
-            <h2>Order Summary</h2>
-
             <div class="summary-row">
                 <span>Subtotal</span>
-                <strong>R<?php echo number_format($total, 2); ?></strong>
+                <strong>R<?php echo number_format($subtotal, 2); ?></strong>
             </div>
 
             <div class="summary-row">
                 <span>Delivery</span>
-                <strong>Calculated later</strong>
+                <strong>R<?php echo number_format($deliveryFee, 2); ?></strong>
             </div>
 
             <hr>
@@ -95,14 +93,6 @@ $total = 0;
                 <span>Total</span>
                 <strong>R<?php echo number_format($total, 2); ?></strong>
             </div>
-
-            <a href="/index.php?page=checkout" class="btn checkout-btn">
-                Proceed to Checkout
-            </a>
-
-            <a class="continue-link" href="/index.php?page=shop">
-                Continue Shopping
-            </a>
         </aside>
 
     </section>
