@@ -13,6 +13,21 @@ class CartController
         $this->db = $db;
     }
 
+    private function requireBuyer()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = "Please login first.";
+            header("Location: /index.php?page=login");
+            exit;
+        }
+
+        if ($_SESSION['user_role'] !== 'buyer') {
+            $_SESSION['error'] = "Buyer access only.";
+            header("Location: /index.php?page=shop");
+            exit;
+        }
+    }
+
     public function add()
     {
         $this->requireBuyer();
