@@ -5,7 +5,6 @@ require_once __DIR__ . '/../models/Cart.php';
 
 class CartController
 {
-
     private $db;
 
     public function __construct($db)
@@ -41,6 +40,21 @@ class CartController
             exit;
         }
 
+        $productModel = new Product($this->db);
+        $product = $productModel->findById($product_id);
+
+        if (!$product) {
+            $_SESSION['error'] = "Product not found.";
+            header("Location: /index.php?page=shop");
+            exit;
+        }
+
+        if ($quantity > (int)$product['stock']) {
+            $_SESSION['error'] = "Not enough stock available.";
+            header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/index.php?page=shop'));
+            exit;
+        }
+
         $cartModel = new Cart($this->db);
         $cartModel->add($_SESSION['user_id'], $product_id, $quantity);
 
@@ -56,11 +70,14 @@ class CartController
         $cartModel = new Cart($this->db);
         $cartItems = $cartModel->getItems($_SESSION['user_id']);
 
-        $total = 0;
+        $subtotal = 0;
+        $deliveryFee = 49.99;
 
         foreach ($cartItems as $item) {
-            $total += $item['price'] * $item['quantity'];
+            $subtotal += $item['price'] * $item['quantity'];
         }
+
+        $total = $subtotal + $deliveryFee;
 
         require_once __DIR__ . '/../views/cart/index.php';
     }
@@ -69,17 +86,48 @@ class CartController
     {
         $this->requireBuyer();
 
-        $product_id = $_POST['product_id'] ?? null;
-        $quantity = (int)($_POST['quantity'] ?? 1);
+        $quantities = $_POST['quantities'] ?? [];
 
-        if (!$product_id) {
-            $_SESSION['error'] = "Invalid cart item.";
+        if (empty($quantities) || !is_array($quantities)) {
+            $_SESSION['error'] = "Invalid cart update.";
             header("Location: /index.php?page=cart");
             exit;
         }
 
         $cartModel = new Cart($this->db);
-        $cartModel->updateQuantity($_SESSION['user_id'], $product_id, $quantity);
+        $productModel = new Product($this->db);
+
+        foreach ($quantities as $product_id => $quantity) {
+            $product_id = (int)$product_id;
+            $quantity = (int)$quantity;
+
+            if ($product_id <= 0) {
+                continue;
+            }
+
+            if ($quantity <= 0) {
+                $cartModel->remove($_SESSION['user_id'], $product_id);
+                continue;
+            }
+
+            $product = $productModel->findById($product_id);
+
+            if (!$product) {
+                continue;
+            }
+
+            if ($quantity > (int)$product['stock']) {
+                $_SESSION['error'] = "Not enough stock available for " . $product['name'] . ".";
+                header("Location: /index.php?page=cart");
+                exit;
+            }
+
+            $cartModel->updateQuantity(
+                $_SESSION['user_id'],
+                $product_id,
+                $quantity
+            );
+        }
 
         $_SESSION['success'] = "Cart updated.";
         header("Location: /index.php?page=cart");

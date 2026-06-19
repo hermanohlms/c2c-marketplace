@@ -3,11 +3,6 @@
 
 <h1>Your Cart</h1>
 
-<?php
-$subtotal = 0;
-$deliveryFee = 49.99;
-?>
-
 <?php if (empty($cartItems)): ?>
 
     <div class="card empty-cart">
@@ -21,9 +16,9 @@ $deliveryFee = 49.99;
     <section class="cart-page">
 
         <form action="/index.php" method="POST" class="cart-items-form">
-            <input type="hidden" name="action" value="update-cart">
-
             <?php echo csrfField(); ?>
+
+            <input type="hidden" name="action" value="update-cart">
 
             <div class="cart-items-list">
 
@@ -31,13 +26,7 @@ $deliveryFee = 49.99;
 
                     <?php
                     $itemSubtotal = $item['price'] * $item['quantity'];
-                    $subtotal += $itemSubtotal;
                     ?>
-
-                    <?php
-                    $total = $itemSubtotal + $deliveryFee;
-                    ?>
-
 
                     <div class="cart-item-card">
 
@@ -46,6 +35,10 @@ $deliveryFee = 49.99;
                                 src="/uploads/<?php echo htmlspecialchars($item['image']); ?>"
                                 alt="<?php echo htmlspecialchars($item['name']); ?>"
                                 class="cart-item-image">
+                        <?php else: ?>
+                            <div class="cart-item-image product-image-placeholder">
+                                No Image
+                            </div>
                         <?php endif; ?>
 
                         <div class="cart-item-info">
@@ -61,13 +54,25 @@ $deliveryFee = 49.99;
                                     type="number"
                                     name="quantities[<?php echo htmlspecialchars($item['product_id']); ?>]"
                                     value="<?php echo htmlspecialchars($item['quantity']); ?>"
-                                    min="0">
+                                    min="0"
+                                    max="<?php echo htmlspecialchars($item['stock']); ?>">
                             </label>
 
                             <p class="cart-item-subtotal">
                                 Subtotal:
-                                <strong>R<?php echo number_format($subtotal, 2); ?></strong>
+                                <strong>R<?php echo number_format($itemSubtotal, 2); ?></strong>
                             </p>
+
+                            <form action="/index.php" method="POST">
+                                <?php echo csrfField(); ?>
+
+                                <input type="hidden" name="action" value="remove-from-cart">
+                                <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($item['product_id']); ?>">
+
+                                <button type="submit" class="btn btn-secondary">
+                                    Remove
+                                </button>
+                            </form>
                         </div>
 
                     </div>
@@ -82,6 +87,8 @@ $deliveryFee = 49.99;
         </form>
 
         <aside class="cart-summary card">
+            <h2>Order Summary</h2>
+
             <div class="summary-row">
                 <span>Subtotal</span>
                 <strong>R<?php echo number_format($subtotal, 2); ?></strong>
@@ -98,6 +105,14 @@ $deliveryFee = 49.99;
                 <span>Total</span>
                 <strong>R<?php echo number_format($total, 2); ?></strong>
             </div>
+
+            <a href="/index.php?page=checkout" class="btn checkout-btn">
+                Proceed to Checkout
+            </a>
+
+            <a class="continue-link" href="/index.php?page=shop">
+                Continue Shopping
+            </a>
         </aside>
 
     </section>
