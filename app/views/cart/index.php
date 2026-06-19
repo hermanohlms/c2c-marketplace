@@ -34,6 +34,11 @@ $deliveryFee = 49.99;
                     $subtotal += $itemSubtotal;
                     ?>
 
+                    <?php
+                    $total = $itemSubtotal + $deliveryFee;
+                    ?>
+
+
                     <div class="cart-item-card">
 
                         <?php if (!empty($item['image'])): ?>
