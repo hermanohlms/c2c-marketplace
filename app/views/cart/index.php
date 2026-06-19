@@ -81,10 +81,11 @@
 
             </div>
 
-            <button type="submit" class="btn btn-secondary">
-                Update Cart
-            </button>
         </form>
+
+        <button type="submit" class="btn btn-secondary">
+            Update Cart
+        </button>
 
         <aside class="cart-summary card">
             <h2>Order Summary</h2>
