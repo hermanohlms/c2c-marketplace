@@ -62,7 +62,7 @@ class CartController
             $total += $item['price'] * $item['quantity'];
         }
 
-        require_once __DIR__ . '/../views/cart/view.php';
+        require_once __DIR__ . '/../views/cart/index.php';
     }
 
     public function update()
