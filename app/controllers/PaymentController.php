@@ -56,11 +56,6 @@ class PaymentController
             $this->config['passphrase']
         );
 
-        echo '<pre>';
-        print_r($data);
-        echo '</pre>';
-        exit;
-
         $url = $this->config['sandbox']
             ? $this->config['sandbox_url']
             : $this->config['live_url'];
