@@ -81,9 +81,11 @@
                     <a href="/index.php?page=cart" class="notification-link">
                         Cart
 
-                        <span id="cart-count" class="notification-badge">
-                            0
-                        </span>
+                        <?php if (!empty($_SESSION['cart_count'])): ?>
+                            <span id="cart-count" class="notification-badge">
+                                <?php echo htmlspecialchars($_SESSION['cart_count']); ?>
+                            </span>
+                        <?php endif; ?>
                     </a>
 
                     <a href="/index.php?page=contact">Contact Support</a>

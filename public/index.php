@@ -93,6 +93,19 @@ if (isset($_SESSION['user_id'])) {
     $_SESSION['wishlist_count'] =
         $wishlistStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
+    $cartStmt = $conn->prepare("
+        SELECT COALESCE(SUM(quantity), 0) AS total
+        FROM cart_items
+        WHERE user_id = :user_id
+    ");
+
+    $cartStmt->execute([
+        ':user_id' => $_SESSION['user_id']
+    ]);
+
+    $_SESSION['cart_count'] =
+        $cartStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
     if (($_SESSION['user_role'] ?? '') === 'admin') {
         $ticketStmt = $conn->prepare("
             SELECT COUNT(*) AS total
