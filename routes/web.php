@@ -6,6 +6,9 @@ if ($action === 'register') {
 } elseif ($action === 'login') {
 
     $controller->login();
+} elseif ($action === 'request-payout') {
+
+    $orderController->requestPayout();
 } elseif ($page === 'dashboard') {
 
     if (!isset($_SESSION['user_id'])) {
@@ -212,9 +215,6 @@ if ($action === 'register') {
 } elseif ($page === 'admin-tickets') {
 
     $adminController->tickets();
-} elseif ($action === 'request-payout') {
-
-    $orderController->requestPayout();
 } elseif ($page === 'admin-payouts') {
 
     $adminController->payouts();
