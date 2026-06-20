@@ -2088,7 +2088,7 @@ footer {
 }
 
 .product-image {
-    height: 190px;
+    height: auto;
     object-fit: contain;
     background: #f8fafc;
     padding: 10px;
