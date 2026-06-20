@@ -101,8 +101,10 @@ class CartController
         $cartModel = new Cart($this->db);
         $cartItems = $cartModel->getItems($_SESSION['user_id']);
 
+        $orderConfig = require __DIR__ . '/../../config/order.php';
+
         $subtotal = 0;
-        $deliveryFee = 49.99;
+        $deliveryFee = $orderConfig['delivery_fee'];
 
         foreach ($cartItems as $item) {
             $subtotal += $item['price'] * $item['quantity'];

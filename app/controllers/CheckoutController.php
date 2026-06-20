@@ -63,7 +63,10 @@ class CheckoutController
         $orderModel = new Order($this->db);
         $productModel = new Product($this->db);
 
-        $total = 0;
+        $orderConfig = require __DIR__ . '/../../config/order.php';
+        $deliveryFee = $orderConfig['delivery_fee'];
+
+        $total = $deliveryFee;
 
         foreach ($cart as $item) {
             $total += $item['price'] * $item['quantity'];
