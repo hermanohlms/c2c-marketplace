@@ -98,8 +98,6 @@ class PaymentController
     {
         $data = $_POST;
 
-        error_log('ITN received: ' . json_encode($data));
-
         if (getenv('PAYFAST_VALIDATE_IP') === 'true') {
             $clientIp = $this->getClientIp();
 
@@ -110,20 +108,18 @@ class PaymentController
         }
 
         if (empty($data)) {
-            error_log('ITN failed: No ITN data received');
             http_response_code(400);
             exit('No ITN data received');
         }
 
         $receivedSignature = $data['signature'] ?? '';
 
-        $generatedSignature = generatePayfastSignature(
+        $generatedSignature = verifyPayfastItnSignature(
             $data,
             $this->config['passphrase']
         );
 
         if ($receivedSignature !== $generatedSignature) {
-            error_log('ITN failed: Invalid signature. Received=' . $receivedSignature . ' Generated=' . $generatedSignature . ' Passphrase_set=' . (trim($this->config['passphrase']) !== '' ? 'yes' : 'no'));
             http_response_code(400);
             exit('Invalid signature');
         }
@@ -134,7 +130,6 @@ class PaymentController
         $pf_payment_id = $data['pf_payment_id'] ?? null;
 
         if (!$order_id) {
-            error_log('ITN failed: Missing order ID');
             http_response_code(400);
             exit('Missing order ID');
         }
@@ -144,7 +139,6 @@ class PaymentController
         $order = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$order) {
-            error_log('ITN failed: Order not found for id=' . $order_id);
             http_response_code(404);
             exit('Order not found');
         }
@@ -158,7 +152,6 @@ class PaymentController
             number_format((float)$order['total_amount'], 2, '.', '') !==
             number_format((float)$amount_gross, 2, '.', '')
         ) {
-            error_log('ITN failed: Amount mismatch. order.total_amount=' . $order['total_amount'] . ' amount_gross=' . $amount_gross);
             http_response_code(400);
             exit('Amount mismatch');
         }
