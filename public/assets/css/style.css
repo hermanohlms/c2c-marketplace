@@ -235,7 +235,7 @@ nav {
 }
 
 img {
-    max-width: max-content;
+    max-width: 100%;
     height: auto;
 }
 
@@ -547,6 +547,8 @@ button {
 
 .product-image {
     width: 100%;
+    height: 220px;
+    object-fit: cover;
     display: block;
 }
 
@@ -2086,9 +2088,10 @@ footer {
 }
 
 .product-image {
-    height: auto;
+    height: 190px;
     object-fit: contain;
     background: #f8fafc;
+    padding: 10px;
 }
 
 .product-card-body {
