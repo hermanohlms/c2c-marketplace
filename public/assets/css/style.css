@@ -700,6 +700,8 @@ button {
     border-radius: var(--radius);
     overflow: hidden;
     height: 420px;
+    max-width: 420px;
+    margin: 0 auto;
     display: grid;
     place-items: center;
 }
