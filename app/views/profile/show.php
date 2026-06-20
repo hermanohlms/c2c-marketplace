@@ -14,7 +14,7 @@
 
         <?php if (!empty($user['profile_image'])): ?>
             <img
-                src="/uploads/<?php echo htmlspecialchars($user['profile_image']); ?>"
+                src="<?php echo htmlspecialchars(productImageUrl($user['profile_image'])); ?>"
                 alt="<?php echo htmlspecialchars($user['name']); ?>"
                 class="profile-large-image">
         <?php else: ?>

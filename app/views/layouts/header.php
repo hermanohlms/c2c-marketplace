@@ -121,7 +121,7 @@
 
                         <?php if (!empty($_SESSION['profile_image'])): ?>
                             <img
-                                src="/uploads/<?php echo htmlspecialchars($_SESSION['profile_image']); ?>"
+                                src="<?php echo htmlspecialchars(productImageUrl($_SESSION['profile_image'])); ?>"
                                 alt="<?php echo htmlspecialchars($_SESSION['user_name']); ?>"
                                 class="profile-avatar-img">
                         <?php else: ?>

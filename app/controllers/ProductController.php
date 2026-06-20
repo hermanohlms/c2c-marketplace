@@ -26,8 +26,6 @@ class ProductController
             $price = $_POST['price'];
             $stock = $_POST['stock'];
 
-            $image = $_FILES['image']['name'];
-
             $image = null;
 
             if (
@@ -56,14 +54,13 @@ class ProductController
                     exit;
                 }
 
-                $extension = $allowedMimeTypes[$mimeType];
+                $image = uploadImageToCloudinary($_FILES['image']['tmp_name']);
 
-                $image = 'product_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
-
-                move_uploaded_file(
-                    $_FILES['image']['tmp_name'],
-                    __DIR__ . '/../../public/uploads/' . $image
-                );
+                if (!$image) {
+                    $_SESSION['error'] = "Image upload failed. Please try again.";
+                    header("Location: /index.php?page=add-product");
+                    exit;
+                }
             }
 
             if (!$image) {
@@ -337,14 +334,13 @@ class ProductController
                 exit;
             }
 
-            $extension = $allowedMimeTypes[$mimeType];
+            $image = uploadImageToCloudinary($_FILES['image']['tmp_name']);
 
-            $image = 'product_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
-
-            move_uploaded_file(
-                $_FILES['image']['tmp_name'],
-                __DIR__ . '/../../public/uploads/' . $image
-            );
+            if (!$image) {
+                $_SESSION['error'] = "Image upload failed. Please try again.";
+                header("Location: /index.php?page=edit-product&id=" . $product_id);
+                exit;
+            }
         }
 
         $productModel = new Product($this->db);

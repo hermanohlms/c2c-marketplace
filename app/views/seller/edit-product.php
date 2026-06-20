@@ -14,7 +14,7 @@
 
     <?php if (!empty($product['image'])): ?>
         <img
-            src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+            src="<?php echo htmlspecialchars(productImageUrl($product['image'])); ?>"
             alt="<?php echo htmlspecialchars($product['name']); ?>"
             style="max-width: 240px; border-radius: 14px; margin-bottom: 20px;">
     <?php endif; ?>

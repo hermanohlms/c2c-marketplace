@@ -29,6 +29,7 @@ require_once __DIR__ . '/../app/helpers/data_helper.php';
 require_once __DIR__ . '/../app/helpers/email_helper.php';
 require_once __DIR__ . '/../app/helpers/csrf_helper.php';
 require_once __DIR__ . '/../app/helpers/error_helper.php';
+require_once __DIR__ . '/../app/helpers/cloudinary_helper.php';
 require_once __DIR__ . '/../app/controllers/SupportController.php';
 
 

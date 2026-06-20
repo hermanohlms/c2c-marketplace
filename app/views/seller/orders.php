@@ -40,7 +40,7 @@
 
                     <?php if (!empty($order['product_image'])): ?>
                         <img
-                            src="/uploads/<?php echo htmlspecialchars($order['product_image']); ?>"
+                            src="<?php echo htmlspecialchars(productImageUrl($order['product_image'])); ?>"
                             alt="<?php echo htmlspecialchars($order['product_name']); ?>">
                     <?php endif; ?>
 

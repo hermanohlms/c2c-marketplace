@@ -7,7 +7,7 @@
 
         <?php if (!empty($seller['profile_image'])): ?>
             <img
-                src="/uploads/<?php echo htmlspecialchars($seller['profile_image']); ?>"
+                src="<?php echo htmlspecialchars(productImageUrl($seller['profile_image'])); ?>"
                 alt="<?php echo htmlspecialchars($seller['name']); ?>"
                 class="seller-store-image">
         <?php else: ?>
@@ -108,7 +108,7 @@
                 <a href="/index.php?page=product&id=<?php echo htmlspecialchars($product['id']); ?>" class="product-image-link">
                     <?php if (!empty($product['image'])): ?>
                         <img
-                            src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                            src="<?php echo htmlspecialchars(productImageUrl($product['image'])); ?>"
                             alt="<?php echo htmlspecialchars($product['name']); ?>"
                             class="product-image">
                     <?php else: ?>

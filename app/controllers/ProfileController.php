@@ -71,15 +71,13 @@ class ProfileController
                 exit;
             }
 
-            $extension = $allowedMimeTypes[$mimeType];
+            $profileImage = uploadImageToCloudinary($_FILES['profile_image']['tmp_name']);
 
-            $profileImage =
-                'profile_' . $_SESSION['user_id'] . '_' . time() . '.' . $extension;
-
-            move_uploaded_file(
-                $_FILES['profile_image']['tmp_name'],
-                __DIR__ . '/../../public/uploads/' . $profileImage
-            );
+            if (!$profileImage) {
+                $_SESSION['error'] = "Image upload failed. Please try again.";
+                header("Location: /index.php?page=profile");
+                exit;
+            }
         }
 
         $userModel = new User($this->db);

@@ -34,7 +34,7 @@
 
                 <?php if (!empty($product['image'])): ?>
                     <img
-                        src="/uploads/<?php echo htmlspecialchars($product['image']); ?>"
+                        src="<?php echo htmlspecialchars(productImageUrl($product['image'])); ?>"
                         alt="<?php echo htmlspecialchars($product['name']); ?>"
                         class="product-image">
                 <?php endif; ?>

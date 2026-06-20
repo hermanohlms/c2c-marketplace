@@ -27,7 +27,7 @@
 
                     <?php if (!empty($item['image'])): ?>
                         <img
-                            src="/uploads/<?php echo htmlspecialchars($item['image']); ?>"
+                            src="<?php echo htmlspecialchars(productImageUrl($item['image'])); ?>"
                             alt="<?php echo htmlspecialchars($item['name']); ?>"
                             class="cart-item-image">
                     <?php else: ?>

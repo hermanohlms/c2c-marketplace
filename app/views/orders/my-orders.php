@@ -65,7 +65,7 @@
 
                             <?php if (!empty($item['product_image'])): ?>
                                 <img
-                                    src="/uploads/<?php echo htmlspecialchars($item['product_image']); ?>"
+                                    src="<?php echo htmlspecialchars(productImageUrl($item['product_image'])); ?>"
                                     alt="<?php echo htmlspecialchars($item['product_name']); ?>">
                             <?php endif; ?>
 
