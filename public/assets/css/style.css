@@ -692,6 +692,7 @@ button {
     grid-template-columns: 1fr;
     gap: 24px;
     margin-bottom: 40px;
+    align-items: start;
 }
 
 .product-detail-image-wrap {
@@ -704,6 +705,17 @@ button {
     margin: 0 auto;
     display: grid;
     place-items: center;
+}
+
+@media (min-width: 768px) {
+    .product-detail-page {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .product-detail-image-wrap {
+        margin: 0;
+        max-width: none;
+    }
 }
 
 .product-detail-image {

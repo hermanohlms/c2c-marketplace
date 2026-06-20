@@ -1,4 +1,4 @@
-# C2C Marketplace
+# One-Stop-Shop
 
 A PHP, PostgreSQL, and Docker-based e-commerce marketplace with buyer, seller, and admin roles.
 
