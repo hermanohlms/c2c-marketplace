@@ -20,6 +20,7 @@ A PHP, PostgreSQL, and Docker-based e-commerce marketplace with buyer, seller, a
 - Admin product moderation
 - Admin user management
 - Seller analytics dashboard
+- PayFast payment integration
 
 ## Tech Stack
 
