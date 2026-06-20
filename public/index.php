@@ -95,10 +95,11 @@ if (isset($_SESSION['user_id'])) {
 
     $cartCount = 0;
 
-    if (!empty($_SESSION['cart'])) {
-        foreach ($_SESSION['cart'] as $item) {
-            $cartCount += (int)($item['quantity'] ?? 0);
-        }
+    if (($_SESSION['user_role'] ?? '') === 'buyer') {
+        require_once __DIR__ . '/../app/models/Cart.php';
+
+        $cartModel = new Cart($conn);
+        $cartCount = (int) $cartModel->count($_SESSION['user_id']);
     }
 
     $_SESSION['cart_count'] = $cartCount;

@@ -33,8 +33,15 @@ class CartController
 
         $product_id = (int)($_POST['product_id'] ?? 0);
         $quantity = max(1, (int)($_POST['quantity'] ?? 1));
+        $isAjax = isset($_POST['ajax']);
 
         if ($product_id <= 0) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Invalid product.']);
+                exit;
+            }
+
             $_SESSION['error'] = "Invalid product.";
             header("Location: /index.php?page=shop");
             exit;
@@ -44,19 +51,43 @@ class CartController
         $product = $productModel->findById($product_id);
 
         if (!$product) {
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => 'Product not found.']);
+                exit;
+            }
+
             $_SESSION['error'] = "Product not found.";
             header("Location: /index.php?page=shop");
             exit;
         }
 
         if ($quantity > (int)$product['stock']) {
-            $_SESSION['error'] = "Only " . $product['stock'] . " items available in stock.";
+            $message = "Only " . $product['stock'] . " items available in stock.";
+
+            if ($isAjax) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false, 'message' => $message]);
+                exit;
+            }
+
+            $_SESSION['error'] = $message;
             header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/index.php?page=shop'));
             exit;
         }
 
         $cartModel = new Cart($this->db);
         $cartModel->add($_SESSION['user_id'], $product_id, $quantity);
+
+        if ($isAjax) {
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'message' => 'Product added to cart.',
+                'count' => (int) $cartModel->count($_SESSION['user_id'])
+            ]);
+            exit;
+        }
 
         $_SESSION['success'] = "Product added to cart.";
         header("Location: " . ($_SERVER['HTTP_REFERER'] ?? '/index.php?page=cart'));

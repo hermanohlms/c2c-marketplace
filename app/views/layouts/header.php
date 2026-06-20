@@ -81,11 +81,12 @@
                     <a href="/index.php?page=cart" class="notification-link">
                         Cart
 
-                        <?php if (!empty($_SESSION['cart_count'])): ?>
-                            <span id="cart-count" class="notification-badge">
-                                <?php echo htmlspecialchars($_SESSION['cart_count']); ?>
-                            </span>
-                        <?php endif; ?>
+                        <span
+                            id="cart-count"
+                            class="notification-badge"
+                            style="display: <?php echo !empty($_SESSION['cart_count']) ? 'inline-grid' : 'none'; ?>;">
+                            <?php echo htmlspecialchars($_SESSION['cart_count'] ?? 0); ?>
+                        </span>
                     </a>
 
                     <a href="/index.php?page=contact">Contact Support</a>

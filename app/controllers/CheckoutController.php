@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../models/Order.php';
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/Notification.php';
+require_once __DIR__ . '/../models/Cart.php';
 
 class CheckoutController
 {
@@ -28,7 +29,8 @@ class CheckoutController
             exit;
         }
 
-        $cart = $_SESSION['cart'] ?? [];
+        $cartModel = new Cart($this->db);
+        $cart = $cartModel->getItems($_SESSION['user_id']);
 
         if (empty($cart)) {
             $_SESSION['error'] = "Your cart is empty.";
@@ -84,7 +86,7 @@ class CheckoutController
             );
 
             foreach ($cart as $item) {
-                $product = $productModel->findById($item['id']);
+                $product = $productModel->findById($item['product_id']);
 
                 if (!$product || $product['stock'] < $item['quantity']) {
                     throw new Exception("Not enough stock for " . $item['name']);
@@ -92,7 +94,7 @@ class CheckoutController
 
                 $orderModel->addItem(
                     $order_id,
-                    $item['id'],
+                    $item['product_id'],
                     $item['quantity'],
                     $item['price']
                 );
@@ -100,7 +102,7 @@ class CheckoutController
 
             $this->db->commit();
 
-            unset($_SESSION['cart']);
+            $cartModel->clear($_SESSION['user_id']);
 
             $_SESSION['last_order_id'] = $order_id;
 
@@ -161,7 +163,9 @@ class CheckoutController
             exit;
         }
 
-        if (empty($_SESSION['cart'])) {
+        $cartModel = new Cart($this->db);
+
+        if (empty($cartModel->getItems($_SESSION['user_id']))) {
             $_SESSION['error'] = "Your cart is empty.";
             header("Location: /index.php?page=cart");
             exit;
