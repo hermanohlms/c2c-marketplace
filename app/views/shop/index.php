@@ -57,24 +57,6 @@
 
     <div class="product-grid">
 
-        <?php if ($totalPages > 1): ?>
-
-            <div class="pagination">
-
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-
-                    <a
-                        class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
-                        href="/index.php?page=shop&search=<?php echo urlencode($search); ?>&category_id=<?php echo urlencode($category_id); ?>&sort=<?php echo urlencode($sort); ?>&p=<?php echo $i; ?>">
-                        <?php echo $i; ?>
-                    </a>
-
-                <?php endfor; ?>
-
-            </div>
-
-        <?php endif; ?>
-
         <?php foreach ($products as $product): ?>
 
             <div class="product-card">
@@ -140,6 +122,24 @@
         <?php endforeach; ?>
 
     </div>
+
+    <?php if ($totalPages > 1): ?>
+
+        <div class="pagination">
+
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+
+                <a
+                    class="<?php echo $i === $currentPage ? 'active' : ''; ?>"
+                    href="/index.php?page=shop&search=<?php echo urlencode($search); ?>&category_id=<?php echo urlencode($category_id); ?>&sort=<?php echo urlencode($sort); ?>&p=<?php echo $i; ?>">
+                    <?php echo $i; ?>
+                </a>
+
+            <?php endfor; ?>
+
+        </div>
+
+    <?php endif; ?>
 
 <?php endif; ?>
 
