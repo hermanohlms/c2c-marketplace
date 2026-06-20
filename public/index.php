@@ -34,7 +34,7 @@ require_once __DIR__ . '/../app/controllers/SupportController.php';
 
 
 $action = $_POST['action'] ?? $_GET['action'] ?? null;
-$page = $_GET['page'] ?? 'home';
+$page = $_GET['page'] ?? ($action ? null : 'home');
 
 $csrfExemptActions = [
     'cart-count',
