@@ -23,8 +23,14 @@ function validateCsrf()
         empty($token) ||
         !hash_equals($_SESSION['csrf_token'], $token)
     ) {
-        $_SESSION['error'] = "Invalid security token. Please try again.";
-        header("Location: /index.php?page=home");
+        $_SESSION['error'] = "Your session expired. Please try again.";
+
+        $referer = $_SERVER['HTTP_REFERER'] ?? '';
+        $redirectTo = (strpos($referer, $_SERVER['HTTP_HOST'] ?? '') !== false)
+            ? $referer
+            : '/index.php?page=home';
+
+        header("Location: " . $redirectTo);
         exit;
     }
 }
