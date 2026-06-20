@@ -1,141 +1,158 @@
 <?php
 
-session_start();
+require_once __DIR__ . '/../models/User.php';
 
-require_once __DIR__ . '/../config/db.php';
+class AuthController
+{
 
+    private $db;
 
-require_once __DIR__ . '/../app/controllers/ProductController.php';
-require_once __DIR__ . '/../app/controllers/AuthController.php';
-require_once __DIR__ . '/../app/controllers/CartController.php';
-require_once __DIR__ . '/../app/controllers/CheckoutController.php';
-require_once __DIR__ . '/../app/controllers/OrderController.php';
-require_once __DIR__ . '/../app/controllers/ReviewController.php';
-require_once __DIR__ . '/../app/controllers/AdminController.php';
-require_once __DIR__ . '/../app/controllers/PaymentController.php';
-require_once __DIR__ . '/../app/controllers/WishlistController.php';
-require_once __DIR__ . '/../app/controllers/ProfileController.php';
-require_once __DIR__ . '/../app/controllers/SellerStoreController.php';
-require_once __DIR__ . '/../app/controllers/NotificationController.php';
-require_once __DIR__ . '/../app/controllers/MessageController.php';
-
-
-require_once __DIR__ . '/../app/models/Notification.php';
-require_once __DIR__ . '/../app/models/Order.php';
-require_once __DIR__ . '/../app/models/Product.php';
-require_once __DIR__ . '/../app/models/Message.php';
-require_once __DIR__ . '/../app/models/Escrow.php';
-require_once __DIR__ . '/../app/helpers/data_helper.php';
-require_once __DIR__ . '/../app/helpers/email_helper.php';
-require_once __DIR__ . '/../app/helpers/csrf_helper.php';
-require_once __DIR__ . '/../app/helpers/error_helper.php';
-require_once __DIR__ . '/../app/helpers/cloudinary_helper.php';
-require_once __DIR__ . '/../app/controllers/SupportController.php';
-
-if (isset($_SESSION['user_id'])) {
-    require_once __DIR__ . '/../app/models/User.php';
-
-    $userModel = new User($conn);
-    $currentUser = $userModel->findById($_SESSION['user_id']);
-
-    if (!$currentUser || ($currentUser['status'] ?? 'active') === 'inactive') {
-        session_destroy();
-        session_start();
-
-        $_SESSION['error'] = "This account has been deactivated. Please contact support.";
-
-        header("Location: /index.php?page=login");
-        exit;
-    }
-}
-
-
-
-$action = $_POST['action'] ?? $_GET['action'] ?? null;
-$page = $_GET['page'] ?? ($action ? null : 'home');
-
-$csrfExemptActions = [
-    'cart-count',
-    'wishlist-count'
-];
-
-$csrfExemptPages = [
-    'payfast-itn'
-];
-
-if (
-    $_SERVER['REQUEST_METHOD'] === 'POST' &&
-    !in_array($action, $csrfExemptActions) &&
-    !in_array($page, $csrfExemptPages)
-) {
-    validateCsrf();
-}
-
-$supportController = new SupportController($conn);
-$orderModel = new Order($conn);
-$productModel = new Product($conn);
-
-//$escrowModel = new Escrow($conn);
-//$escrowModel->releaseExpiredShippedOrders(14);
-$messageController = new MessageController($conn);
-$notificationController = new NotificationController($conn);
-$sellerStoreController = new SellerStoreController($conn);
-$profileController = new ProfileController($conn);
-$wishlistController = new WishlistController($conn);
-$paymentController = new PaymentController($conn);
-$adminController = new AdminController($conn);
-$reviewController = new ReviewController($conn);
-$orderController = new OrderController($conn);
-$checkoutController = new CheckoutController($conn);
-$cartController = new CartController($conn);
-$controller = new AuthController($conn);
-$productController = new ProductController($conn);
-
-if (isset($_SESSION['user_id'])) {
-
-    $messageModel = new Message($conn);
-
-    $_SESSION['unread_messages'] =
-        $messageModel->unreadCount($_SESSION['user_id']);
-
-    $wishlistStmt = $conn->prepare("
-        SELECT COUNT(*) AS total
-        FROM wishlists
-        WHERE user_id = :user_id
-    ");
-
-    $wishlistStmt->execute([
-        ':user_id' => $_SESSION['user_id']
-    ]);
-
-    $_SESSION['wishlist_count'] =
-        $wishlistStmt->fetch(PDO::FETCH_ASSOC)['total'];
-
-    $cartCount = 0;
-
-    if (($_SESSION['user_role'] ?? '') === 'buyer') {
-        require_once __DIR__ . '/../app/models/Cart.php';
-
-        $cartModel = new Cart($conn);
-        $cartCount = (int) $cartModel->count($_SESSION['user_id']);
+    public function __construct($db)
+    {
+        $this->db = $db;
     }
 
-    $_SESSION['cart_count'] = $cartCount;
+    public function register()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $_SESSION['open_support_tickets'] = 0;
+            $name = trim($_POST['name'] ?? '');
+            $email = trim($_POST['email'] ?? '');
+            $rawPassword = $_POST['password'] ?? '';
 
-    if (($_SESSION['user_role'] ?? '') === 'admin') {
-        $ticketStmt = $conn->prepare("
-            SELECT COUNT(*) AS total
-            FROM support_tickets
-            WHERE status = 'open'
-        ");
+            $role = $_POST['role'] ?? 'buyer';
 
-        $ticketStmt->execute();
+            $allowedRoles = ['buyer', 'seller'];
 
-        $_SESSION['open_support_tickets'] =
-            $ticketStmt->fetch(PDO::FETCH_ASSOC)['total'];
+            if (!in_array($role, $allowedRoles)) {
+                $role = 'buyer';
+            }
+
+            // Validation
+
+            if ($name === '' || $email === '' || $rawPassword === '') {
+                $_SESSION['error'] = "All fields are required.";
+                header("Location: /index.php?page=register");
+                exit;
+            }
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $_SESSION['error'] = "Please enter a valid email address.";
+                header("Location: /index.php?page=register");
+                exit;
+            }
+
+            if (strlen($rawPassword) < 6) {
+                $_SESSION['error'] = "Password must be at least 6 characters long.";
+                header("Location: /index.php?page=register");
+                exit;
+            }
+
+            $password = password_hash(
+                $rawPassword,
+                PASSWORD_DEFAULT
+            );
+
+            $userModel = new User($this->db);
+
+            try {
+
+                $created = $userModel->create(
+                    $name,
+                    $email,
+                    $password,
+                    $role
+                );
+
+                if ($created) {
+
+                    $_SESSION['success'] =
+                        "Account created successfully. Please login.";
+
+                    header("Location: /index.php?page=login");
+                    exit;
+                }
+
+                $_SESSION['error'] =
+                    "Registration failed. Please try again.";
+
+                header("Location: /index.php?page=register");
+                exit;
+            } catch (PDOException $e) {
+
+                if ($e->getCode() === '23505') {
+
+                    $_SESSION['error'] =
+                        "An account with this email already exists.";
+
+                    header("Location: /index.php?page=register");
+                    exit;
+                }
+
+                $_SESSION['error'] =
+                    "Registration failed. Please try again.";
+
+                header("Location: /index.php?page=register");
+                exit;
+            }
+        }
+    }
+
+    public function login()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+
+            $userModel = new User($this->db);
+
+            $user = $userModel->findByEmail($email);
+
+            if ($user) {
+
+                if (password_verify($password, $user['password'])) {
+
+                    if (($user['status'] ?? 'active') === 'inactive') {
+                        $_SESSION['error'] = "This account has been deactivated. Please contact support.";
+
+                        header("Location: /index.php?page=login");
+                        exit;
+                    }
+
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['user_name'] = $user['name'];
+                    $_SESSION['user_role'] = $user['role'];
+                    $_SESSION['profile_image'] = $user['profile_image'] ?? null;
+
+                    if ($user['role'] === 'seller') {
+                        header("Location: /index.php?page=dashboard");
+                        exit;
+                    }
+
+                    if ($user['role'] === 'buyer') {
+                        header("Location: /index.php?page=shop");
+                        exit;
+                    }
+
+                    if ($user['role'] === 'admin') {
+                        header("Location: /index.php?page=admin-dashboard");
+                        exit;
+                    }
+                } else {
+
+                    $_SESSION['error'] = "Incorrect email or password.";
+
+                    header("Location: /index.php?page=login");
+                    exit;
+                }
+            } else {
+
+                $_SESSION['error'] = "Incorrect email or password.";
+
+                header("Location: /index.php?page=login");
+                exit;
+            }
+        }
     }
 }
-
-require_once __DIR__ . '/../routes/web.php';
