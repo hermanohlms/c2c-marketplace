@@ -24,6 +24,9 @@ if ($action === 'register') {
     $activeProductsCount = $productModel->countActiveBySeller($_SESSION['user_id']);
     $lowStockProducts = $productModel->getLowStockBySeller($_SESSION['user_id']);
 
+    $escrowModel = new Escrow($conn);
+    $netRevenue = $escrowModel->getSellerNetRevenue($_SESSION['user_id']);
+
     require_once __DIR__ . '/../app/views/seller/dashboard.php';
 } elseif ($page === 'my-products') {
 

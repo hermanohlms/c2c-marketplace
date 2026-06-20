@@ -4,11 +4,14 @@ class Escrow
 {
     private $conn;
 
-    private $commissionRate = 0.10; // 10%
+    private $commissionRate;
 
     public function __construct($db)
     {
         $this->conn = $db;
+
+        $orderConfig = require __DIR__ . '/../../config/order.php';
+        $this->commissionRate = $orderConfig['commission_rate'];
     }
 
     public function createForOrderItem($order_id, $order_item_id, $seller_id, $gross_amount)
@@ -66,6 +69,23 @@ class Escrow
         return $stmt->execute([
             ':order_id' => $order_id
         ]);
+    }
+
+    public function getSellerNetRevenue($seller_id)
+    {
+        $sql = "
+            SELECT COALESCE(SUM(seller_amount), 0) AS net_revenue
+            FROM seller_escrow
+            WHERE seller_id = :seller_id
+        ";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->execute([
+            ':seller_id' => $seller_id
+        ]);
+
+        return (float) $stmt->fetchColumn();
     }
 
     public function getSellerSummary($seller_id)

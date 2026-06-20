@@ -13,8 +13,8 @@
 <div class="analytics-grid">
 
     <div class="analytics-card">
-        <span>Total Revenue</span>
-        <strong>R<?php echo number_format($analytics['total_revenue'], 2); ?></strong>
+        <span>Net Revenue</span>
+        <strong>R<?php echo number_format($netRevenue, 2); ?></strong>
     </div>
 
     <div class="analytics-card">
