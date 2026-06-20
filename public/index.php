@@ -32,6 +32,23 @@ require_once __DIR__ . '/../app/helpers/error_helper.php';
 require_once __DIR__ . '/../app/helpers/cloudinary_helper.php';
 require_once __DIR__ . '/../app/controllers/SupportController.php';
 
+if (isset($_SESSION['user_id'])) {
+    require_once __DIR__ . '/../app/models/User.php';
+
+    $userModel = new User($conn);
+    $currentUser = $userModel->findById($_SESSION['user_id']);
+
+    if (!$currentUser || ($currentUser['status'] ?? 'active') === 'inactive') {
+        session_destroy();
+        session_start();
+
+        $_SESSION['error'] = "This account has been deactivated. Please contact support.";
+
+        header("Location: /index.php?page=login");
+        exit;
+    }
+}
+
 
 
 $action = $_POST['action'] ?? $_GET['action'] ?? null;
